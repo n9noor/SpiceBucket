@@ -56,7 +56,6 @@ class ProductController extends Controller
         $categories = ProductCategory::where('is_active', true)->get();
         $productImages = ProductImage::where('product_id', $product->id)->get(); 
         $productVariant = ProductVerientPrice::leftjoin('product_variant_values AS ppv1', 'ppv1.id', '=', 'product_variant_price.variant_value_id_1')->leftjoin('product_variants AS pv1', 'pv1.id', '=', 'ppv1.variant_id')->leftjoin('product_variant_values AS ppv2', 'ppv2.id', '=', 'product_variant_price.variant_value_id_2')->leftjoin('product_variants AS pv2', 'pv2.id', '=', 'ppv2.variant_id')->leftjoin('product_variant_values AS ppv3', 'ppv3.id', '=', 'product_variant_price.variant_value_id_3')->leftjoin('product_variants AS pv3', 'pv3.id', '=', 'ppv3.variant_id')->select('product_variant_price.*', 'ppv1.value AS Object1Value', 'ppv2.value AS Object2Value', 'ppv3.value AS Object3Value', 'pv1.name AS Object1', 'pv2.name AS Object2', 'pv3.name AS Object3')->where('product_id', $product->id)->get(); 
-        dd($productVariant);
         return view('products.edit', ['title' => 'Edit Product - Spicebucket Administrator', 'catgories' => $categories, 'vendors' => $vendors, 'product' => $product, 'productImages' => $productImages, 'productVariant' => $productVariant]);
     }
     

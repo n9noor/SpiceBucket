@@ -18,6 +18,9 @@ Edit Product: {{$product->name}}
 </div>
 </div>
 </div>
+@if($errors->any())
+    {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
+@endif
 <form action="/products/update-product/{{$product->id}}" method="post" class="form-horizontal" enctype="multipart/form-data">
 @csrf
 @method("PUT")
@@ -153,7 +156,17 @@ Edit Product: {{$product->name}}
 <h1 class="card-header">Product Image</h1>
 <div class="card-body">
 <div class="row">
-@for($i=1; $i<=12; $i++)
+@php $i=1; @endphp
+@foreach($productImages as $image)
+<div class="col-md-3">
+<div class="position-relative mb-3">
+<label for="product_image_{{$i}}" class="form-label"><div id="product-image-view-{{$i}}"><img class="mx-5 my-3 img-thumbnail" src="{{asset('/images/products/' . $image->image)}}" width="200" height="200"></div></label>
+<input style="display:none" type="file" name="product_image[]" id="product_image_{{$i}}" class="form-control" onchange="displayImage(this, 'product-image-view-{{$i}}');" />
+</div>
+</div>
+@php $i++; @endphp
+@endforeach
+@for(; $i<=12; $i++)
 <div class="col-md-3">
 <div class="position-relative mb-3">
 <label for="product_image_{{$i}}" class="form-label"><div id="product-image-view-{{$i}}"><img class="mx-5 my-3 img-thumbnail" src="{{asset('images/upload.png')}}" width="200" height="200"></div></label>
@@ -297,7 +310,7 @@ $video_link = json_decode($product->video_url, true)
 <div class="main-card mb-3 card">
 <h1 class="card-header">Variants</h1>
 <div class="card-body">
-<div id="variant-table" class="my-3 default-hide p-4 table-responsive">
+<div id="variant-table" class="my-3 p-4 table-responsive">
 <table class="table table-bordered table-striped">
 <thead>
 <tr>
@@ -305,7 +318,7 @@ $video_link = json_decode($product->video_url, true)
 <th>Product Price</th>
 <th>Net Price</th>
 <th>Discount Price</th>
-<th>B2B Product Price</th>
+<!-- <th>B2B Product Price</th> -->
 <th>SKU (Optional)</th>
 <th>Barcode (Optional)</th>
 <th>Weight</th>
@@ -314,16 +327,79 @@ $video_link = json_decode($product->video_url, true)
 </thead>
 <tbody>
 @foreach($productVariant as $variant)
+<input type="hidden" name="@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[productpriceid]" id="@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_productpriceid" value="{{$variant->id}}" />
 <tr>
-<th nowrap><input class='readonly-as-label' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][label]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_label' value="{{$val['label']}}" readonly /></th>
-<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][product_mrp]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_product_mrp' value="{{$val['product_mrp']}}"></td>
-<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][net_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_net_price' value="{{$val['net_price']}}"></td>
-<td><div class='input-group'><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][discount_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_discount_price' readonly value="{{$val['discount_price']}}"><div class='input-group-text'><span class=''>%</span></div></div></td>
-<!-- <td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][b2b_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_b2b_price'></td> -->
-<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][sku]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_sku' value="{{$val['sku']}}"></td>
-<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][barcode]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_barcode' value="{{$val['barcode']}}"></td>
-<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][net_weight]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_net_weight' value="{{$val['net_weight']}}"></td>
-<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][quantity]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_quantity' value="{{$val['quantity']}}"></td>
+<th nowrap><input class='readonly-as-label' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[label]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_label' value="@if(!is_null($variant->Object1Value)){{$variant->Object1Value}}@endif 
+@if(!is_null($variant->Object2Value))/ {{$variant->Object2Value}}@endif 
+@if(!is_null($variant->Object3Value))/ {{$variant->Object3Value}}@endif" readonly /></th>
+<td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[product_mrp]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_product_mrp' value="{{$variant->product_mrp}}"></td>
+<td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[net_price]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_net_price' value="{{$variant->net_price}}"></td>
+<td><div class='input-group'><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[discount_price]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_discount_price' readonly value="{{$variant->discount_price}}"><div class='input-group-text'><span class=''>%</span></div></div></td>
+<!-- <td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[b2b_price]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_b2b_price'></td> -->
+<td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[sku]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_sku' value="{{$variant->sku}}"></td>
+<td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[barcode]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_barcode' value="{{$variant->barcode}}"></td>
+<td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[net_weight]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_net_weight' value="{{$variant->net_weight}}"></td>
+<td><input class='form-control' type='text' name='@if(!is_null($variant->variant_value_id_1))variant[{{$variant->variant_value_id_1}}]@endif
+@if(!is_null($variant->variant_value_id_2))[{{$variant->variant_value_id_2}}]@endif
+@if(!is_null($variant->variant_value_id_3))[{{$variant->variant_value_id_3}}]@endif
+[quantity]' id='@if(!is_null($variant->variant_value_id_1))variant_{{$variant->variant_value_id_1}}@endif
+@if(!is_null($variant->variant_value_id_2))_{{$variant->variant_value_id_2}}@endif
+@if(!is_null($variant->variant_value_id_3))_{{$variant->variant_value_id_3}}@endif
+_quantity' value="{{$variant->quantity}}"></td>
 </tr>
 @endforeach
 </tbody>
