@@ -155,7 +155,7 @@ class ApiController extends Controller
             ]);
             
             if ($validatormobile->fails()) { 
-                return response()->json([ 'status'=> false, 'message'=> $validatormobile->errors() ]);
+                return response()->json([ 'status'=> false, 'message'=> implode(",", $validatormobile->messages()->all()) ]);
             }
             
             $smsmessage = "Dear Customer, your OTP " . $otpnumber . " For Registration on Spicebucket.com Thanks Spice Bucket E-Retail (OPC) Pvt. Ltd.";
@@ -169,7 +169,7 @@ class ApiController extends Controller
             ]);
             
             if ($validatoremail->fails()) { 
-                return response()->json([ 'status'=> false, 'message'=> $validatoremail->errors() ]);
+                return response()->json([ 'status'=> false, 'message'=> implode(",", $validatoremail->messages()->all()) ]);
             }
             Mail::send('mailtemplate.sendotp', array('otp' => $otpnumber), function($message) use ($data) {
                 $message->to($data->emailphone)->subject('Welcome to SpiceBucket.');
@@ -191,7 +191,7 @@ class ApiController extends Controller
         if($validator->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()
+                'message' => implode(",", $validator->messages()->all())
             ], 200);
         }
         $data = json_decode($request->getContent());
@@ -220,7 +220,7 @@ class ApiController extends Controller
         if($validator->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()
+                'message' => implode(",", $validator->messages()->all())
             ], 200);
         }
         $data = json_decode($request->getContent());
@@ -259,7 +259,7 @@ class ApiController extends Controller
         if($validator->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()
+                'message' => implode(",", $validator->messages()->all())
             ], 200);
         }
         $data = json_decode($request->getContent());
@@ -298,7 +298,7 @@ class ApiController extends Controller
         if($validator->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()
+                'message' => implode(",", $validator->messages()->all())
             ], 200);
         }
         $data = json_decode($request->getContent());
