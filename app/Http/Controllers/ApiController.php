@@ -15,14 +15,14 @@ class ApiController extends Controller
     public function login(Request $request) {
         $validator = Validator::make($request->json()->all(), [
             'email' => 'required',
-            'password' => 'required',
+            'otp' => 'required',
             'deviceId' => 'required',
             'firebaseToken' => 'required'
         ]);
         if($validator->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()
+                'message' => implode(",", $validator->messages()->all())
             ], 200);
         }
         $data = json_decode($request->getContent());
@@ -32,11 +32,11 @@ class ApiController extends Controller
             ]);
             
             if ($validatormobile->fails()) { 
-                return response()->json([ 'status'=> false, 'message'=> $validatormobile->errors() ]);
+                return response()->json([ 'status'=> false, 'message'=> implode(",", $validatormobile->messages()->all()) ]);
             }
             
             $result = Customer::where('phone', $data->email)->where('is_active', true)->first();
-            if(!is_null($result) && Hash::check($data->password, $result->otp)) {
+            if(!is_null($result) && Hash::check($data->otp, $result->otp)) {
                 $tokenid = getRandomGeneratedString(16);
                 Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken, 'token_id' => $tokenid]);
                 return response()->json([
@@ -56,11 +56,11 @@ class ApiController extends Controller
             ]);
             
             if ($validatoremail->fails()) { 
-                return response()->json([ 'status'=> false, 'message'=> $validatoremail->errors() ]);
+                return response()->json([ 'status'=> false, 'message'=> implode(",", $validatoremail->messages()->all()) ]);
             }
             
             $result = Customer::where('emailid', $data->email)->where('is_active', true)->first();
-            if(!is_null($result) && (Hash::check($data->password, $result->password) || Hash::check($data->password, $result->otp))) {
+            if(!is_null($result) && Hash::check($data->otp, $result->otp)) {
                 $tokenid = getRandomGeneratedString(16);
                 Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken, 'token_id' => $tokenid]);
                 return response()->json([

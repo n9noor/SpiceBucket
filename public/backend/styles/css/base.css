@@ -24438,3 +24438,9 @@ span.multiselect-native-select select {
 
 .after-img {
   max-width: 100%; }
+
+.readonly-as-label{
+background-color: transparent;
+border: none;
+font-weight: 700;
+}

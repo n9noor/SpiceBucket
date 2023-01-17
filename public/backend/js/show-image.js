@@ -117,23 +117,23 @@ $(document).ready(function(){
                     for(var j in Object2){
                         if(typeof(Object3) != "undefined" && Object3 != null){
                             for(var k in Object3){
-                                html += "<tr><th nowrap>" + Object1[i] + " / " + Object2[j] + " / " + Object3[k] + "</th>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][product_mrp]' id='variant_"  + i + "_" + j + "_product_mrp'></td>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][net_price]' id='variant_"  + i + "_" + j + "_net_price'></td>";
-                                html += "<td><div class='input-group'><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][discount_price]' id='variant_"  + i + "_" + j + "_discount_price' readonly><div class='input-group-text'><span class=''>%</span></div></div></td>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][b2b_price]' id='variant_"  + i + "_" + j + "_b2b_price'></td>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][sku]' id='variant_"  + i + "_" + j + "_sku'></td>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][barcode]' id='variant_"  + i + "_" + j + "_barcode'></td>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][net_weight]' id='variant_"  + i + "_" + j + "_net_weight'></td>";
-                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][quantity]' id='variant_"  + i + "_" + j + "_quantity'></td>";
+                                html += "<tr><th nowrap><input class='readonly-as-label' type='text' name='variant["  + i + "][" + j + "][" + k + "][label]' id='variant_"  + i + "_" + j + "_" + k + "_label' value='" + Object1[i] + " / " + Object2[j] + " / " + Object3[k] + "' readonly /></th>";
+                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][product_mrp]' id='variant_"  + i + "_" + j + "_" + k + "_product_mrp'></td>";
+                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][net_price]' id='variant_"  + i + "_" + j + "_" + k + "_net_price'></td>";
+                                html += "<td><div class='input-group'><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][discount_price]' id='variant_"  + i + "_" + j + "_" + k + "_discount_price' readonly><div class='input-group-text'><span class=''>%</span></div></div></td>";
+                                /*html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][b2b_price]' id='variant_"  + i + "_" + j + "_" + k + "_b2b_price'></td>";*/
+                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][sku]' id='variant_"  + i + "_" + j + "_" + k + "_sku'></td>";
+                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][barcode]' id='variant_"  + i + "_" + j + "_" + k + "_barcode'></td>";
+                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][net_weight]' id='variant_"  + i + "_" + j + "_" + k + "_net_weight'></td>";
+                                html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][" + k + "][quantity]' id='variant_"  + i + "_" + j + "_" + k + "_quantity'></td>";
                                 html += "</tr>";
                             }
                         } else {
-                            html += "<tr><th nowrap>" + Object1[i] + " / " + Object2[j] + "</th>";
+                            html += "<tr><th nowrap><input class='readonly-as-label' type='text' name='variant["  + i + "][" + j + "][label]' id='variant_"  + i + "_" + j + "_label' value='" + Object1[i] + " / " + Object2[j] + "' readonly /></th>";
                             html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][product_mrp]' id='variant_"  + i + "_" + j + "_product_mrp'></td>";
                             html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][net_price]' id='variant_"  + i + "_" + j + "_net_price'></td>";
                             html += "<td><div class='input-group'><input class='form-control' type='text' name='variant["  + i + "][" + j + "][discount_price]' id='variant_"  + i + "_" + j + "_discount_price' readonly><div class='input-group-text'><span class=''>%</span></div></div></td>";
-                            html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][b2b_price]' id='variant_"  + i + "_" + j + "_b2b_price'></td>";
+                            /*html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][b2b_price]' id='variant_"  + i + "_" + j + "_b2b_price'></td>";*/
                             html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][sku]' id='variant_"  + i + "_" + j + "_sku'></td>";
                             html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][barcode]' id='variant_"  + i + "_" + j + "_barcode'></td>";
                             html += "<td><input class='form-control' type='text' name='variant["  + i + "][" + j + "][net_weight]' id='variant_"  + i + "_" + j + "_net_weight'></td>";
@@ -142,11 +142,11 @@ $(document).ready(function(){
                         }
                     }
                 } else {
-                    html += "<tr><th nowrap>" + Object1[i] + "</th>";
+                    html += "<tr><th nowrap><input class='readonly-as-label' type='text' name='variant["  + i + "][label]' id='variant_"  + i + "_label' value='" + Object1[i] + "' readonly /></th>";
                     html += "<td><input class='form-control' type='text' name='variant["  + i + "][product_mrp]' id='variant_"  + i + "_product_mrp'></td>";
                     html += "<td><input class='form-control' type='text' name='variant["  + i + "][net_price]' id='variant_"  + i + "_net_price'></td>";
                     html += "<td><div class='input-group'><input class='form-control' type='text' name='variant["  + i + "][discount_price]' id='variant_"  + i + "_discount_price' readonly><div class='input-group-text'><span class=''>%</span></div></div></td>";
-                    html += "<td><input class='form-control' type='text' name='variant["  + i + "][b2b_price]' id='variant_"  + i + "_b2b_price'></td>";
+                    /*html += "<td><input class='form-control' type='text' name='variant["  + i + "][b2b_price]' id='variant_"  + i + "_b2b_price'></td>";*/
                     html += "<td><input class='form-control' type='text' name='variant["  + i + "][sku]' id='variant_"  + i + "_sku'></td>";
                     html += "<td><input class='form-control' type='text' name='variant["  + i + "][barcode]' id='variant_"  + i + "_barcode'></td>";
                     html += "<td><input class='form-control' type='text' name='variant["  + i + "][net_weight]' id='variant_"  + i + "_net_weight'></td>";

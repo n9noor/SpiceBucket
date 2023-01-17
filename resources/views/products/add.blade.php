@@ -18,6 +18,9 @@ Add Product
 </div>
 </div>
 </div>
+@if($errors->any())
+    {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
+@endif
 <form action="/products/save-product" method="post" class="form-horizontal" enctype="multipart/form-data">
 @csrf
 <div class="main-card mb-3 card">
@@ -176,7 +179,7 @@ Add Product
 <div class="input-group-text">
 <span class="">https://www.youtube.com/embed/</span>
 </div>
-<input type="text" class="form-control" name="video_link[]" id="video_link_{{$i}}">
+<input type="text" class="form-control" name="video_link[]" id="video_link_{{$i}}" value="{{old('video_link.'.($i-1))}}">
 </div>
 </div>
 @endfor
@@ -250,6 +253,7 @@ Add Product
 </div>
 </div>
 </div>
+<!--
 <div class="col-md-6 bg-info p-2">
 <h3 class="card-title text-white">B2B Pricing</h3>
 <div class="row">
@@ -273,6 +277,7 @@ Add Product
 </div>
 </div>
 </div>
+-->
 </div>
 </div>
 </div>
@@ -325,26 +330,26 @@ Add Product
 <h1 class="card-header">Variants</h1>
 <div class="card-body">
 <div class="form-check form-check-inline">
-<input class="form-check-input" type="checkbox" name="varient_property_manual" id="varient_property_manual" value="manual" @if(old('varient_property_manual') == 'manual') checked @endif>
+<input class="form-check-input" type="checkbox" name="varient_property_manual" id="varient_property_manual" value="yes" @if(old('varient_property_manual') == 'yes') checked @endif>
 <label class="form-check-label" for="varient_property_manual">Create variant options for this product</label>
 </div>
 <div class="form-check form-check-inline">
-<input class="form-check-input" type="checkbox" name="varient_property_copy" id="varient_property_copy" value="copy" @if(old('varient_property_copy') == 'copy') checked @endif>
+<input class="form-check-input" type="checkbox" name="varient_property_copy" id="varient_property_copy" value="yes" @if(old('varient_property_copy') == 'yes') checked @endif>
 <label class="form-check-label" for="varient_property_copy">Copy variants/options from existing product</label>
 </div>
-<div class="my-3 default-hide border p-4" id="varient_property_manual_div">
+<div class="my-3 @if(old('varient_property_manual') <> 'yes') default-hide @endif border p-4" id="varient_property_manual_div">
 @foreach($variantsValueMap as $varient_id => $map)
 <div class="row">
 <div class="col-sm-3">
 <div class="form-check">
-<input class="form-check-input" type="checkbox" value="{{$varient_id}}" name="variant_id[{{$varient_id}}]" id="variant_id_{{$varient_id}}" data-text="{{$map['name']}}">
+<input class="form-check-input" @if(is_array(old('variant_id')) && in_array($varient_id, old('variant_id'))) checked @endif type="checkbox" value="{{$varient_id}}" name="variant_id[]" id="variant_id_{{$varient_id}}" data-text="{{$map['name']}}">
 <label class="form-check-label" for="variant_id_{{$varient_id}}">{{$map['name']}}</label>
 </div>
 </div>
 <div class="col-sm-9">
 @foreach($map['values'] as $values)
 <div class="form-check form-check-inline">
-<input class="form-check-input" type="checkbox" value="{{$values['id']}}" name="varient_value[{{$varient_id}}][{{$values['id']}}]" id="varient_value_{{$varient_id}}_{{$values['id']}}" data-text="{{$values['value']}}" >
+<input class="form-check-input" @if(is_array(old('variant_id')) && in_array($values['id'], old('varient_value'))) checked @endif type="checkbox" value="{{$values['id']}}" name="varient_value[]" id="varient_value_{{$varient_id}}_{{$values['id']}}" data-text="{{$values['value']}}" >
 <label class="form-check-label" for="varient_value_{{$varient_id}}_{{$values['id']}}">{{$values['value']}}</label>
 </div>
 @endforeach
@@ -353,36 +358,82 @@ Add Product
 @endforeach
 <button class="btn btn-danger" type="button" id="generate-variant-tbl-btn">Generate Variant Table</button>
 </div>
-<div class="my-3 default-hide border p-4" id="varient_property_copy_div">
+<div class="my-3 @if(old('varient_property_copy') <> 'yes') default-hide @endif border p-4" id="varient_property_copy_div">
 <div class="position-relative mb-3">
 <label for="copy_from_product" class="form-label">Copy From Product</label>
-<select class="form-control" name="copy_from_product" id="copy_from_product" value="{{old('net_price_without_tax')}}">
+<select class="form-control" name="copy_from_product" id="copy_from_product">
 <option value=""></option>
 @foreach($products as $copyproduct)
-<option value="{{$copyproduct->id}}">{{$copyproduct->name}}</option>
+<option value="{{$copyproduct->id}}"{{old('copy_from_product') == $copyproduct->id ? " selected='selected'" : ""}}>{{$copyproduct->name}}</option>
 @endforeach
 </select>
+@error('copy_from_product')
+<small class="text-danger">{{$message}}</small>
+@enderror
 </div>
 </div>
-<div id="variant-table" class="my-3 default-hide p-4 table-responsive">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th nowrap>Variant</th>
-                <th>Product Price</th>
-                <th>Net Price</th>
-                <th>Discount Price</th>
-                <th>B2B Product Price</th>
-                <th>SKU (Optional)</th>
-                <th>Barcode (Optional)</th>
-                <th>Weight</th>
-                <th>Quantity (Optional)</th>
-            </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>    
+<div id="variant-table" class="my-3 @if(old('varient_property_manual') <> 'yes') default-hide @endif p-4 table-responsive">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th nowrap>Variant</th>
+<th>Product Price</th>
+<th>Net Price</th>
+<th>Discount Price</th>
+<!-- <th>B2B Product Price</th> -->
+<th>SKU (Optional)</th>
+<th>Barcode (Optional)</th>
+<th>Weight</th>
+<th>Quantity (Optional)</th>
+</tr>
+</thead>
+<tbody>
+@if(is_array(old('variant')))
+@foreach(old('variant') as $variant_id => $variant_values)
+@if(is_array($variant_values) && !array_key_exists('product_mrp', $variant_values))
+@foreach($variant_values as $variant_value_id => $values)
+@if(is_array($values) && !array_key_exists('product_mrp', $values))
+@foreach($values as $obj3 => $val)
+<tr><th nowrap><input class='readonly-as-label' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][label]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_label' value="{{$val['label']}}" readonly /></th>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][product_mrp]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_product_mrp' value="{{$val['product_mrp']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][net_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_net_price' value="{{$val['net_price']}}"></td>
+<td><div class='input-group'><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][discount_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_discount_price' readonly value="{{$val['discount_price']}}"><div class='input-group-text'><span class=''>%</span></div></div></td>
+<!-- <td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][b2b_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_b2b_price'></td> -->
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][sku]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_sku' value="{{$val['sku']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][barcode]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_barcode' value="{{$val['barcode']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][net_weight]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_net_weight' value="{{$val['net_weight']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][quantity]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_quantity' value="{{$val['quantity']}}"></td>
+</tr>
+@endforeach
+@else
+<tr><th nowrap><input class='readonly-as-label' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][label]' id='variant_{{$variant_id}}_{{$variant_value_id}}_label' value="{{$values['label']}}" readonly /></th>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][product_mrp]' id='variant_{{$variant_id}}_{{$variant_value_id}}_product_mrp' value="{{$values['product_mrp']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][net_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_net_price' value="{{$values['net_price']}}"></td>
+<td><div class='input-group'><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][discount_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_discount_price' readonly value="{{$values['discount_price']}}"><div class='input-group-text'><span class=''>%</span></div></div></td>
+<!-- <td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][b2b_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_b2b_price'></td> -->
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][sku]' id='variant_{{$variant_id}}_{{$variant_value_id}}_sku' value="{{$values['sku']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][barcode]' id='variant_{{$variant_id}}_{{$variant_value_id}}_barcode' value="{{$values['barcode']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][net_weight]' id='variant_{{$variant_id}}_{{$variant_value_id}}_net_weight' value="{{$values['net_weight']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][quantity]' id='variant_{{$variant_id}}_{{$variant_value_id}}_quantity' value="{{$values['quantity']}}"></td>
+</tr>
+@endif
+@endforeach
+@else
+<tr><th nowrap><input class='readonly-as-label' type='text' name='variant[{{$variant_id}}][label]' id='variant_{{$variant_id}}_label' value="{{$variant_values['label']}}" readonly /></th>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][product_mrp]' id='variant_{{$variant_id}}_product_mrp' value="{{$variant_values['product_mrp']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][net_price]' id='variant_{{$variant_id}}_net_price' value="{{$variant_values['net_price']}}"></td>
+<td><div class='input-group'><input class='form-control' type='text' name='variant[{{$variant_id}}][discount_price]' id='variant_{{$variant_id}}_discount_price' readonly value="{{$variant_values['discount_price']}}"><div class='input-group-text'><span class=''>%</span></div></div></td>
+<!-- <td><input class='form-control' type='text' name='variant[{{$variant_id}}][b2b_price]' id='variant_{{$variant_id}}_b2b_price'></td> -->
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][sku]' id='variant_{{$variant_id}}_sku' value="{{$variant_values['sku']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][barcode]' id='variant_{{$variant_id}}_barcode' value="{{$variant_values['barcode']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][net_weight]' id='variant_{{$variant_id}}_net_weight' value="{{$variant_values['net_weight']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][quantity]' id='variant_{{$variant_id}}_quantity' value="{{$variant_values['quantity']}}"></td>
+</tr>
+@endif
+@endforeach
+@endif
+</tbody>
+</table>
 </div>
 </div>
 </div>

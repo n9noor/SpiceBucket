@@ -169,13 +169,15 @@ Edit Product: {{$product->name}}
 <div class="card-body">
 <div class="row">
 @for($i=1; $i<=4; $i++)
-{{$video_link = json_decode($product->video_link, true)}}
+@php
+$video_link = json_decode($product->video_url, true)
+@endphp
 <div class="col-md-6 mb-4">
 <div class="input-group">
 <div class="input-group-text">
 <span class="">https://www.youtube.com/embed/</span>
 </div>
-<input type="text" class="form-control" name="video_link[]" id="video_link_{{$i}}" value="{{$video_link[$i]}}">
+<input type="text" class="form-control" name="video_link[]" id="video_link_{{$i}}" value="{{$video_link[$i-1]}}">
 </div>
 </div>
 @endfor
@@ -237,6 +239,7 @@ Edit Product: {{$product->name}}
 </div>
 </div>
 </div>
+<!--
 <div class="col-md-6 bg-info p-2">
 <h3 class="card-title text-white">B2B Pricing</h3>
 <div class="row">
@@ -254,6 +257,7 @@ Edit Product: {{$product->name}}
 </div>
 </div>
 </div>
+-->
 </div>
 </div>
 </div>
@@ -294,22 +298,36 @@ Edit Product: {{$product->name}}
 <h1 class="card-header">Variants</h1>
 <div class="card-body">
 <div id="variant-table" class="my-3 default-hide p-4 table-responsive">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th nowrap>Variant</th>
-                <th>Product Price</th>
-                <th>Net Price</th>
-                <th>Discount Price</th>
-                <th>B2B Product Price</th>
-                <th>SKU (Optional)</th>
-                <th>Barcode (Optional)</th>
-                <th>Weight</th>
-                <th>Quantity (Optional)</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>    
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th nowrap>Variant</th>
+<th>Product Price</th>
+<th>Net Price</th>
+<th>Discount Price</th>
+<th>B2B Product Price</th>
+<th>SKU (Optional)</th>
+<th>Barcode (Optional)</th>
+<th>Weight</th>
+<th>Quantity (Optional)</th>
+</tr>
+</thead>
+<tbody>
+@foreach($productVariant as $variant)
+<tr>
+<th nowrap><input class='readonly-as-label' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][label]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_label' value="{{$val['label']}}" readonly /></th>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][product_mrp]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_product_mrp' value="{{$val['product_mrp']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][net_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_net_price' value="{{$val['net_price']}}"></td>
+<td><div class='input-group'><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][discount_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_discount_price' readonly value="{{$val['discount_price']}}"><div class='input-group-text'><span class=''>%</span></div></div></td>
+<!-- <td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][b2b_price]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_b2b_price'></td> -->
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][sku]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_sku' value="{{$val['sku']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][barcode]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_barcode' value="{{$val['barcode']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][net_weight]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_net_weight' value="{{$val['net_weight']}}"></td>
+<td><input class='form-control' type='text' name='variant[{{$variant_id}}][{{$variant_value_id}}][{{$obj3}}][quantity]' id='variant_{{$variant_id}}_{{$variant_value_id}}_{{$obj3}}_quantity' value="{{$val['quantity']}}"></td>
+</tr>
+@endforeach
+</tbody>
+</table>    
 </div>
 </div>
 </div>
