@@ -494,7 +494,7 @@ function ecCheckCookie()
                         '<a href="javascript:void(0);" class="sidekka_pro_img"><img src="'+ img_url +'" alt="product"></a>'+
                         '<div class="ec-pro-content">'+
                         '<a href="javascript:void(0);" class="cart_pro_title">'+ p_name +'</a>'+
-                        '<span class="cart-price"><span>'+ p_price +'</span> x <span class="cart-qty">1</span></span>'+
+                        '<span class="cart-price"><span>₹ '+ p_price +'</span> x <span class="cart-qty">1</span> = <b>₹</b> <span class="total-qty-price"></span></span>'+
                         '<div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>'+
                         '<input class="qty-input" type="text" name="ec_qtybtn" value="1">'+
                         '<div class="inc ec_qtybtn">+</div></div>'+
@@ -506,9 +506,11 @@ function ecCheckCookie()
                         qty++;
                         $('li[data-pid="product-'+p_id+'"]').attr('data-qty', qty);
                         $('input[name="ec_qtybtn"]').val(qty);
+                        
                         $('.cart-qty').html(qty);
+                        $('.total-qty-price').html(p_price*qty);
                     }
-                    $.post
+                
                     $('.eccart-pro-items').append(p_html);    
                     
                 });
