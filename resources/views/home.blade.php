@@ -28,13 +28,13 @@
 <div class="ec-pro-actions">
 <a href="javascript:void(0)" class="ec-btn-group compare" title="Compare">
 <img src="{{asset('frontend/images/icons/compare.svg')}}" class="svg_img pro_svg" alt="" /></a>
-<button title="Add To Cart" class=" add-to-cart"><img src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img pro_svg" alt="" /> Add To Cart</button>
+<button title="Add To Cart" class="add-to-cart"><img src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img pro_svg" alt="" /> Add To Cart</button>
 <a class="ec-btn-group wishlist" title="Wishlist"><img src="{{asset('frontend/images/icons/wishlist.svg')}}" class="svg_img pro_svg" alt="" /></a>
 </div>
 </div>
 </div>
 <div class="ec-pro-content">
-<h5 class="ec-pro-title"><a href="javascript:void(0)">{{$product->name}}</a></h5>
+<h5 class="ec-pro-title"><a data-id="{{$product->id}}" href="javascript:void(0)">{{$product->name}}</a></h5>
 <div class="ec-pro-rating">
 <i class="ecicon eci-star fill"></i>
 <i class="ecicon eci-star fill"></i>
@@ -44,7 +44,7 @@
 </div>
 <div class="ec-pro-list-desc">{{$product->description}}</div>
 <span class="ec-price">
-<span class="new-price"><i class="ecicon eci-inr"></i> {{$product->price}}</span>
+<span class="new-price"><i class="ecicon eci-inr"></i> {{$product->net_price}}</span>
 </span>
 </div>
 </div>
