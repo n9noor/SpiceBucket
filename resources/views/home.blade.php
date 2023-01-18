@@ -44,7 +44,7 @@
 </div>
 <div class="ec-pro-list-desc">{{$product->description}}</div>
 <span class="ec-price">
-<span class="new-price">{{$product->net_price}}</span>
+<span class="new-price"><i class="ecicon eci-inr"></i> {{$product->net_price}}</span>
 </span>
 </div>
 </div>
