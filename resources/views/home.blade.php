@@ -18,8 +18,8 @@
 <div class="ec-pro-image-outer">
 <div class="ec-pro-image">
 <a href="javascript:void(0)" class="image">
-<img class="main-image" src="{{url('/images/products/' . $product->image)}}" alt="Product" />
-<img class="hover-image" src="{{url('/images/products/' . $product->image)}}" alt="Product" />
+<img class="main-image" src="{{url('/images/no-image-available.jpg')}}" alt="Product" />
+<img class="hover-image" src="{{url('/images/no-image-available.jpg')}}" alt="Product" />
 </a>
 <span class="percentage">{{$product->discount}}</span>
 <a href="#" class="quickview" data-link-action="quickview" title="Quick view" data-bs-toggle="modal" data-bs-target="#ec_quickview_modal">
