@@ -19,7 +19,7 @@ Edit Product: {{$product->name}}
 </div>
 </div>
 @if($errors->any())
-    {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
+{!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
 @endif
 <form action="/products/update-product/{{$product->id}}" method="post" class="form-horizontal" enctype="multipart/form-data">
 @csrf
@@ -156,17 +156,19 @@ Edit Product: {{$product->name}}
 <h1 class="card-header">Product Image</h1>
 <div class="card-body">
 <div class="row">
+<small style="color:#ff0000;">Note: Click on the image to delete it.</small>
 @php $i=1; @endphp
 @foreach($productImages as $image)
 <div class="col-md-3">
 <div class="position-relative mb-3">
-<label for="product_image_{{$i}}" class="form-label"><div id="product-image-view-{{$i}}"><img class="mx-5 my-3 img-thumbnail" src="{{asset('/images/products/' . $image->image)}}" width="200" height="200"></div></label>
-<input style="display:none" type="file" name="product_image[]" id="product_image_{{$i}}" class="form-control" onchange="displayImage(this, 'product-image-view-{{$i}}');" />
+<div style="cursor:pointer;" onclick="deleteImage({{$image->id}}, this)"><img class="mx-5 my-3 img-thumbnail" src="{{asset('/images/products/' . $image->image)}}" width="200" height="200"></div>
 </div>
 </div>
 @php $i++; @endphp
 @endforeach
-@for(; $i<=12; $i++)
+</div>
+<div class="row">
+@for($i=1; $i<=12; $i++)
 <div class="col-md-3">
 <div class="position-relative mb-3">
 <label for="product_image_{{$i}}" class="form-label"><div id="product-image-view-{{$i}}"><img class="mx-5 my-3 img-thumbnail" src="{{asset('images/upload.png')}}" width="200" height="200"></div></label>

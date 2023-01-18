@@ -160,3 +160,15 @@ $(document).ready(function(){
         $('#variant-table').show();
     });
 });
+
+function deleteImage(id, element){
+    if(confirm("Do you want to delete this image?")){
+        $.get('/products/delete-image', {id: id}, function(result) {
+            if(result.ok == true){
+                $(element).parent().parent().remove();
+            } else {
+                toast["error"]("", "Not able to delete the image, as " + result.message);
+            }
+        }, 'json');
+    }
+}

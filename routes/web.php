@@ -87,6 +87,7 @@ Route::prefix('products')->group(function () {
     Route::post('/save-product', [ProductController::class, 'save_product']);
     Route::put('/update-product/{product}', [ProductController::class, 'update_product']);
     Route::get('/delete-product/{product}', [ProductController::class, 'delete_product']);
+    Route::get('/delete-image', [ProductController::class, 'delete_product_image']);
 
     Route::get('/categories', [ProductController::class, 'product_category']);
     Route::get('/add-product-category', [ProductController::class, 'add_category']);

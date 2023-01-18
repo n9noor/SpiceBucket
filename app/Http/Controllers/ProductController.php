@@ -21,9 +21,9 @@ class ProductController extends Controller
             return redirect('/' . $panel . '/login')->with('message', "Please logged in.");
         }
         if($request->session()->get('admin-logged-in') == true) {
-            $products = DB::table('products')->join('product_category', 'product_category.id', '=', 'products.category_id')->join('vendors', 'vendors.id', '=', 'products.vendor_id')->select('products.*', 'product_category.name AS categoryname', 'vendors.store_name AS vendor')->get();
+            $products = Product::join('product_category', 'product_category.id', '=', 'products.category_id')->join('vendors', 'vendors.id', '=', 'products.vendor_id')->select('products.*', 'product_category.name AS categoryname', 'vendors.store_name AS vendor')->get();
         } else if($request->session()->get('vendor-logged-in') == true) {
-            $products = DB::table('products')->join('product_category', 'product_category.id', '=', 'products.category_id')->join('vendors', 'vendors.id', '=', 'products.vendor_id')->where('products.vendor_id', $request->session()->get('vendor-loggedin-id'))->select('products.*', 'product_category.name AS categoryname')->get();
+            $products = Product::join('product_category', 'product_category.id', '=', 'products.category_id')->where('products.vendor_id', $request->session()->get('vendor-loggedin-id'))->select('products.*', 'product_category.name AS categoryname')->get();
         }
         return view('products.list', ['title' => 'Products - Spicebucket Administrator', 'products' => $products]);
     }
@@ -76,8 +76,8 @@ class ProductController extends Controller
             'moq' => 'required|regex:/^\d+$/',
             'product_image' => 'required',
             'product_image.*' => 'image|mimes:png,jpg,jpeg|max:2048',
-            'varient_property_manual' => 'required_unless: varient_property_copy,null',
-            'varient_property_copy' => 'required_unless: varient_property_manual,null',
+            'varient_property_manual' => 'required_unless:varient_property_copy,null',
+            'varient_property_copy' => 'required_unless:varient_property_manual,null',
             'copy_from_product' => 'required_if:varient_property_copy,copy',
             'variant' => 'required_if:varient_property_manual,manual',
             'variant.*.product_mrp' => 'required_if:varient_property_manual,manual',
@@ -185,15 +185,21 @@ class ProductController extends Controller
             'category_id' => 'required',
             'name' => 'required',
             'description' => 'required',
-            'hsn_code' => 'required|regex:/^\w+$/',
-            'sku' => 'required|regex:/^\w+$/',
+            'hsn_code' => 'required|regex:/^\w+$/i',
+            'sku' => 'required|regex:/^\w[\w-]+$/i',
             'barcode' => 'required',
+            'origin' => 'nullable|regex:/^[a-z]+$/i',
             'selling_price' => 'required',
             'discount_price' => 'required',
             'net_price' => 'required',
-            'moq' => 'required',
+            'moq' => 'required|regex:/^\d+$/',
+            'product_image.*' => 'image|mimes:png,jpg,jpeg|max:2048',
+            'variant' => 'required_if:varient_property_manual,manual',
+            'variant.*.product_mrp' => 'required_if:varient_property_manual,manual',
+            'variant.*.net_price' => 'required_if:varient_property_manual,manual',
+            'variant.*.discount_price' => 'required_if:varient_property_manual,manual',
+            'variant.*.net_weight' => 'required_if:varient_property_manual,manual'
         ]);
-        $product->vendor_id = $request->vendor_id;
         $product->category_id = $request->category_id;
         $product->product_type = $request->product_type;
         $product->name = $request->name;
@@ -216,8 +222,81 @@ class ProductController extends Controller
         $product->tax_rate = $request->taxable_rate;
         $product->tax_amount = $request->taxable_amount;
         $product->net_price_with_tax = $request->net_price_without_tax;
-        $product->video_link = json_encode($request->video_url);
+        $product->video_url = json_encode($request->video_link);
         $product->save();
+        
+        foreach($request->variant as $varient_value_id1 => $variantsValue1){
+            if(is_array($variantsValue1) && !array_key_exists('product_mrp', $variantsValue1)) {
+                foreach($variantsValue1 as $varient_value_id2 => $variantsValue2){
+                    if(is_array($variantsValue2) && !array_key_exists('product_mrp', $variantsValue2)) {
+                        foreach($variantsValue2 as $varient_value_id3 => $variantsValue3){
+                            $productVariantPrice = new ProductVerientPrice();
+                            if(array_key_exists('productpriceid', $variantsValue3) && $variantsValue3['productpriceid'] > 0){
+                                $productVariantPrice = ProductVerientPrice::find($variantsValue3['productpriceid']);
+                            }
+                            $productVariantPrice->product_id = $product->id;
+                            $productVariantPrice->variant_value_id_1 = $varient_value_id1;
+                            $productVariantPrice->variant_value_id_2 = $varient_value_id2;
+                            $productVariantPrice->variant_value_id_3 = $varient_value_id3;
+                            $productVariantPrice->product_mrp = $variantsValue3['product_mrp'];
+                            $productVariantPrice->net_price = $variantsValue3['net_price'];
+                            $productVariantPrice->discount_price = $variantsValue3['discount_price'];
+                            $productVariantPrice->sku = $variantsValue3['sku'];
+                            $productVariantPrice->barcode = $variantsValue3['barcode'];
+                            $productVariantPrice->net_weight = $variantsValue3['net_weight'];
+                            $productVariantPrice->quantity = $variantsValue3['quantity'];
+                            $productVariantPrice->save();
+                        }
+                    } else {
+                        $productVariantPrice = new ProductVerientPrice();
+                        if(array_key_exists('productpriceid', $variantsValue2) && $variantsValue2['productpriceid'] > 0){
+                            $productVariantPrice = ProductVerientPrice::find($variantsValue2['productpriceid']);
+                        }
+                        $productVariantPrice->product_id = $product->id;
+                        $productVariantPrice->variant_value_id_1 = $varient_value_id1;
+                        $productVariantPrice->variant_value_id_2 = $varient_value_id2;
+                        $productVariantPrice->product_mrp = $variantsValue2['product_mrp'];
+                        $productVariantPrice->net_price = $variantsValue2['net_price'];
+                        $productVariantPrice->discount_price = $variantsValue2['discount_price'];
+                        $productVariantPrice->sku = $variantsValue2['sku'];
+                        $productVariantPrice->barcode = $variantsValue2['barcode'];
+                        $productVariantPrice->net_weight = $variantsValue2['net_weight'];
+                        $productVariantPrice->quantity = $variantsValue2['quantity'];
+                        $productVariantPrice->save();
+                    }
+                }
+            } else {
+                $productVariantPrice = new ProductVerientPrice();
+                if(array_key_exists('productpriceid', $variantsValue1) && $variantsValue1['productpriceid'] > 0){
+                    $productVariantPrice = ProductVerientPrice::find($variantsValue1['productpriceid']);
+                }
+                $productVariantPrice->product_id = $product->id;
+                $productVariantPrice->variant_value_id_1 = $varient_value_id1;
+                $productVariantPrice->product_mrp = $variantsValue1['product_mrp'];
+                $productVariantPrice->net_price = $variantsValue1['net_price'];
+                $productVariantPrice->discount_price = $variantsValue1['discount_price'];
+                $productVariantPrice->sku = $variantsValue1['sku'];
+                $productVariantPrice->barcode = $variantsValue1['barcode'];
+                $productVariantPrice->net_weight = $variantsValue1['net_weight'];
+                $productVariantPrice->quantity = $variantsValue1['quantity'];
+                $productVariantPrice->save();
+            }
+        }
+        
+        if($request->hasfile('product_image')){
+            $counter = 1;
+            foreach($request->product_image as $image) {
+                $imageObj = new ProductImage();
+                $imageName = 'p' . $counter . '-' . time() . '.' . $image->extension();
+                $image->move(public_path('images/products'), $imageName);
+                $imageObj->product_id = $product->id;
+                $imageObj->image = $imageName;
+                $imageObj->imagesetid = $counter;
+                $imageObj->save();
+                $counter++;
+            }
+        }
+        
         return redirect('/products/list')->with('message', 'Product Updated Successfully.');
     }
     
@@ -313,5 +392,22 @@ class ProductController extends Controller
             $this->getChildCategories($row->id);
         }
         return implode(",", $children);
+    }
+
+    public function delete_product_image(Request $request) {
+        $image = ProductImage::find($request->id);
+        if(File::exists(public_path('/images/products/' . $image->image))){
+            File::delete(public_path('/images/products/' . $image->image));
+        }
+        if(ProductImage::destroy($request->id)) {
+            return response()->json([
+                'ok' => true
+            ]);
+        } else {
+            return response()->json([
+                'ok' => true,
+                'message' => ''
+            ]);
+        }
     }
 }
