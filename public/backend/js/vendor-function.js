@@ -81,4 +81,10 @@ $(document).ready(function(){
             toastr['error'](errorMessage.join("<br />"), "Error:");
         }
     });
+    if($('#document-type-table').length > 0){
+        var n_index = $("table th.no-sort").map(function() {
+            return $(this).index();
+        }).get();
+        $('#document-type-table').DataTable({dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-6 text-center'B><'col-sm-12 col-md-3'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>", stateSave: true, scrollX: true, responsive: true, order: [[$('th.default-sort').index(),  'asc']], columnDefs:[{targets: n_index, orderable: false, searchable: false}], buttons: [{extend: 'csvHtml5', className:'border-2 btn-icon btn-shadow btn btn-outline-info p-1 mx-2', title: 'Data export', text: '<i class="fa fa-file-csv fa-3x"></i><span style="font-size:24px;margin-left:5px;">CSV</span>'}, {extend: 'excelHtml5', className:'border-2 btn-icon btn-shadow btn btn-outline-info p-1 mx-2', title: 'Data export', text: '<i class="fa fa-file-excel fa-3x"></i><span style="font-size:24px;margin-left:5px;">Excel</span>'}]});
+    }
 });

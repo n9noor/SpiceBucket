@@ -30,7 +30,15 @@ class ProductController extends Controller
     
     public function add_product(Request $request) {
         $vendors = Vendor::where('is_active', true)->get();
-        $categories = ProductCategory::where('is_active', true)->get();
+        $categories = ProductCategory::where('is_active', true)->where('parent', 0)->get();
+        $subcategories = [];
+        $childcategories = ProductCategory::where('is_active', true)->where('parent', '<>', 0)->get();
+        foreach($childcategories as $subcategory) {
+            if(!array_key_exists($subcategory->parent, $subcategories)){
+                $subcategories[$subcategory->parent] = array();
+            }
+            array_push($subcategories[$subcategory->parent], array('id' => $subcategory->id, 'name' => $subcategory->name));
+        }
         $products = Product::where('vendor_id', $request->session()->get('vendor-loggedin-id'))->get();
         $variants = ProductVerient::where('vendor_id', $request->session()->get('vendor-loggedin-id'))->where('is_active', true)->get();
         $variantsValueMap = array();
@@ -48,22 +56,30 @@ class ProductController extends Controller
                 }, explode(",", $variant->variantvalues));
             }
         }
-        return view('products.add', ['title' => 'Add Product - Spicebucket Administrator', 'catgories' => $categories, 'vendors' => $vendors, 'products' => $products, 'variantsValueMap' => $variantsValueMap]);
+        return view('products.add', ['title' => 'Add Product - Spicebucket Administrator', 'catgories' => $categories, 'vendors' => $vendors, 'products' => $products, 'variantsValueMap' => $variantsValueMap, 'subcategories' => json_encode($subcategories)]);
     }
     
     public function edit_product(Product $product){
         $vendors = Vendor::where('is_active', true)->get();
-        $categories = ProductCategory::where('is_active', true)->get();
+        $categories = ProductCategory::where('is_active', true)->where('parent', 0)->get();
+        $subcategories = [];
+        $childcategories = ProductCategory::where('is_active', true)->where('parent', '<>', 0)->get();
+        foreach($childcategories as $subcategory) {
+            if(!array_key_exists($subcategory->parent, $subcategories)){
+                $subcategories[$subcategory->parent] = array();
+            }
+            array_push($subcategories[$subcategory->parent], array('id' => $subcategory->id, 'name' => $subcategory->name));
+        }
         $productImages = ProductImage::where('product_id', $product->id)->get(); 
         $productVariant = ProductVerientPrice::leftjoin('product_variant_values AS ppv1', 'ppv1.id', '=', 'product_variant_price.variant_value_id_1')->leftjoin('product_variants AS pv1', 'pv1.id', '=', 'ppv1.variant_id')->leftjoin('product_variant_values AS ppv2', 'ppv2.id', '=', 'product_variant_price.variant_value_id_2')->leftjoin('product_variants AS pv2', 'pv2.id', '=', 'ppv2.variant_id')->leftjoin('product_variant_values AS ppv3', 'ppv3.id', '=', 'product_variant_price.variant_value_id_3')->leftjoin('product_variants AS pv3', 'pv3.id', '=', 'ppv3.variant_id')->select('product_variant_price.*', 'ppv1.value AS Object1Value', 'ppv2.value AS Object2Value', 'ppv3.value AS Object3Value', 'pv1.name AS Object1', 'pv2.name AS Object2', 'pv3.name AS Object3')->where('product_id', $product->id)->get(); 
-        return view('products.edit', ['title' => 'Edit Product - Spicebucket Administrator', 'catgories' => $categories, 'vendors' => $vendors, 'product' => $product, 'productImages' => $productImages, 'productVariant' => $productVariant]);
+        return view('products.edit', ['title' => 'Edit Product - Spicebucket Administrator', 'catgories' => $categories, 'vendors' => $vendors, 'product' => $product, 'productImages' => $productImages, 'productVariant' => $productVariant, 'subcategories' => $subcategories]);
     }
     
     public function save_product(Request $request) {
         $product = new Product();
         $this->validate($request, [
             'vendor_id' => 'required',
-            'category_id' => 'required',
+            'main_category_id' => 'required',
             'name' => 'required',
             'description' => 'required',
             'hsn_code' => 'required|regex:/^\w+$/i',
@@ -86,7 +102,8 @@ class ProductController extends Controller
             'variant.*.net_weight' => 'required_if:varient_property_manual,manual'
         ]);
         $product->vendor_id = $request->vendor_id;
-        $product->category_id = $request->category_id;
+        $product->category_id = $request->main_category_id;
+        $product->sub_category_id = $request->sub_category_id;
         $product->product_type = $request->product_type;
         $product->name = $request->name;
         $product->summary = $request->summary;
@@ -182,7 +199,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($product);
         $this->validate($request, [
             'vendor_id' => 'required',
-            'category_id' => 'required',
+            'main_category_id' => 'required',
             'name' => 'required',
             'description' => 'required',
             'hsn_code' => 'required|regex:/^\w+$/i',
@@ -200,7 +217,8 @@ class ProductController extends Controller
             'variant.*.discount_price' => 'required_if:varient_property_manual,manual',
             'variant.*.net_weight' => 'required_if:varient_property_manual,manual'
         ]);
-        $product->category_id = $request->category_id;
+        $product->category_id = $request->main_category_id;
+        $product->sub_category_id = $request->sub_category_id;
         $product->product_type = $request->product_type;
         $product->name = $request->name;
         $product->summary = $request->summary;

@@ -29,14 +29,25 @@ Add Product
 <div class="row">
 <div class="col-md-2">
 <div class="position-relative mb-3">
-<label for="category_id" class="form-label">Category</label>
-<select class="multiselect-dropdown form-control" name="category_id" id="category_id" placeholder="Select category">
+<label for="main_category_id" class="form-label">Main Category</label>
+<select class="multiselect-dropdown form-control" name="main_category_id" id="main_category_id" placeholder="Select category">
 <option value=""></option>
 @foreach($catgories as $category)
-<option value="{{$category->id}}" {{old('category_id') == $category->id ? " selected='selected'" : ""}}>{{$category->name}}</option>
+<option value="{{$category->id}}" {{old('main_category_id') == $category->id ? " selected='selected'" : ""}}>{{$category->name}}</option>
 @endforeach
 </select>
-@error('category_id')
+@error('main_category_id')
+<small class="text-danger">{{$message}}</small>
+@enderror
+</div>
+</div>
+<div class="col-md-2">
+<div class="position-relative mb-3">
+<label for="sub_category_id" class="form-label">Sub Category</label>
+<select class="multiselect-dropdown form-control" name="sub_category_id" id="sub_category_id" placeholder="Select category">
+<option value=""></option>
+</select>
+@error('sub_category_id')
 <small class="text-danger">{{$message}}</small>
 @enderror
 </div>
@@ -61,7 +72,7 @@ Add Product
 @enderror
 </div>
 </div>
-<div class="{{session('admin-logged-in') == true ? 'col-md-4' : 'col-md-7' }}">
+<div class="{{session('admin-logged-in') == true ? 'col-md-3' : 'col-md-5' }}">
 <div class="position-relative mb-3">
 <label for="name" class="form-label">Name</label>
 <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{old('name')}}" />
@@ -71,7 +82,7 @@ Add Product
 </div>
 </div>
 @if(session('admin-logged-in') == true)
-<div class="col-md-3">
+<div class="col-md-2">
 <div class="position-relative mb-3">
 <label for="vendor_id" class="form-label">Vendor</label>
 <select class="form-control" name="vendor_id" id="vendor_id" placeholder="Select Vendor">
@@ -197,7 +208,7 @@ Add Product
 <div class="row">
 <div class="col-md-4">
 <div class="position-relative mb-3">
-<label for="selling_price" class="form-label">Selling Price</label>
+<label for="selling_price" class="form-label">Max. Retail Price(MRP)</label>
 <input type="text" class="form-control" name="selling_price" id="selling_price" placeholder="Enter Selling Price" value="{{old('selling_price')}}" />
 @error('selling_price')
 <small class="text-danger">{{$message}}</small>
@@ -206,7 +217,7 @@ Add Product
 </div>
 <div class="col-md-4">
 <div class="position-relative mb-3">
-<label for="net_price" class="form-label">Net Price</label>
+<label for="net_price" class="form-label">Selling Price</label>
 <input type="text" class="form-control" name="net_price" id="net_price" value="{{old('net_price')}}" placeholder="Enter Net Price" />
 @error('net_price')
 <small class="text-danger">{{$message}}</small>
@@ -377,9 +388,9 @@ Add Product
 <thead>
 <tr>
 <th nowrap>Variant</th>
-<th>Product Price</th>
-<th>Net Price</th>
-<th>Discount Price</th>
+<th>Product MRP</th>
+<th>Selling Price</th>
+<th>Discount</th>
 <!-- <th>B2B Product Price</th> -->
 <th>SKU (Optional)</th>
 <th>Barcode (Optional)</th>
@@ -443,9 +454,10 @@ Add Product
 
 @push('javascripts')
 <script type="text/javascript" src="{{asset('backend/vendors/select2/dist/js/select2.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('backend/js/show-image.js')}}"></script>
 <script type="text/javascript" src="{{asset('backend/js/ckeditor/ckeditor.js')}}"></script>
 <script type="text/javascript">
 CKEDITOR.replace('description');
+var subcategories = {!!$subcategories!!};
 </script>
+<script type="text/javascript" src="{{asset('backend/js/show-image.js')}}"></script>
 @endpush

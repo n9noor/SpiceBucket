@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="{{asset('backend/vendors/linearicons-master/dist/web-font/style.css')}}">
 <link rel="stylesheet" href="{{asset('backend/vendors/pixeden-stroke-7-icon-master/pe-icon-7-stroke/dist/pe-icon-7-stroke.css')}}">
 <link href="{{asset('backend/styles/css/base.css')}}" rel="stylesheet">
+@stack('stylesheets')
 </head>
 <body>
 <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">

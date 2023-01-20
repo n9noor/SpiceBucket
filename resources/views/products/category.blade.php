@@ -55,7 +55,7 @@ Product Category
 <td nowrap>{{$category->name}}</td>
 <td nowrap>{{$category->slug}}</td>
 <td nowrap>{{$category->parentName}}</td>
-<td nowrap>{{$category->description}}</td>
+<td nowrap>{!!$category->description!!}</td>
 </tr>
 @endforeach
 </tbody>

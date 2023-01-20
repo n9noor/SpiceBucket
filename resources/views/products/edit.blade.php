@@ -30,14 +30,30 @@ Edit Product: {{$product->name}}
 <div class="row">
 <div class="col-md-2">
 <div class="position-relative mb-3">
-<label for="category_id" class="form-label">Category</label>
-<select class="multiselect-dropdown form-control" name="category_id" id="category_id" placeholder="Select category">
+<label for="main_category_id" class="form-label">Main Category</label>
+<select class="multiselect-dropdown form-control" name="main_category_id" id="main_category_id" placeholder="Select category">
 <option value=""></option>
 @foreach($catgories as $category)
 <option value="{{$category->id}}" {{ $category->id == $product->category_id ? " selected='selected'" : ""}}>{{$category->name}}</option>
 @endforeach
 </select>
-@error('category_id')
+@error('main_category_id')
+<small class="text-danger">{{$message}}</small>
+@enderror
+</div>
+</div>
+<div class="col-md-2">
+<div class="position-relative mb-3">
+<label for="sub_category_id" class="form-label">Sub Category</label>
+<select class="multiselect-dropdown form-control" name="sub_category_id" id="sub_category_id" placeholder="Select category">
+<option value=""></option>
+@if(array_key_exists($product->category_id, $subcategories))
+    @foreach($subcategories[$product->category_id] as $subcategory)
+        <option value="{{$subcategory['id']}}" {{ $subcategory['id'] == $product->sub_category_id ? " selected='selected'" : ""}}>{{$subcategory['name']}}</option>
+    @endforeach
+@endif
+</select>
+@error('sub_category_id')
 <small class="text-danger">{{$message}}</small>
 @enderror
 </div>
@@ -62,7 +78,7 @@ Edit Product: {{$product->name}}
 @enderror
 </div>
 </div>
-<div class="{{session('admin-logged-in') == true ? 'col-md-4' : 'col-md-7' }}">
+<div class="{{session('admin-logged-in') == true ? 'col-md-3' : 'col-md-5' }}">
 <div class="position-relative mb-3">
 <label for="name" class="form-label">Name</label>
 <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{$product->name}}" />
@@ -72,7 +88,7 @@ Edit Product: {{$product->name}}
 </div>
 </div>
 @if(session('admin-logged-in') == true)
-<div class="col-md-3">
+<div class="col-md-2">
 <div class="position-relative mb-3">
 <label for="vendor_id" class="form-label">Vendor</label>
 <select class="form-control" name="vendor_id" id="vendor_id" placeholder="Select Vendor">
@@ -192,7 +208,7 @@ $video_link = json_decode($product->video_url, true)
 <div class="input-group-text">
 <span class="">https://www.youtube.com/embed/</span>
 </div>
-<input type="text" class="form-control" name="video_link[]" id="video_link_{{$i}}" value="{{$video_link[$i-1]}}">
+<input type="text" class="form-control" name="video_link[]" id="video_link_{{$i}}" value="{{$video_link != false && !is_null($video_link) ? $video_link[$i-1] : ""}}">
 </div>
 </div>
 @endfor
@@ -207,7 +223,7 @@ $video_link = json_decode($product->video_url, true)
 <div class="row">
 <div class="col-md-4">
 <div class="position-relative mb-3">
-<label for="selling_price" class="form-label">Selling Price</label>
+<label for="selling_price" class="form-label">Max. Retail Price (MRP)</label>
 <input type="text" class="form-control" name="selling_price" id="selling_price" placeholder="Enter Selling Price" value="{{$product->product_mrp}}" />
 @error('selling_price')
 <small class="text-danger">{{$message}}</small>
@@ -216,7 +232,7 @@ $video_link = json_decode($product->video_url, true)
 </div>
 <div class="col-md-4">
 <div class="position-relative mb-3">
-<label for="net_price" class="form-label">Net Price</label>
+<label for="net_price" class="form-label">Selling Price</label>
 <input type="text" class="form-control" name="net_price" id="net_price" value="{{$product->net_price}}" placeholder="Enter Net Price" />
 </div>
 </div>
@@ -317,9 +333,9 @@ $video_link = json_decode($product->video_url, true)
 <thead>
 <tr>
 <th nowrap>Variant</th>
-<th>Product Price</th>
-<th>Net Price</th>
-<th>Discount Price</th>
+<th>Product MRP</th>
+<th>Selling Price</th>
+<th>Discount</th>
 <!-- <th>B2B Product Price</th> -->
 <th>SKU (Optional)</th>
 <th>Barcode (Optional)</th>
@@ -415,9 +431,10 @@ _quantity' value="{{$variant->quantity}}"></td>
 
 @push('javascripts')
 <script type="text/javascript" src="{{asset('backend/vendors/select2/dist/js/select2.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('backend/js/show-image.js')}}"></script>
 <script type="text/javascript" src="{{asset('backend/js/ckeditor/ckeditor.js')}}"></script>
 <script type="text/javascript">
 CKEDITOR.replace('description');
+var subcategories = @json($subcategories);
 </script>
+<script type="text/javascript" src="{{asset('backend/js/show-image.js')}}"></script>
 @endpush

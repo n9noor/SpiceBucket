@@ -14,6 +14,23 @@ $(document).ready(function(){
         theme: "bootstrap4",
         placeholder: "Select an option",
     });
+
+    $('#main_category_id').change(function() {
+        var catgoryid = $(this).val();
+        var html = '<option value=""></option>';
+        if(subcategories.hasOwnProperty(catgoryid)) {
+            for(var i in subcategories[catgoryid]){
+                html += '<option value="' + subcategories[catgoryid][i].id + '">'  + subcategories[catgoryid][i].name + '</option>';
+            }
+        }
+        $('#sub_category_id').select2('destroy');
+        $('#sub_category_id').html(html);
+        $('#sub_category_id').select2({
+            theme: "bootstrap4",
+            placeholder: "Select an option",
+        });
+        jQuery('.select2-container').css('width','100%');
+    });
     
     $('.default-hide').hide();
     $('input[type="checkbox"][name^="varient_property"]').change(function() {

@@ -19,10 +19,10 @@ Product
 <button type="button" onclick="$('#variant_type_id').val(0);$('#variant_type').val('');" data-bs-toggle="modal" data-bs-target="#add-variant-type-modal" title="Add Variant Type" class="btn-icon btn-shadow me-3 btn btn-dark">
 <i class="fa fa-plus btn-icon-wrapper"></i> Add Variant Type
 </button>
-@endif
 <button type="button" onclick="window.location.href='/products/add-product'" title="Add Product" class="btn-icon btn-shadow me-3 btn btn-dark">
 <i class="fa fa-plus btn-icon-wrapper"></i> Add Product
 </button>
+@endif
 </div>
 </div>
 </div>
@@ -49,7 +49,9 @@ Product
 @foreach($products as $product)
 <tr>
 <td>
+@if(session('vendor-logged-in') == true)
 <a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-primary" href="/products/edit-product/{{$product->id}}"><i class="btn-icon-wrapper fa fa-user"></i>Edit Product</a>
+@endif
 <a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-danger" href="/products/delete-product/{{$product->id}}"><i class="btn-icon-wrapper fa fa-trash"></i>Delete Product</a>
 </td>
 <td><input data-column="is_active" data-type="product" data-id="{{$product->id}}" type="checkbox"{{$product->is_active == true ? " checked='checked'" : ""}} data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger"></td>

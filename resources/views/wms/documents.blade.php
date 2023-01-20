@@ -20,9 +20,10 @@ Required Documents for Vendors
 </div>
 <div class="main-card mb-3 card">
 <div class="g-0 row pt-3 pb-2 px-3">
-<table class="table table-stripped">
+<div class="table-responsive">
+<table id="document-type-table" class="table table-stripped" style="width:100%">
 <thead>
-<tr><th>#</th><th>Active</th><th>Type</th></tr>
+<tr><th class="no-sort">#</th><th class="no-sort">Active</th><th class="default-sort">Type</th></tr>
 </thead>
 <tbody>
 @foreach($types as $type)
@@ -39,10 +40,25 @@ Required Documents for Vendors
 </table>
 </div>
 </div>
+</div>
 @endsection
+
+@push('stylesheets')
+<link rel="stylesheet" href="{{asset('backend/vendors/datatables.net-buttons/css/bootstrap4.min.css')}}">
+@endpush
 
 @push('externalJavascripts')
 <script type="text/javascript" src="{{asset('backend/vendors/bootstrap4-toggle/js/bootstrap4-toggle.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/bootstrap-table/dist/bootstrap-table.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-buttons/js/buttons.html5.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-buttons/js/jszip.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-buttons/js/vfs_fonts.js')}}"></script>
+<script type="text/javascript" src="{{asset('backend/vendors/datatables.net-buttons/js/pdfmake.min.js')}}"></script>
 @endpush
 
 @push('javascripts')
