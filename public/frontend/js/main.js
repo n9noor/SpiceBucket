@@ -475,7 +475,9 @@ function ecCheckCookie()
                     $(".cart-count-lable").html(count);
                     
                     // Remove Empty message    
-                    $(".emp-cart-msg").parent().remove();        
+                    if($(".emp-cart-msg").length > 0){
+                        $(".emp-cart-msg").parent().remove();        
+                    }
                     
                     setTimeout(function(){ 
                         $(".ec-cart-float").fadeOut(); 
@@ -518,7 +520,7 @@ function ecCheckCookie()
                         },
                         success:function(response)
                         {
-
+                            
                         }
                     });
                     
@@ -560,17 +562,29 @@ function ecCheckCookie()
                         // $(".ec-pro-content .remove").on("click", function () {
                         
                         var cart_product_count = $(".eccart-pro-items li").length;
-                        
+                        var pid = $(this).closest('li')[0].getAttribute('data-pid');
+                        var p_id = pid.replace('product-', '');
+                        var pcount = $('#ec_qtybtn_' + p_id).val();
                         $(this).closest("li").remove();
                         if (cart_product_count == 1) {
                             $('.eccart-pro-items').html('<li><p class="emp-cart-msg">Your cart is empty!</p></li>');
                         }
                         
+                        var index = cart.indexOf(parseInt(p_id));
+                        if (index > -1) {
+                            cart.splice(index, 1);
+                        }
+                        
                         var count = $(".cart-count-lable").html();            
-                        count--;
+                        count -= pcount;
                         $(".cart-count-lable").html(count);
                         
                         cart_product_count--;
+                        $.ajax({ 
+                            method:'GET',
+                            url:"remove-mycart",
+                            data:{product_id: p_id}
+                        });
                     });    
                     
                 })();

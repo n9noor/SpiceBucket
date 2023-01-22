@@ -28,7 +28,7 @@ use PHPUnit\TextUI\XmlConfiguration\Variable;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/cart', [AuthController::class, 'addToCart']);
 Route::get('/mycart', [AuthController::class, 'mycart']);
-Route::get('/removemycart', [AuthController::class, 'removemycart']);
+Route::get('/remove-mycart', [AuthController::class, 'removemycart']);
 Route::get('/checkout', [AuthController::class, 'checkout']);
 
 

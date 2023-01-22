@@ -168,6 +168,14 @@ class AuthController extends Controller
         }
     }
     public function removemycart(Request $request){
-        $request->session()->put('customer-cart');
+        $totalquantity = $request->session()->get('totalquantity');
+        $cart = $request->session()->get('customer-cart');
+        $pid = $request->product_id;
+        if(array_key_exists($pid, $cart)){
+            $totalquantity -= $cart[$pid]['quantity'];
+            unset($cart[$pid]);
+            $request->session()->put('totalquantity', $totalquantity);
+            $request->session()->put('customer-cart', $cart);
+        }
     }
 }
