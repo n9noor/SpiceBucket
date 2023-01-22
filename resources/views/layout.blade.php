@@ -315,7 +315,7 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 <ul class="eccart-pro-items">
 @php $subprice = 0; $gst = 0; @endphp
 @foreach(Session::get('customer-cart') as $product_id => $cart)
-<li data-pid="product-{{$product_id}}" data-qty="{{$cart['quantity']}}">
+<li data-pid="product-{{$product_id}}" data-qty="{{$cart['quantity']}}" data-price="{{$cart['price']}}">
 <a href="javascript:void(0);" class="sidekka_pro_img">
 <img src="{{url('/images/products/' . $cart['image'])}}" alt="product">
 </a>
@@ -338,16 +338,16 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 <tbody>
 <tr>
 <td class="text-left">Sub-Total :</td>
-<td class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($subprice, 2)}}</td>
+<td class="text-right"><i class="ecicon eci-rupee"></i> <span id='sub-price'>{{number_format($subprice, 2)}}</span></td>
 </tr>
 <tr>
 <td class="text-left">GST (18%) :</td>
 @php $gst = $subprice * 0.18; @endphp
-<td class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($gst, 2)}}</td>
+<td class="text-right"><i class="ecicon eci-rupee"></i> <span id='gst-price'>{{number_format($gst, 2)}}</span></td>
 </tr>
 <tr>
 <td class="text-left">Total :</td>
-<td class="text-right primary-color"><i class="ecicon eci-rupee"></i> {{number_format(($subprice + $gst), 2)}}</td>
+<td class="text-right primary-color"><i class="ecicon eci-rupee"></i> <span id='total-price'>{{number_format(($subprice + $gst), 2)}}</span></td>
 </tr>
 </tbody>
 </table>

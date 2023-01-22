@@ -46,6 +46,9 @@ Route::get('/login/google/callback', [GoogleController::class, 'callback']);
 Route::get('/login/facebook', [FacebookController::class, 'redirectToFacebook']);
 Route::get('/login/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
 
+Route::get('/razorpay', [RazorpayController::class, 'razorpay'])->name('razorpay');
+Route::post('/razorpaypayment', [RazorpayController::class, 'payment'])->name('payment');
+
 Route::prefix('administrator')->group(function (){
     Route::post('/', [AdministratorController::class, 'login_process']);
     Route::get('/', [AdministratorController::class, 'index']);
