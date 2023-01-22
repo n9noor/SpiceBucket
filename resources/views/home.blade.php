@@ -1,5 +1,6 @@
 @extends("layout")
 @section("content")
+
 <section class="section ec-product-tab section-space-p" id="collection">
 <div class="container">
 <div class="row">
@@ -18,8 +19,8 @@
 <div class="ec-pro-image-outer">
 <div class="ec-pro-image">
 <a href="javascript:void(0)" class="image">
-<img class="main-image" src="{{!is_null($product->image) ? url('/images/products/' . $product->image) : url('/images/no-image-available.jpg')}}" alt="{{$product->name}}" />
-<img class="hover-image" src="{{!is_null($product->image) ? url('/images/products/' . $product->image) : url('/images/no-image-available.jpg')}}" alt="{{$product->name}}" />
+<img class="main-image" src="{{url('/images/products/' . $product->image)}}" alt="{{$product->name}}" />
+<img class="hover-image" src="{{url('/images/products/' . $product->image)}}" alt="{{$product->name}}" />
 </a>
 <span class="percentage">{{$product->discount}}</span>
 <a href="#" class="quickview" data-link-action="quickview" title="Quick view" data-bs-toggle="modal" data-bs-target="#ec_quickview_modal">
@@ -48,6 +49,7 @@
 </span>
 </div>
 </div>
+
 </div>
 @endforeach
 </div>

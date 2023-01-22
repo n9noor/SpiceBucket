@@ -123,7 +123,7 @@ class="svg_img header_svg" alt="" /></div>
 <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
 <div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}"
 class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count cart-count-lable">{{Session::get('cart-count')}}</span>
+<span class="ec-header-count cart-count-lable"></span>
 </a>
 <!-- Header Cart End -->
 <!-- Header menu Start -->
@@ -197,7 +197,7 @@ class="svg_img header_svg" alt="" /></div>
 <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
 <div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}"
 class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count cart-count-lable">{{Session::get('cart-count')}}</span>
+<span class="ec-header-count cart-count-lable">{{Session::get('totalquantity')}}</span>
 </a>
 <!-- Header Cart End -->
 </div>
@@ -313,6 +313,21 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 <button class="ec-close">×</button>
 </div>
 <ul class="eccart-pro-items">
+@foreach(Session::get('customer-cart') as $product_id => $cart)
+<li data-pid="product-{{$product_id}}" data-qty="{{$cart['quantity']}}">
+<a href="javascript:void(0);" class="sidekka_pro_img">
+<img src="{{url('/images/products/' . $cart['image'])}}" alt="product">
+</a>
+<div class="ec-pro-content">
+<a href="javascript:void(0);" class="cart_pro_title">{{$cart['title']}}</a>
+<span class="cart-price"><span>{{$cart['price']}}</span> x <span class="cart-qty">{{$cart['quantity']}}</span></span>
+<div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>
+<input class="qty-input" type="text" name="ec_qtybtn" value="{{$cart['quantity']}}">
+<div class="inc ec_qtybtn">+</div></div>
+<a href="javascript:void(0)" class="remove" id="remove-{{$product_id}}">×</a>
+</div>
+</li>
+@endforeach
 </ul>
 </div>
 <div class="ec-cart-bottom">
@@ -335,7 +350,7 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 </table>
 </div>
 <div class="cart_btn">
-<a href="/cart" class="btn btn-primary">View Cart</a>
+<a href="{{url('/cart')}}" class="btn btn-primary">View Cart</a>
 <a href="/checkout" class="btn btn-secondary">Checkout</a>
 </div>
 </div>
@@ -528,6 +543,7 @@ class="svg_img header_svg" alt="icon" /></a>
 <script src="{{asset('frontend/js/plugins/jquery.sticky-sidebar.js')}}"></script>
 <!-- Main Js -->
 <script src="{{asset('frontend/js/vendor/index.js')}}"></script>
+<script src="{{asset('frontend/js/cart.js')}}"></script>
 <script src="{{asset('frontend/js/main.js')}}"></script>
 
 </body>

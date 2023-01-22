@@ -112,7 +112,7 @@ class="svg_img pro_svg" alt="" /></a>
 </div>
 </div>
 <div class="ec-pro-content">
-<h5 class="ec-pro-title"><a href="javascript:void(0)">{{$product->name}}</a></h5>
+<h5 class="ec-pro-title"><a data-id="{{$product->id}}" href="javascript:void(0)">{{$product->name}}</a></h5>
 <div class="ec-pro-rating">
 <i class="ecicon eci-star fill"></i>
 <i class="ecicon eci-star fill"></i>
@@ -122,7 +122,7 @@ class="svg_img pro_svg" alt="" /></a>
 </div>
 <div class="ec-pro-list-desc">{{$product->description}}</div>
 <span class="ec-price">
-<span class="new-price"><i class="ecicon eci-inr"></i> {{$product->price}}</span>
+<span class="new-price"><i class="ecicon eci-inr"></i> {{$product->net_price}}</span>
 </span>
 </div>
 </div>
