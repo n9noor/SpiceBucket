@@ -14,7 +14,7 @@
                         <div class="col-md-6 col-sm-12">
                             <!-- ec-breadcrumb-list start -->
                             <ul class="ec-breadcrumb-list">
-                                <li class="ec-breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="ec-breadcrumb-item"><a href="/">Home</a></li>
                                 <li class="ec-breadcrumb-item active">Checkout</li>
                             </ul>
                             <!-- ec-breadcrumb-list end -->
@@ -34,6 +34,7 @@
                     <!-- checkout content Start -->
                     <div class="ec-checkout-content">
                         <div class="ec-checkout-inner">
+                            <!--
                             <div class="ec-checkout-wrap margin-bottom-30">
                                 <div class="ec-checkout-block ec-check-new">
                                     <h3 class="ec-checkout-title">New Customer</h3>
@@ -81,8 +82,8 @@
                                         </form>
                                     </div>
                                 </div>
-
                             </div>
+-->
                             <div class="ec-checkout-wrap margin-bottom-30 padding-bottom-3">
                                 <div class="ec-checkout-block ec-check-bill">
                                     <h3 class="ec-checkout-title">Billing Details</h3>
@@ -215,7 +216,7 @@
                                         <div class="ec-product-inner">
                                             <div class="ec-pro-image-outer">
                                                 <div class="ec-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
+                                                    <a href="javascript:void(0)" class="image">
                                                         <img class="main-image"
                                                             src="assets/images/product-image/1_1.jpg"
                                                             alt="Product" />
@@ -226,7 +227,7 @@
                                                 </div>
                                             </div>
                                             <div class="ec-pro-content">
-                                                <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Baby toy teddy bear</a></h5>
+                                                <h5 class="ec-pro-title"><a href="javascript:void(0)">Baby toy teddy bear</a></h5>
                                                 <div class="ec-pro-rating">
                                                     <i class="ecicon eci-star fill"></i>
                                                     <i class="ecicon eci-star fill"></i>
@@ -291,7 +292,7 @@
                                         <div class="ec-product-inner">
                                             <div class="ec-pro-image-outer">
                                                 <div class="ec-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
+                                                    <a href="javascript:void(0)" class="image">
                                                         <img class="main-image"
                                                             src="assets/images/product-image/8_1.jpg"
                                                             alt="Product" />
@@ -302,7 +303,7 @@
                                                 </div>
                                             </div>
                                             <div class="ec-pro-content">
-                                                <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Smart I watch 2GB</a></h5>
+                                                <h5 class="ec-pro-title"><a href="javascript:void(0)">Smart I watch 2GB</a></h5>
                                                 <div class="ec-pro-rating">
                                                     <i class="ecicon eci-star fill"></i>
                                                     <i class="ecicon eci-star fill"></i>
@@ -434,25 +435,25 @@
                             <div class="ec-sb-block-content">
                                 <div class="ec-check-pay-img-inner">
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment1.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment1.png')}}" alt="">
                                     </div>
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment2.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment2.png')}}" alt="">
                                     </div>
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment3.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment3.png')}}" alt="">
                                     </div>
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment4.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment4.png')}}" alt="">
                                     </div>
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment5.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment5.png')}}" alt="">
                                     </div>
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment6.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment6.png')}}" alt="">
                                     </div>
                                     <div class="ec-check-pay-img">
-                                        <img src="assets/images/icons/payment7.png" alt="">
+                                        <img src="{{asset('frontend/images/icons/payment7.png')}}" alt="">
                                     </div>
                                 </div>
                             </div>

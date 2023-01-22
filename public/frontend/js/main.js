@@ -1,4 +1,3 @@
-var cart=[];
 // Function To Create New Cookie 
 function ecCreateCookie(cookieName,cookieValue,daysToExpire)
 {
@@ -468,7 +467,6 @@ function ecCheckCookie()
                 
                 /*----------------------------- Sidekka And SideMenu -----------------------------------*/
                 $("body").on("click", ".add-to-cart", function(){
-                    
                     $(".ec-cart-float").fadeIn();
                     
                     var count = $(".cart-count-lable").html();        
@@ -488,16 +486,16 @@ function ecCheckCookie()
                     var img_url = $(this).parents().parents().children(".image").find(".main-image").attr("src");
                     var p_name = $(this).parents().parents().parents().children(".ec-pro-content").children("h5").children("a").html();        
                     var p_price = $(this).parents().parents().parents().children(".ec-pro-content").children(".ec-price").children(".new-price").html();
-                    if($.inArray(p_id, cart) == -1){
-                        cart.push(p_id);     
+                    if($.inArray(parseInt(p_id), cart) == -1){
+                        cart.push(parseInt(p_id));     
                         qty=1;               
                         var p_html = '<li data-pid="product-' + p_id + '" data-qty="1">'+
                         '<a href="javascript:void(0);" class="sidekka_pro_img"><img src="'+ img_url +'" alt="product"></a>'+
                         '<div class="ec-pro-content">'+
                         '<a href="javascript:void(0);" class="cart_pro_title">'+ p_name +'</a>'+
-                        '<span class="cart-price"><span>'+ p_price +'</span> x <span class="cart-qty">1</span></span>'+
+                        '<span class="cart-price"><span>'+ p_price +'</span> x <span class="cart-qty-'+p_id+'">1</span></span>'+
                         '<div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>'+
-                        '<input class="qty-input" type="text" name="ec_qtybtn" value="1">'+
+                        '<input class="qty-input" type="text" name="ec_qtybtn_'+p_id+'" value="1">'+
                         '<div class="inc ec_qtybtn">+</div></div>'+
                         '<a href="javascript:void(0)" class="remove">×</a>'+
                         '</div>'+
@@ -506,8 +504,8 @@ function ecCheckCookie()
                         var qty = parseInt($('li[data-pid="product-'+p_id+'"]').attr('data-qty'));
                         qty++;
                         $('li[data-pid="product-'+p_id+'"]').attr('data-qty', qty);
-                        $('input[name="ec_qtybtn"]').val(qty);
-                        $('.cart-qty').html(qty);
+                        $('input[name="ec_qtybtn_'+p_id+'"]').val(qty);
+                        $('.cart-qty-'+p_id).html(qty);
                     }
                     $('.eccart-pro-items').append(p_html);    
                     
@@ -655,10 +653,11 @@ function ecCheckCookie()
                 $('.zoom-image-hover').zoom();
                 
                 /*----------------------------- Qty Plus Minus Button  ------------------------------ */
+                /*
                 var QtyPlusMinus = $(".qty-plus-minus");
                 QtyPlusMinus.prepend('<div class="dec ec_qtybtn">-</div>');
                 QtyPlusMinus.append('<div class="inc ec_qtybtn">+</div>');
-                
+                */
                 $("body").on("click", ".ec_qtybtn", function(){
                     
                     // $(".ec_qtybtn").on("click", function() {

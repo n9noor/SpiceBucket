@@ -12,13 +12,13 @@ Product
 </div>
 </div>
 <div class="page-title-actions">
-@if(session('vendor-logged-in') == true)
-<button type="button" onclick="$('#variant_value_id').val(0);$('#variant_id').val('');$('#variant_value').val('');" data-bs-toggle="modal" data-bs-target="#add-variant-value-modal" title="Add Variant Value" class="btn-icon btn-shadow me-3 btn btn-dark">
-<i class="fa fa-plus btn-icon-wrapper"></i> Add Variant Value
+@if(session('admin-logged-in') == true)
+<button type="button" onclick="$('#variant_value_id').val(0);$('#variant_id').val('');$('#variant_value').val('');" data-bs-toggle="modal" data-bs-target="#add-variant-value-modal" title="Add Variant Value" class="btn-icon btn-shadow me-3 btn btn-dark"> Add Variant Value
 </button>
 <button type="button" onclick="$('#variant_type_id').val(0);$('#variant_type').val('');" data-bs-toggle="modal" data-bs-target="#add-variant-type-modal" title="Add Variant Type" class="btn-icon btn-shadow me-3 btn btn-dark">
 <i class="fa fa-plus btn-icon-wrapper"></i> Add Variant Type
 </button>
+@elseif(session('vendor-logged-in') == true)
 <button type="button" onclick="window.location.href='/products/add-product'" title="Add Product" class="btn-icon btn-shadow me-3 btn btn-dark">
 <i class="fa fa-plus btn-icon-wrapper"></i> Add Product
 </button>
@@ -79,7 +79,11 @@ Product
 <div class="tab-pane active" id="tab-variant-type" role="tabpanel">
 <div class="table-responsive">
 <table id="product-variant-type-table" class="table table-striped table-bordered">
-<thead><tr><th>#</th><th>Active</th><th>Variant Type Name</th></tr></thead>
+<thead><tr><th>#</th>
+@if(session('admin-logged-in') == true)
+<th>Active</th>
+@endif
+<th>Variant Type Name</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
@@ -87,7 +91,11 @@ Product
 <div class="tab-pane" id="tab-variant-value" role="tabpanel">
 <div class="table-responsive">
 <table id="product-variant-value-table" class="table table-striped table-bordered">
-<thead><tr><th>#</th><th>Active</th><th>Variant Type Name</th><th>Variant Type Value</th></tr></thead>
+<thead><tr><th>#</th>
+@if(session('admin-logged-in') == true)
+<th>Active</th>
+@endif
+<th>Variant Type Name</th><th>Variant Type Value</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>

@@ -13,7 +13,7 @@
                         <div class="col-md-6 col-sm-12">
                             <!-- ec-breadcrumb-list start -->
                             <ul class="ec-breadcrumb-list">
-                                <li class="ec-breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="ec-breadcrumb-item"><a href="/">Home</a></li>
                                 <li class="ec-breadcrumb-item active">Cart</li>
                             </ul>
                             <!-- ec-breadcrumb-list end -->
@@ -48,10 +48,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @php $subprice=0; @endphp
                                                 @foreach($customercart as $product_id => $cart)
                                                 <tr>
                                                     <td data-label="Product" class="ec-cart-pro-name"><a
-                                                            href="product-left-sidebar.html"><img class="ec-cart-pro-img mr-4"
+                                                            href="javascript:void(0)"><img class="ec-cart-pro-img mr-4"
                                                                 src="{{url('/images/products/' . $cart['image'])}}"
                                                                 alt="" />{{$cart['title']}} </a></td>
                                                     <td data-label="Price" class="ec-cart-pro-price"><span
@@ -68,6 +69,7 @@
                                                         <a href="#"><i class="ecicon eci-trash-o"></i></a>
                                                     </td>
                                                 </tr>
+                                                @php $subprice += $cart['totalprice']; @endphp
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -75,7 +77,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="ec-cart-update-bottom">
-                                                <a href="#">Continue Shopping</a>
+                                                <a href="/">Continue Shopping</a>
                                                 <button class="btn btn-primary" id="checkout-btn"> <a href="{{url('/checkout')}}">Check Out</a> </button>
                                             </div>
                                         </div>
@@ -94,6 +96,7 @@
                             <div class="ec-sb-title">
                                 <h3 class="ec-sidebar-title">Summary</h3>
                             </div>
+                            <!--
                             <div class="ec-sb-block-content">
                                 <h4 class="ec-ship-title">Estimate Shipping</h4>
                                 <div class="ec-cart-form">
@@ -135,17 +138,19 @@
                                     </form>
                                 </div>
                             </div>
+-->
 
                             <div class="ec-sb-block-content">
                                 <div class="ec-cart-summary-bottom">
                                     <div class="ec-cart-summary">
                                         <div>
                                             <span class="text-left">Sub-Total</span>
-                                            <span class="text-right">$80.00</span>
+                                            <span class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($subprice, 2)}}</span>
                                         </div>
                                         <div>
-                                            <span class="text-left">Delivery Charges</span>
-                                            <span class="text-right">$80.00</span>
+                                            <span class="text-left">GST(18%)</span>
+                                            @php $gst = $subprice * 0.18; @endphp
+                                            <span class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($gst, 2)}}</span>
                                         </div>
                                         <div>
                                             <span class="text-left">Coupan Discount</span>
@@ -162,7 +167,7 @@
                                         </div>
                                         <div class="ec-cart-summary-total">
                                             <span class="text-left">Total Amount</span>
-                                            <span class="text-right">$80.00</span>
+                                            <span class="text-right"><i class="ecicon eci-rupee"></i> {{number_format(($subprice + $gst), 2)}}</span>
                                         </div>
                                     </div>
 

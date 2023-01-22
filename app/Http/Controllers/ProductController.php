@@ -40,7 +40,7 @@ class ProductController extends Controller
             array_push($subcategories[$subcategory->parent], array('id' => $subcategory->id, 'name' => $subcategory->name));
         }
         $products = Product::where('vendor_id', $request->session()->get('vendor-loggedin-id'))->get();
-        $variants = ProductVerient::where('vendor_id', $request->session()->get('vendor-loggedin-id'))->where('is_active', true)->get();
+        $variants = ProductVerient::where('is_active', true)->get();
         $variantsValueMap = array();
         foreach($variants as $variant){
             if(!array_key_exists($variant->id, $variantsValueMap)) {
@@ -91,9 +91,9 @@ class ProductController extends Controller
             'net_price' => 'required',
             'moq' => 'required|regex:/^\d+$/',
             'product_image' => 'required',
-            'product_image.*' => 'image|mimes:png,jpg,jpeg|max:2048',
-            'varient_property_manual' => 'required_unless:varient_property_copy,null',
-            'varient_property_copy' => 'required_unless:varient_property_manual,null',
+            'product_image.*' => 'image|mimes:png,jpg,jpeg|max:4096',
+            'varient_property_manual' => 'required_unless:varient_property_copy,yes',
+            'varient_property_copy' => 'required_unless:varient_property_manual,yes',
             'copy_from_product' => 'required_if:varient_property_copy,copy',
             'variant' => 'required_if:varient_property_manual,manual',
             'variant.*.product_mrp' => 'required_if:varient_property_manual,manual',
@@ -210,7 +210,7 @@ class ProductController extends Controller
             'discount_price' => 'required',
             'net_price' => 'required',
             'moq' => 'required|regex:/^\d+$/',
-            'product_image.*' => 'image|mimes:png,jpg,jpeg|max:2048',
+            'product_image.*' => 'image|mimes:png,jpg,jpeg|max:4096',
             'variant' => 'required_if:varient_property_manual,manual',
             'variant.*.product_mrp' => 'required_if:varient_property_manual,manual',
             'variant.*.net_price' => 'required_if:varient_property_manual,manual',
@@ -359,8 +359,9 @@ class ProductController extends Controller
             'category_image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'category_parent' => ''
         ]);
-        if($request->session()->get('vendor-logged-in') == true)
-        $category->vendor_id=$request->session()->get('vendor-loggedin-id');
+        if($request->session()->get('vendor-logged-in') == true) {
+            $category->vendor_id=$request->session()->get('vendor-loggedin-id');
+        }
         $category->name = $request->category_name;
         $category->slug = $request->category_slug;
         $category->description = $request->category_description;

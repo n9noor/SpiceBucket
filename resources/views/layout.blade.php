@@ -123,7 +123,7 @@ class="svg_img header_svg" alt="" /></div>
 <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
 <div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}"
 class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count cart-count-lable"></span>
+<span class="ec-header-count cart-count-lable">{{Session::get('totalquantity')}}</span>
 </a>
 <!-- Header Cart End -->
 <!-- Header menu Start -->
@@ -313,6 +313,7 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 <button class="ec-close">×</button>
 </div>
 <ul class="eccart-pro-items">
+@php $subprice = 0; $gst = 0; @endphp
 @foreach(Session::get('customer-cart') as $product_id => $cart)
 <li data-pid="product-{{$product_id}}" data-qty="{{$cart['quantity']}}">
 <a href="javascript:void(0);" class="sidekka_pro_img">
@@ -320,13 +321,14 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 </a>
 <div class="ec-pro-content">
 <a href="javascript:void(0);" class="cart_pro_title">{{$cart['title']}}</a>
-<span class="cart-price"><span>{{$cart['price']}}</span> x <span class="cart-qty">{{$cart['quantity']}}</span></span>
+<span class="cart-price"><span><i class="ecicon eci-rupee"></i> {{$cart['price']}}</span> x <span class="cart-qty-{{$product_id}}">{{$cart['quantity']}}</span></span>
 <div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>
-<input class="qty-input" type="text" name="ec_qtybtn" value="{{$cart['quantity']}}">
+<input class="qty-input" type="text" name="ec_qtybtn_{{$product_id}}" value="{{$cart['quantity']}}">
 <div class="inc ec_qtybtn">+</div></div>
 <a href="javascript:void(0)" class="remove" id="remove-{{$product_id}}">×</a>
 </div>
 </li>
+@php $subprice += ($cart['quantity'] * $cart['price']); @endphp
 @endforeach
 </ul>
 </div>
@@ -336,15 +338,16 @@ class="ecicon eci-caret-down" aria-hidden="true"></i></button>
 <tbody>
 <tr>
 <td class="text-left">Sub-Total :</td>
-<td class="text-right">{{Session::get('subtotal-amount')}}</td>
+<td class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($subprice, 2)}}</td>
 </tr>
 <tr>
 <td class="text-left">GST (18%) :</td>
-<td class="text-right">{{Session::get('gst-amount')}}</td>
+@php $gst = $subprice * 0.18; @endphp
+<td class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($gst, 2)}}</td>
 </tr>
 <tr>
 <td class="text-left">Total :</td>
-<td class="text-right primary-color">{{Session::get('total-amount')}}</td>
+<td class="text-right primary-color"><i class="ecicon eci-rupee"></i> {{number_format(($subprice + $gst), 2)}}</td>
 </tr>
 </tbody>
 </table>
@@ -494,7 +497,7 @@ src="{{asset('frontend/images/icons/menu.svg')}}" class="svg_img header_svg" alt
 <div class="ec-nav-panel-icons">
 <a href="#ec-side-cart" class="toggle-cart ec-header-btn ec-side-toggle"><img
 src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img header_svg" alt="" /><span
-class="ec-cart-noti ec-header-count cart-count-lable">3</span></a>
+class="ec-cart-noti ec-header-count cart-count-lable">{{Session::get('totalquantity')}}</span></a>
 </div>
 <div class="ec-nav-panel-icons">
 <a href="/" class="ec-header-btn"><img src="{{asset('frontend/images/icons/home.svg')}}"
@@ -520,7 +523,7 @@ class="svg_img header_svg" alt="icon" /></a>
 <div class="ec-cart-float">
 <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
 <div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img header_svg" alt="" /></div>
-<span class="ec-cart-count cart-count-lable">{{Session::get('cart-count')}}</span>
+<span class="ec-cart-count cart-count-lable">{{Session::get('totalquantity')}}</span>
 </a>
 </div>
 <!-- Cart Floating Button end -->
@@ -542,6 +545,9 @@ class="svg_img header_svg" alt="icon" /></a>
 <script src="{{asset('frontend/js/vendor/jquery.magnific-popup.min.js')}}"></script>
 <script src="{{asset('frontend/js/plugins/jquery.sticky-sidebar.js')}}"></script>
 <!-- Main Js -->
+<script>
+var cart = @php echo json_encode(array_keys(session('customer-cart'))); @endphp;
+</script>
 <script src="{{asset('frontend/js/vendor/index.js')}}"></script>
 <script src="{{asset('frontend/js/cart.js')}}"></script>
 <script src="{{asset('frontend/js/main.js')}}"></script>
