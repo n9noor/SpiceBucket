@@ -1,183 +1,568 @@
 @extends("layout")
+
 @section("content")
- 
-    <!-- Ec breadcrumb start -->
-    <div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+
+<style>
+    .mobile-view-table{
+        display: none !important;
+    }
+      @media (max-width: 600px){
+/*.web-view{
+    display:none!important; 
+}*/
+
+.detail-extralink{
+    width: 100px;
+    margin-left: 10px;
+}
+
+.mobile-view-table {
+    display:block!important;
+}
+}
+.btn{
+    padding: 3px 6px !important;
+}
+
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    
+    margin-bottom: 0px !important;
+}
+.right-tableslayout  .table>:not(caption)>*> *{
+    border-right: 1px solid grey !important;
+    padding: .5rem 0px;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+hr {
+    margin: 9px 0px !important;
+}
+p{
+    margin-bottom: 0px !important;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.table thead {
+    display: contents;
+}
+</style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+	<main class="main">
+    <div class="page-header breadcrumb-wrap">
+
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="row ec_breadcrumb_inner">
-                        <div class="col-md-6 col-sm-12">
-                            <h2 class="ec-breadcrumb-title">Cart</h2>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <!-- ec-breadcrumb-list start -->
-                            <ul class="ec-breadcrumb-list">
-                                <li class="ec-breadcrumb-item"><a href="/">Home</a></li>
-                                <li class="ec-breadcrumb-item active">Cart</li>
-                            </ul>
-                            <!-- ec-breadcrumb-list end -->
-                        </div>
-                    </div>
-                </div>
+
+            <div class="breadcrumb">
+
+                <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+
+                <span></span> Cart
+
             </div>
+
         </div>
+
     </div>
-    <!-- Ec breadcrumb end -->
 
-    <!-- Ec cart page -->
-    <section class="ec-page-content section-space-p">
-        <div class="container">
-            <div class="row">
-                <div class="ec-cart-leftside col-lg-8 col-md-12 ">
-                    <!-- cart content Start -->
-                    
-                    <div class="ec-cart-content">
-                        <div class="ec-cart-inner">
-                            <div class="row">
-                                <form action="#">
-                                    <div class="table-content cart-table-content">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Product</th>
-                                                    <th>Price</th>
-                                                    <th style="text-align: center;">Quantity</th>
-                                                    <th>Total</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php $subprice=0; @endphp
-                                                @foreach($customercart as $product_id => $cart)
-                                                <tr>
-                                                    <td data-label="Product" class="ec-cart-pro-name"><a
-                                                            href="javascript:void(0)"><img class="ec-cart-pro-img mr-4"
-                                                                src="{{url('/images/products/' . $cart['image'])}}"
-                                                                alt="" />{{$cart['title']}} </a></td>
-                                                    <td data-label="Price" class="ec-cart-pro-price"><span
-                                                            class="amount"><i class='ecicon eci-rupee'></i>{{$cart['price']}}</span></td>
-                                                    <td data-label="Quantity" class="ec-cart-pro-qty"
-                                                        style="text-align: center;">
-                                                        <div class="cart-qty-plus-minus">
-                                                            <input class="cart-plus-minus" type="text"
-                                                                name="cartqtybutton" value="{{$cart['quantity']}}" />
-                                                        </div>
-                                                    </td>
-                                                    <td data-label="Total" class="ec-cart-pro-subtotal">{{$cart['totalprice']}}</td>
-                                                    <td data-label="Remove" class="ec-cart-pro-remove">
-                                                        <a href="#"><i class="ecicon eci-trash-o"></i></a>
-                                                    </td>
-                                                </tr>
-                                                @php $subprice += $cart['totalprice']; @endphp
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="ec-cart-update-bottom">
-                                                <a href="/">Continue Shopping</a>
-                                                <button class="btn btn-primary" id="checkout-btn"> <a href="{{url('/checkout')}}">Check Out</a> </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!--cart content End -->
+    <div class="container mb-80 mt-10 web-view"> 
+
+        <div class="row">
+
+            <div class="col-lg-8 mb-10">
+
+                <div class="d-flex justify-content-between">
+
+                    <h6 class="text-body">There are <span class="text-brand">{{count(array_keys(Session::get('customer-cart')))}}</span> products in your cart, Please Proceed checkout  </h6>
+
                 </div>
-                <!-- Sidebar Area Start -->
-                <div class="ec-cart-rightside col-lg-4 col-md-12">
-                    <div class="ec-sidebar-wrap">
-                        <!-- Sidebar Summary Block -->
-                        <div class="ec-sidebar-block">
-                            <div class="ec-sb-title">
-                                <h3 class="ec-sidebar-title">Summary</h3>
-                            </div>
-                            <!--
-                            <div class="ec-sb-block-content">
-                                <h4 class="ec-ship-title">Estimate Shipping</h4>
-                                <div class="ec-cart-form">
-                                    <p>Enter your destination to get a shipping estimate</p>
-                                    <form action="#" method="post">
-                                        <span class="ec-cart-wrap">
-                                            <label>Country *</label>
-                                            <span class="ec-cart-select-inner">
-                                                <select name="ec_cart_country" id="ec-cart-select-country"
-                                                    class="ec-cart-select">
-                                                    <option selected="" disabled="">United States</option>
-                                                    <option value="1">Country 1</option>
-                                                    <option value="2">Country 2</option>
-                                                    <option value="3">Country 3</option>
-                                                    <option value="4">Country 4</option>
-                                                    <option value="5">Country 5</option>
-                                                </select>
-                                            </span>
-                                        </span>
-                                        <span class="ec-cart-wrap">
-                                            <label>State/Province</label>
-                                            <span class="ec-cart-select-inner">
-                                                <select name="ec_cart_state" id="ec-cart-select-state"
-                                                    class="ec-cart-select">
-                                                    <option selected="" disabled="">Please Select a region, state
-                                                    </option>
-                                                    <option value="1">Region/State 1</option>
-                                                    <option value="2">Region/State 2</option>
-                                                    <option value="3">Region/State 3</option>
-                                                    <option value="4">Region/State 4</option>
-                                                    <option value="5">Region/State 5</option>
-                                                </select>
-                                            </span>
-                                        </span>
-                                        <span class="ec-cart-wrap">
-                                            <label>Zip/Postal Code</label>
-                                            <input type="text" name="postalcode" placeholder="Zip/Postal Code">
-                                        </span>
-                                    </form>
-                                </div>
-                            </div>
--->
 
-                            <div class="ec-sb-block-content">
-                                <div class="ec-cart-summary-bottom">
-                                    <div class="ec-cart-summary">
-                                        <div>
-                                            <span class="text-left">Sub-Total</span>
-                                            <span class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($subprice, 2)}}</span>
-                                        </div>
-                                        <div>
-                                            <span class="text-left">GST(18%)</span>
-                                            @php $gst = $subprice * 0.18; @endphp
-                                            <span class="text-right"><i class="ecicon eci-rupee"></i> {{number_format($gst, 2)}}</span>
-                                        </div>
-                                        <div>
-                                            <span class="text-left">Coupan Discount</span>
-                                            <span class="text-right"><a class="ec-cart-coupan">Apply Coupan</a></span>
-                                        </div>
-                                        <div class="ec-cart-coupan-content">
-                                            <form class="ec-cart-coupan-form" name="ec-cart-coupan-form" method="post"
-                                                action="#">
-                                                <input class="ec-coupan" type="text" required=""
-                                                    placeholder="Enter Your Coupan Code" name="ec-coupan" value="">
-                                                <button class="ec-coupan-btn button btn-primary" type="submit"
-                                                    name="subscribe" value="">Apply</button>
-                                            </form>
-                                        </div>
-                                        <div class="ec-cart-summary-total">
-                                            <span class="text-left">Total Amount</span>
-                                            <span class="text-right"><i class="ecicon eci-rupee"></i> {{number_format(($subprice + $gst), 2)}}</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Sidebar Summary Block -->
-                    </div>
-                </div>
             </div>
+
         </div>
-    </section>
+
+        <div class="row">
+
+            <div class="col-lg-8">
+
+                <div class="table-responsive shopping-summery">
+
+                    @php 
+					$subprice=$gstprice=$totalprice=0; 
+					$shippingbasepriceforBrand = 
+					array(); $netpriceforBrand = array(); @endphp
+
+                    @if(!empty($customercart))
+
+                    @foreach($customercart as $store_name => $cart)
+
+                    <table class="table table-wishlist">
+
+                        <thead class="text-center">
+
+                            <!-- <tr>
+
+                                <td colspan="7">
+
+                                    <h2>Visit Store: <a target="_blank" href="/brand/{{$cart['storeslug']}}">@if(is_null($cart['vendor_alias']))
+
+                                            {{$store_name}}
+
+                                            @else
+
+                                            {{$cart['vendor_alias']}}
+
+                                            @endif</a></h2>
+
+                                </td>
+
+                            </tr> -->
+
+                            @php
+
+                            $flag = 0;
+
+                            $remainingAmount=499;
+
+                            $vendorcartPrice = array_column($cart['child'], 'totalprice');
+
+                            $vendorcartQuantity = array_column($cart['child'], 'quantity');
+
+                            $vendorcartPriceWithoutTax = array_column($cart['child'], 'price');
+                            $achievedAmount = 0;
+                            $achievedPercent = 0; 
+                            $remainingPercent = 100;
+                            @endphp
+
+                                @for($i=0; $i < count($vendorcartQuantity); $i++) 
+                                    @php 
+                                        $remainingAmount -= $vendorcartPrice[$i];
+                                        $achievedAmount += $vendorcartPrice[$i];
+                                    @endphp 
+                                    @if($remainingAmount <=0) 
+                                        @php 
+                                            $flag=1; break; 
+                                        @endphp 
+                                    @endif 
+                                @endfor 
+                                
+                                @if($remainingAmount >0) 
+                                    @php
+                                        $achievedPercent = round( ( ($achievedAmount * 100)/499));
+                                        $remainingPercent = (100 - $achievedPercent);
+                                    @endphp
+                                @endif
+                                <tr>
+                                    <td colspan="4" class="text-left">
+                                        <div style="display:flex; align-items: center;" class="justify-content-between">
+											<h2 style="padding-left: 0px;margin-top: 0px; color:#585CFC !important;">Visit Store: <a target="_blank" href="/brand/{{$cart['storeslug']}}">
+                                                @if(is_null($cart['vendor_alias']))
+                                                    {{$store_name}}
+                                                @else
+                                                    {{$cart['vendor_alias']}}
+                                                @endif</a>
+											</h2> 
+											<!--<div class="mt-0">
+												<small class="cart-PageNoteAd fa-bounce">Note: Add <i class="fa fa-rupee-sign"></i>{{$remainingAmount}} More For Free Shipping</small>
+											</div>-->
+										</div>
+										
+                                    </td>
+                                    
+                                    
+                                </tr>
+                                @if($flag==1)
+                                    <tr>
+                                        <td class="free-delivery-note free" colspan="7" id="remaining-amount-for-free-delievery-{{$cart['storeid']}}">
+                                            <small>Note: Congratulation you are eligible for free Shipping for this seller.</small>
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td class="free-delivery-note remain" style="padding-left: 10px;" colspan="7" id="remaining-amount-for-free-delievery-{{$cart['storeid']}}">
+                                            <div class="container-fluid">
+                                            <!--achievedAmount: Rs. {{number_format((float)$achievedAmount, 2, '.', '')}}
+                                            remainingprogressbar: Rs. {{number_format((float)(499 - $achievedAmount), 2, '.', '')}}-->
+                                            
+                                                <div class="progress">
+                                                    <div class="progress-bar  green-progressbar-start progress-bar-striped active" role="progressbar" aria-valuenow="{{$achievedPercent}}" 
+                                                    aria-valuemin="0" aria-valuemax="100" style="width:{{$achievedPercent}}%">
+                                                        Rs. {{number_format((float)$achievedAmount, 2, '.', '')}}
+                                                    </div>
+                                                    <div class="progress-bar remainingprogressbar progress-bar-striped active" role="progressbar" aria-valuenow="{{100 - $achievedPercent}}" 
+                                                    aria-valuemin="0" aria-valuemax="100" style="width:{{100 - $achievedPercent}}%" style="color:#333333;">
+                                                        Rs. {{number_format((float)(499 - $achievedAmount), 2, '.', '')}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <marquee width="100%" direction="left" height="auto">
+                                                    <small>Note: Add <i class="fa fa-rupee-sign"></i> {{number_format((float)$remainingAmount, 2, '.', '')}} More For Free Shipping</small>
+                                            </marquee>
+                                        </td>
+                                    </tr>
+                                @endif
+
+                                
+
+                        </thead>
+
+                        <tbody class="scroll-cart text-center">
+                            <tr class="main-heading">
+
+                                    <th nowrap=""colspan="2" class="pl-10">Product</th>
+
+                                    <th nowrap="">Unit Price</th>
+
+                                    <th nowrap="" >GST</th>
+
+                                    <th nowrap="">Quantity</th>
+
+                                    <th nowrap="">Subtotal</th>
+
+                                    <th nowrap="">Remove</th>
+
+                                </tr>
+
+                            @foreach($cart['child'] as $product)
+								{{$product['wallet_amount']}}
+                            <tr id="cart-row-{{$product['productid']}}-{{$product['variantid']}}" class="pt-30">
+                                @php $imagearray=array('path_folder'=>'/images/products/','image'=>$product['image'],'size'=>[100,100]); 
+                                                        @endphp  
+                                <td valign="top" nowrap="" width="70" class="image product-thumbnail pl-10"><img src="{{imageRender($imagearray)}}" alt="#"></td>
+
+                                <td valign="top"  style="text-align:left;" nowrap="" width="250" class="product-des product-name">
+
+                                    <h6 class="mb-5"><a href="/product/{{$product['slug']}}"><span class="product-name mb-10 text-heading">{{$product['title']}}</span></a></h6>
+
+                                    <p class="d-block mb-0 sold-by"><small><span>Brand: </span> <a href="/brand/{{$cart['storeslug']}}">
+
+                                                @if(is_null($cart['vendor_alias']))
+
+                                                {{$store_name}}
+
+                                                @else
+
+                                                {{$cart['vendor_alias']}}
+
+                                                @endif </a></small></p>
+
+                                    <p class="mb-0"><small>{{$product['variant']}}</small></p>
+
+                                </td>
+
+                                <td valign="top" nowrap="" class="price" data-title="Price">
+
+                                    <h4 class="text-body"><i class="fa fa-rupee-sign"></i>{{number_format($product['price'], 2)}}</h4>
+
+                                </td>
+
+                                <td valign="top" nowrap="" class="price" data-title="gstPrice">
+
+                                    <h4 class="text-body"><i class="fa fa-rupee-sign"></i>{{number_format($product['gst_amount'], 2)}}</h4>
+
+                                </td>
+
+                                <td valign="top" style="text-align:center;" nowrap="" width="150" class="text-center detail-info" data-title="Stock">
+
+                                    <div class="detail-extralink d-flex">
+
+                                        <div class="detail-sign"><a href="javascript:void(0)" id="cart__quantity-minus-{{$product['productid']}}-{{$product['variantid']}}" class="qty-down cart__quantity__minus"><i class="fi-rs-minus"></i></a></div>
+
+                                        <div class="detail-qty border radius">
+
+                                            <input name="quantity" type="text" class="cart__quantity__input cart__quantity-input-{{$product['productid']}}-{{$product['variantid']}}" id="cart__quantity-input-{{$product['productid']}}-{{$product['variantid']}}" value="{{$product['quantity']}}" readonly>
+
+                                            <input type="hidden" id="min-quantity-input-{{$product['productid']}}-{{$product['variantid']}}" value="{{$product['minoq']}}" name="min-quantity-input" />
+
+                                            <input type="hidden" id="max-quantity-input-{{$product['productid']}}-{{$product['variantid']}}" value="{{$product['maxoq']}}" name="max-quantity-input" />
+
+                                        </div>
+
+                                        <div class="detail-sign"><a href="javascript:void(0)" id="cart__quantity-plus-{{$product['productid']}}-{{$product['variantid']}}" class="qty-up cart__quantity__plus"><i class="fi-rs-plus"></i></a></div>
+
+                                    </div>
+
+                                </td>
+
+                                <td valign="top" nowrap="" class="price" data-title="Price">
+
+                                    <h4 class="text-brand"><i class="fa fa-rupee-sign"></i> <span id="price-span-{{$product['productid']}}-{{$product['variantid']}}">{{number_format($product['totalprice'], 2)}}</span></h4>
+
+                                </td>
+
+                                <td valign="top" nowrap="" class="action text-center" data-title="Remove"><a href="javascript:void(0)" onclick="removeCart({{$product['productid']}}, {{$product['variantid']}})" class="text-body"><i class="fi-rs-trash"></i></a></td>
+
+                            </tr>
+
+                            @php
+
+                            $subprice += $product['price'] * $product['quantity'];
+
+                            $gstprice += $product['gst_amount'] * $product['quantity'];
+
+                            $totalprice += $product['totalprice'];
+
+                            if(!array_key_exists($cart['storeid'], $netpriceforBrand)){
+
+                            $netpriceforBrand[$cart['storeid']] = 0;
+
+                            }
+
+                            $netpriceforBrand[$cart['storeid']] += $product['totalprice'];
+
+                            if(!array_key_exists($cart['storeid'], $shippingbasepriceforBrand)){
+
+                            $shippingbasepriceforBrand[$cart['storeid']] = $cart['shippingGstAmount'];
+
+                            }
+
+                            @endphp
+
+                            @endforeach
+
+                        </tbody>
+
+                        
+
+                    </table>
+
+                    @endforeach
+
+                    @else
+
+                    <table class="table table-wishlist">
+
+                        <thead>
+
+                            <tr class="main-heading">
+
+                                <th nowrap="" scope="col" colspan="2" class="pl-30">Product</th>
+
+                                <th nowrap="" scope="col">Unit Price</th>
+
+                                <th nowrap="" scope="col">GST</th>
+
+                                <th nowrap="" scope="col">Quantity</th>
+
+                                <th nowrap="" scope="col">Subtotal</th>
+
+                                <th nowrap="" scope="col" align="center">Remove</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td colspan="6" class="pl-30">Your Cart is Empty</td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    @endif
+
+                    @php
+
+                    $shippingforbrand = array_map(function($item){
+
+                    if ($item <= 149) { return 50; } else if($item <=349 && $item> 149) {
+
+                        return 70;
+
+                        } else if($item <=498 && $item> 349){
+
+                            return 100;
+
+                            }else{
+
+                            return 0;
+
+                            }
+
+                            }, $netpriceforBrand);
+
+                            array_walk($shippingforbrand, function(&$item, $key) use ($shippingbasepriceforBrand) {
+
+                                $item = array('shippingprice' => $item, 'baseshippingprice' => round(($item * 100) / (100 + $shippingbasepriceforBrand[$key]), 2), 'gstshippingprice' => round(($item - ($item * 100) / (100 + $shippingbasepriceforBrand[$key])), 2));
+
+                            });
+
+                            @endphp
+
+                </div>
+
+                <div class="divider-2 mb-30"></div>
+
+                <div class="cart-action d-flex justify-content-between">
+
+                    <a class="btn " href="/offers"><i class="fi-rs-arrow-left mr-10"></i>Continue Shopping</a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="border p-md-4 cart-totals ml-30">
+
+                    <div class="table-responsive">
+
+                        <table class="table no-border">
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td nowrap="" class="cart_total_label">
+
+                                        <h6 class="text-muted">Subtotal</h6>
+
+                                    </td>
+									
+									
+
+                                    <td nowrap="" class="cart_total_amount">
+
+                                        <h4 class="text-brand text-end"><i class="fa fa-rupee-sign"></i> <span id="sub-cart-price">{{number_format($subprice,2)}}</span></h4>
+
+                                    </td>
+
+                                </tr>
+								
+								 
+								
+
+                                <tr>
+
+                                    <td nowrap="" class="cart_total_label">
+
+                                        <h6 class="text-muted">Tax</h6>
+
+                                    </td>
+
+                                    <td nowrap="" class="cart_total_amount">
+
+                                        <h4 class="text-brand text-end"><i class="fa fa-rupee-sign"></i> <span id="gst-cart-price">{{number_format($gstprice + array_sum(array_column($shippingforbrand, 'gstshippingprice')),2)}}</span></h4>
+
+                                    </td>
+
+                                </tr>
+
+                                <!--<tr>
+
+                                    <td scope="col" colspan="2">
+
+                                        <div class="divider-2 mt-10 mb-10"></div>
+
+                                    </td>
+
+                                </tr>-->
+
+                                <tr>
+
+                                    <td nowrap="" class="cart_total_label">
+
+                                        <h6 class="text-muted">Shipping Fee</h6>
+
+                                    </td>
+
+                                    <td nowrap="" class="cart_total_amount">
+
+                                        <h4 class="text-end text-brand"><i class="fa fa-rupee-sign"></i> <span id="shipping-cart-price">{{number_format(array_sum(array_column($shippingforbrand, 'baseshippingprice')), 2)}}</span></h4>
+
+                                    </td>
+
+                                </tr>
+
+                                <!--<tr>
+
+                                    <div class="divider-2 mt-10 mb-10"></div>
+
+                                    </td>
+
+                                </tr>-->
+
+                                <tr>
+
+                                    <td nowrap="" class="cart_total_label">
+
+                                        <h6 class="text-muted">Total</h6>
+
+                                    </td>
+
+                                    <td nowrap="" class="cart_total_amount">
+
+                                        <h4 class="text-brand text-end"><i class="fa fa-rupee-sign"></i> <span id="total-cart-price">
+										<div id="tots">  </div>
+										<?php 
+										//print_r($shippingforbrand);?>
+										{{number_format((
+										$totalprice + array_sum(array_column($shippingforbrand, 'shippingprice')
+										
+										)),2)}}</span> </h4>
+
+                                    </td>
+
+                                </tr>
+								
+								
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <a href="/checkout" class="btn mb-20 w-100">Proceed To CheckOut<i class="fi-rs-sign-out ml-15"></i></a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</main>
+
 @endsection
+<script>
+$(document).on("click", ".checks", function() {
+			  if ($(this).prop('checked') == true) {
+				//var price = $(this).attr("data-price"); //price 17.94
+				var price = 70; 
+				alert(price);
+				alert("First");
+				var tots = Number(20);
+			
+				var ffp = Number(price) + Number(tots);
+				alert(ffp);
+				$('.walletaddon').text(ffp);
+			  } else if ($(this).prop('checked') == false) {
+			  alert("Second");
+				var price = 70;
+				alert(price);
+				var tots = Number(20);
+				
+				var ffp =   Number(price) - Number(tots);
+				$('.walletaddon').text(ffp);
+			  }
+		});
+	</script>

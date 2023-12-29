@@ -1,0 +1,322 @@
+<?php
+
+namespace App\Http\Controllers\API;
+use App\Http\Controllers\Controller;
+use App\Models\Customer;
+use App\Models\CustomerAddress;
+use App\Models\DeliveryStatus;
+use App\Models\Order;
+use App\Models\OrderExtraCharges;
+use App\Models\OrderDetail;
+use App\Models\ServiceType;
+use App\Models\Coupon;
+use App\Models\Vendor;
+use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\ProductVerientPrice;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+
+class OrderApiController extends Controller
+{
+   
+    public function myOrder($customerId, $status = null)
+{
+    $query = Order::with('order_details')->where('customer_id', $customerId);
+
+    if ($status !== null) {
+        $query->where('order_status', $status);
+    }
+
+    $orders = $query->orderBy('created_at', 'desc') // Sort orders by date in descending order
+                    ->get();
+
+    foreach ($orders as $order) {
+        foreach ($order->order_details as $orderDetail) {
+            $vendor = Vendor::find($orderDetail->vendor_id);
+            $product = Product::find($orderDetail->product_id);               
+            $billingAddress = CustomerAddress::find($orderDetail->billing_customer_address_id);
+            $shippingAddress = CustomerAddress::find($orderDetail->shipping_customer_address_id);
+            $orderDetail->vendor_name = $vendor ? $vendor->store_name : null;
+            $orderDetail->product_name = $product ? $product->name : null;
+            $orderDetail->billing_address = $billingAddress;
+            $orderDetail->shipping_address = $shippingAddress;
+        }
+    }
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Your orders retrieved successfully.',
+        'orders' => $orders,
+    ]);
+}
+    public function trackingCode(Request $request, $orderId,$tracking_code){
+        $orderDetailsQuery = OrderDetail::where('order_id', $orderId)->where('shipping_tracking_no',$tracking_code);
+        $orderDetails = $orderDetailsQuery->get();
+        
+        if(!empty($orderDetails)){
+
+             $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://dtdcapi.shipsy.io/api/customer/integration/consignment/track?reference_number='.$tracking_code,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'api-key: ' . env('DTDCAPIKEY'),
+                'Content-Type: application/json'
+            ),
+            //CURLOPT_POSTFIELDS => $postfields
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response= json_decode($response,true);
+        if(!empty($response['error'])){
+            return response()->json([
+                'status' => false,
+                'message' => $response['error']['message'],
+                 
+            ], 400);
+        }else{
+             return response()->json([
+            'status' => true,
+            'data' => $response
+        ], 200);
+        }
+       
+
+        }else{
+             return response()->json([
+                'status' => false,
+                'message' => 'Reference number is not valid .',
+                 
+            ], 400);
+        }
+    }
+    public function myorderdetail(Request $request, $orderId)
+{
+    $orderStatus = $request->query('order_status');
+
+    // Retrieve order details for the given order ID and optional order status
+    $orderDetailsQuery = OrderDetail::where('order_id', $orderId);
+    if ($orderStatus) {
+        $orderDetailsQuery->where('order_status', $orderStatus);
+    }
+    $orderDetails = $orderDetailsQuery->get();
+
+    // Retrieve the main order information
+    $orderInformation = Order::find($orderId);
+
+    $orderDetailsGrouped = [];
+
+    foreach ($orderDetails as $detail) {
+        $vendorId = $detail->vendor_id;
+
+        // Create a unique key for each vendor
+        $vendorKey = 'vendor_' . $vendorId;
+
+        // Initialize the vendor's array if not exists
+        if (!isset($orderDetailsGrouped[$vendorKey])) {
+            $orderDetailsGrouped[$vendorKey] = [
+                'storedetails' => [
+                    'vendor_id' => $vendorId,
+                    'store_name' => $detail->vendor->store_name
+                ],
+                'billing_address' => CustomerAddress::find($detail->billing_customer_address_id),
+                'shipping_address' => CustomerAddress::find($detail->shipping_customer_address_id),
+                'product_details' => []
+            ];
+        }
+        $productImages = ProductImage::where('product_id', $detail->product_id)->get();
+
+        // Add product details to the vendor's product_details array
+        $orderDetailsGrouped[$vendorKey]['product_details'][] = [
+            'order_id' => $detail->order_id,
+            'product_id' => $detail->product_id,
+            'product_name' => $detail->product->name,
+            'product_variant_price_id' => $detail->product_variant_price_id,
+            'product_qunatity' => $detail->product_qunatity,
+            'product_price' => $detail->product_price,
+            'gst_on_product_price' => $detail->gst_on_product_price,
+            'total_product_price' => $detail->total_product_price,
+            'created_at' => $detail->created_at,
+            'updated_at' => $detail->updated_at,
+            'shipping_label' => $detail->shipping_label,
+            'shipping_length' => $detail->shipping_length,
+            'shipping_width' => $detail->shipping_width,
+            'shipping_height' => $detail->shipping_height,
+            'shipping_weight' => $detail->shipping_weight,
+            'shipping_agency' => $detail->shipping_agency,
+            'shipping_service' => $detail->shipping_service,
+            'shipping_carrier_name' => $detail->shipping_carrier_name,
+            'shipping_tracking_no' => $detail->shipping_tracking_no,
+            'shipping_date' => $detail->shipping_date,
+            'shipping_tracking_url' => $detail->shipping_tracking_url,
+            'order_status' => $detail->order_status,
+            'product_images' => $productImages,
+            // Include other columns as needed
+        ];
+    }
+
+    // Reformat the array to remove vendor keys and keep only the values
+    $finalOrderDetails = array_values($orderDetailsGrouped);
+
+ $ordersviews = Order::join('order_details', 'orders.id', '=', 'order_details.order_id')
+        ->join('orders_extra_charges', function ($joins) {
+            $joins->on('orders_extra_charges.order_id', '=', 'orders.id');
+            $joins->on('orders_extra_charges.vendor_id', '=', 'order_details.vendor_id');
+        })
+        ->join('customers', 'customers.id', '=', 'orders.customer_id')
+        ->leftjoin('customer_address as cba', 'order_details.billing_customer_address_id', '=', 'cba.id')
+        ->leftjoin('customer_address as csa', 'order_details.shipping_customer_address_id', '=', 'csa.id')
+        ->join('products', 'products.id', '=', 'order_details.product_id')
+        ->leftjoin('vendors', 'vendors.id', '=', 'order_details.vendor_id')
+        ->leftjoin('product_variant_values', 'product_variant_values.id', '=', 'order_details.product_variant_price_id')
+        ->leftjoin('product_variant_price', 'product_variant_price.id', '=', 'order_details.product_variant_price_id')
+        ->leftjoin('product_variant_values AS pvv1', 'product_variant_price.variant_value_id_1', '=', 'pvv1.id')
+        ->leftjoin('product_variants AS pv1', 'pv1.id', '=', 'pvv1.variant_id')
+        ->leftjoin('product_variant_values AS pvv2', 'product_variant_price.variant_value_id_2', '=', 'pvv2.id')
+        ->leftjoin('product_variants AS pv2', 'pv2.id', '=', 'pvv2.variant_id')
+        ->leftjoin('product_variant_values AS pvv3', 'product_variant_price.variant_value_id_3', '=', 'pvv3.id')
+        ->leftjoin('product_variants AS pv3', 'pv3.id', '=', 'pvv3.variant_id')
+        ->where('orders.id', $orderId)
+         
+        ->select('*', 'products.gst_rate AS productgstrate', 'products.name AS productname', 'customers.name AS customerName', 'orders.id AS idoforder', 'orders_extra_charges.cod_charges AS codAmount', 'customers.emailid AS customerEmail', 'customers.phone AS customerPhone', 'customers.created_at AS createdDate', DB::raw('order_details.total_product_price AS totalOrderPrice'), 'csa.emailid AS csaEmail', 'cba.emailid AS cbaEmail', DB::raw('CONCAT(cba.address_line_1, ", ", IF(cba.address_line_2 IS NOT NULL, CONCAT(cba.address_line_2, ", "), ""), IF(cba.address_line_3 IS NOT NULL, CONCAT(cba.address_line_3, ", "), ""), cba.city, ", ", cba.state, ", ", cba.country, ", ", cba.pincode) as billingAddress'),  DB::raw("(SELECT image FROM product_images WHERE product_id=products.id LIMIT 1) AS productImage"), DB::raw('CONCAT(csa.address_line_1, ", ", IF(csa.address_line_2 IS NOT NULL, CONCAT(csa.address_line_2, ", "), ""), IF(csa.address_line_3 IS NOT NULL, CONCAT(csa.address_line_3, ", "), ""), csa.city,", ",  csa.state,", ",  csa.country,", ",  csa.pincode) as shippingAddress'), DB::raw('order_details.gst_on_product_price AS OrderGSTPrice'), 'pv1.name AS productvariantname1', 'pvv1.value AS variantvalue1', 'pv2.name AS productvariantname2', 'pvv2.value AS variantvalue2', 'pv3.name AS productvariantname3', 'pvv3.value AS variantvalue3', 'orders_extra_charges.shipping_charges','order_details.order_status as orderStatus', 'orders_extra_charges.cod_charges', 'orders_extra_charges.discount as discountVendorWise', 'vendors.store_name AS vendor', 'order_details.order_status AS order_status')->orderby('order_details.vendor_id')->get();
+         
+
+        $orderTotalAmount = 0; $existingvendor = array(); $productgstrate = 0; 
+        foreach($ordersviews as $orderdetails){
+             $orderTotalAmount += (($orderdetails->product_price + $orderdetails->gst_on_product_price) * $orderdetails->product_qunatity);
+                if($productgstrate < $orderdetails->productgstrate){
+                        $productgstrate = $orderdetails->productgstrate;
+                }
+                if(!in_array($orderdetails->vendor_id, $existingvendor)){
+                    $orderTotalAmount += $orderdetails->shipping_charges + $orderdetails->codAmount;
+                    array_push($existingvendor, $orderdetails->vendor_id);
+            }
+                 
+        }
+
+        $totalQuantity = 0;
+                    $totalWeight = 0.00;
+                    $existingvendor = array();
+        $counter=1; $vendorTotalAmount=0; $subTotalAmount = 0; $totalGST=0; $totalCod=0; $totalShipping=0; 
+        foreach($ordersviews as $orderdetail){
+            $totalQuantity += $orderdetail->product_qunatity;
+            $totalWeight += $orderdetail->net_weight * $orderdetail->product_qunatity;
+            $counter++; 
+            $subTotalAmount += $orderdetail->product_price * $orderdetail->product_qunatity;
+            $totalGST += $orderdetail->gst_on_product_price * $orderdetail->product_qunatity;
+            $vendorTotalAmount += (($orderdetail->product_price + $orderdetail->gst_on_product_price) * $orderdetail->product_qunatity);
+            if(!in_array($orderdetail->vendor_id, $existingvendor)){
+                $baseshippingprice = round(($orderdetail->shipping_charges * 100) / (100 + $productgstrate), 2);
+                $gstshippingprice = round(($orderdetail->shipping_charges - ($orderdetail->shipping_charges * 100) / (100 + $productgstrate)), 2);
+                $totalShipping += $baseshippingprice;
+                $totalGST += $gstshippingprice;
+                $totalCod += $orderdetail->codAmount;
+                array_push($existingvendor, $orderdetail->vendor_id);
+                $vendorTotalAmount += $orderdetail->shipping_charges + $orderdetail->codAmount;
+            }
+        }
+
+// Reformat the array to remove vendor keys and keep only the values
+$finalOrderDetails = array_values($orderDetailsGrouped);
+// get product summery with gst 
+
+$OrderDataTax['subtotal'] =number_format($subTotalAmount,2);
+$OrderDataTax['tax'] =number_format($totalGST,2);
+$OrderDataTax['discount'] = ($ordersviews[0]->discountVendorWise)?number_format($ordersviews[0]->discountVendorWise,2):0;
+$OrderDataTax['shippingFee']=number_format($totalShipping,2);
+$OrderDataTax['cod']=number_format($totalCod,2);
+$OrderDataTax['grandTotal']=number_format($vendorTotalAmount - $ordersviews[0]->discountVendorWise,2);
+
+
+
+    return response()->json([
+        'order_details' => $finalOrderDetails,
+        'order_information' => $orderInformation,
+        'orderDataTax' => $OrderDataTax,
+        'status' => true
+    ], 200);
+}
+
+
+    ////////////
+  public function getOrderStatus()
+    {
+        $orderStatuses = Order::select('order_status')
+            ->distinct()
+            ->whereNotNull('order_status') // Exclude null values
+            ->pluck('order_status');
+
+        return response()->json([
+            'status' => true,
+            'order_statuses' => $orderStatuses
+        ], 200);
+    }
+
+    public function getOrderDetailStatus()
+    {
+        $orderStatuses = OrderDetail::select('order_status')
+            ->distinct()
+            ->whereNotNull('order_status') // Exclude null values
+            ->pluck('order_status');
+
+        return response()->json([
+            'status' => true,
+            'order_statuses' => $orderStatuses
+        ], 200);
+    }
+
+    public function api_cancelOrder(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:orders,id',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid order ID.',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+    
+        $order_id = $request->input('order_id');
+    
+        $order = Order::find($order_id);
+    
+        if (!$order) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Order not found.',
+            ], 404);
+        }
+    
+        // Update the order status to "cancelled"
+        $order->order_status = 'cancel';
+        $order->save();
+    
+        return response()->json([
+            'status' => true,
+            'message' => 'Order has been canceled successfully.',
+        ]);
+    }
+    
+
+    
+     
+
+}

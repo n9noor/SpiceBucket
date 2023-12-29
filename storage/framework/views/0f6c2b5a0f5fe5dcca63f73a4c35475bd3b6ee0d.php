@@ -1,0 +1,1 @@
+ <?php echo $content; ?><?php /**PATH /var/www/spicebucket/resources/views/mailtemplate/mailNobody.blade.php ENDPATH**/ ?>

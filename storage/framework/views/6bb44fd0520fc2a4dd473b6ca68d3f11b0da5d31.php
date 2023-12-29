@@ -1,0 +1,318 @@
+
+
+<?php $__env->startSection("content"); ?>
+
+<div class="app-page-title">
+
+    <div class="page-title-wrapper">
+
+        <div class="page-title-heading">
+
+            <div class="page-title-icon">
+
+                <i class="pe-7s-user icon-gradient bg-sunny-morning"></i>
+
+            </div>
+
+            <div>
+
+                Sellers
+
+                <div class="page-title-subheading">&nbsp;</div>
+
+            </div>
+
+        </div>
+
+        <div class="page-title-actions">
+
+            <?php if(Session::get('admin-loggedin-property')['seller-add'] == 1): ?>
+
+            <button type="button" onclick="window.location.href='/administrator/add-vendor'" title="Add New Vendor" class="btn-icon btn-shadow me-3 btn btn-dark">
+
+                <i class="fa fa-plus btn-icon-wrapper"></i>Add Vendor
+
+            </button>
+
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php if(Session::get('admin-loggedin-property')['seller-view'] == 1): ?>
+
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table width="100%" class="mb-0 table table-bordered table-striped">
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="no-sort">#</th>
+
+                                <th class="no-sort">Active</th>
+
+                                <th class="no-sort">Approved</th>
+
+                                <th class="default-sort">Store Name</th>
+
+                                <th>GST Number</th>
+
+                                <th>Responsible Person</th>
+
+                                <th>Business Email ID</th>
+
+                                <th>Phone</th>
+
+                                <?php if(Session::get('admin-loggedin-property')['seller-qac-assignment'] == 1): ?>
+
+                                <th>QAC Assigned</th>
+
+                                <?php endif; ?>
+
+                                <?php if(Session::get('admin-loggedin-property')['seller-tab-assignment'] == 1): ?>
+
+                                <th>Tab Category</th>
+
+                                <?php endif; ?>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <?php $__currentLoopData = $vendors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vendor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                            <tr>
+
+                                <td nowrap>
+
+                                    <?php if(Session::get('admin-loggedin-property')['seller-edit'] == 1): ?>
+
+                                    <a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-primary" href="/administrator/view-vendor/<?php echo e($vendor->id); ?>"><i class="btn-icon-wrapper fa fa-eye"></i></a>
+
+                                    <?php endif; ?>
+
+                                    <?php if(Session::get('admin-loggedin-property')['seller-delete'] == 1): ?>
+
+                                    <a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-danger" href="/administrator/delete-vendor/<?php echo e($vendor->id); ?>"><i class="btn-icon-wrapper fa fa-trash"></i></a>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                                <td nowrap>
+
+                                    <?php if(Session::get('admin-loggedin-property')['seller-active'] == 1): ?>
+
+                                    <input data-column="is_active" data-type="vendors" data-id="<?php echo e($vendor->id); ?>" type="checkbox" <?php echo e($vendor->is_active == true ? " checked='checked'" : ""); ?> data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger">
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                                <td nowrap class="text-center">
+
+                                    <?php if($vendor->is_approved == 0): ?>
+
+                                    <?php if(Session::get('admin-loggedin-property')['seller-approve'] == 1): ?>
+
+                                    <a data-id='<?php echo e($vendor->id); ?>' class="btn-icon btn-shadow btn-outline-2x btn btn-outline-success vendor-approve" href="javascript:void(0)"><i class="fa fa-check"></i></a>
+
+                                    <a onclick="$('#vendor_id').val(<?php echo e($vendor->id); ?>);" data-bs-toggle="modal" data-bs-target="#decline-comment-modal" class="btn-icon btn-shadow btn-outline-2x btn btn-outline-danger vendor-not-approve" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+
+                                    <?php else: ?>
+
+                                    <div class="badge bg-warning">Pending</div>
+
+                                    <?php endif; ?>
+
+                                    <?php elseif($vendor->is_approved == 1): ?>
+
+                                    <div class="badge bg-success">Approved</div>
+
+                                    <?php elseif($vendor->is_approved == 2): ?>
+
+                                    <div class="badge bg-danger">Disapproved</div>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                                <td nowrap><?php echo e($vendor->store_name); ?></td>
+
+                                <td nowrap>
+
+                                    <?php echo e($vendor->gst); ?>&nbsp;&nbsp;
+
+                                    <?php if(Session::get('admin-loggedin-property')['seller-gst-verify'] == 1): ?>
+
+                                    <button title="<?php echo e($vendor->verified == false ? "Verify GST Number" : "Verified"); ?>" class="p-0 btn-icon btn-icon-only btn-pill btn btn-outline-link<?php echo e($vendor->verified == false ? " verify-vendor-btn" : " text-success"); ?>" data-gstnumber="<?php echo e($vendor->gst); ?>"><i class="fa fa-check-circle btn-icon-wrapper"></i></button>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                                <td nowrap><?php echo e($vendor->responsible_person); ?></td>
+
+                                <td nowrap><?php echo e($vendor->business_emailid); ?></td>
+
+                                <td nowrap><?php echo e($vendor->phone); ?></td>
+
+                                <?php if(Session::get('admin-loggedin-property')['seller-qac-assignment'] == 1): ?>
+
+                                <td nowrap>
+
+                                    <select class="assignqac-vendor" data-id="<?php echo e($vendor->id); ?>" class="form-control">
+
+                                        <option value=""></option>
+
+                                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                                        <option value="<?php echo e($user->id); ?>" <?php echo e($vendor->qac_user_id == $user->id ? " selected='selected'" : ""); ?>><?php echo e($user->firstname); ?> <?php echo e($user->lastname); ?></option>
+
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                    </select>
+
+                                </td>
+
+                                <?php endif; ?>
+
+                                <?php if(Session::get('admin-loggedin-property')['seller-tab-assignment'] == 1): ?>
+
+                                <td nowrap>
+
+                                    <select class="tab-category-vendor" data-id="<?php echo e($vendor->id); ?>" class="form-control">
+
+                                        <option value=""></option>
+
+                                        <option <?php echo e($vendor->tab_category == 'popular' ? "selected='selected'" : ""); ?> value="popular">Popular Brands</option>
+
+                                        <option <?php echo e($vendor->tab_category == 'top_selling' ? "selected='selected'" : ""); ?> value="top_selling">Top Selling Brands</option>
+
+                                        <option <?php echo e($vendor->tab_category == 'only_at_spicebucket' ? "selected='selected'" : ""); ?> value="only_at_spicebucket">Only at Spice Bucket</option>
+
+                                    </select>
+
+                                </td>
+
+                                <?php endif; ?>
+
+                            </tr>
+
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+
+
+
+<?php $__env->startPush('externalJavascripts'); ?>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/bootstrap4-toggle/js/bootstrap4-toggle.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/bootstrap-table/dist/bootstrap-table.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net/js/jquery.dataTables.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-responsive/js/dataTables.responsive.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-buttons/js/buttons.html5.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-buttons/js/jszip.min.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-buttons/js/vfs_fonts.js')); ?>"></script>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/vendors/datatables.net-buttons/js/pdfmake.min.js')); ?>"></script>
+
+<?php $__env->stopPush(); ?>
+
+
+
+<?php $__env->startPush('javascripts'); ?>
+
+<script type="text/javascript" src="<?php echo e(asset('backend/js/vendor-function.js')); ?>"></script>
+
+<div class="modal fade" id="decline-comment-modal" tabindex="-1" role="dialog" aria-labelledby="decline-comment-modal-label" aria-hidden="true">
+
+    <div class="modal-dialog modal-sm">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="decline-comment-modal-title">Decline Modal</h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" name="_token" id="token" value="<?php echo e(csrf_token()); ?>">
+
+                <input type="hidden" name="vendor_id" id="vendor_id" />
+
+                <div class="position-relative mb-3">
+
+                    <label for="comment" class="form-label">Comment for Decline</label>
+
+                    <textarea class="form-control" name="comment" id="comment" placeholder="Enter Decline Comment"></textarea>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                <button type="button" id="save-decline-comment" class="btn btn-primary">Save changes</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make("wms.layout", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/spicebucket/resources/views/vendor/index.blade.php ENDPATH**/ ?>

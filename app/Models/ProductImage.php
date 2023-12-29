@@ -9,4 +9,8 @@ class ProductImage extends Model
 {
     use HasFactory;
     protected $table = 'product_images';
+
+    public function products(){
+        return $this->belongsTo(Product::class);
+    }
 }

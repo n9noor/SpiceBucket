@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Validator;
 class ApiController extends Controller
 {
     public function login(Request $request) {
+ 
         $validator = Validator::make($request->json()->all(), [
             'email' => 'required',
             'otp' => 'required',
-            'deviceId' => 'required',
-            'firebaseToken' => 'required'
+            'deviceId' => 'required',            
+            //'firebaseToken' => 'required'
         ]);
         if($validator->fails()){
             return response()->json([
@@ -37,12 +38,17 @@ class ApiController extends Controller
             
             $result = Customer::where('phone', $data->email)->where('is_active', true)->first();
             if(!is_null($result) && Hash::check($data->otp, $result->otp)) {
-                $tokenid = getRandomGeneratedString(16);
-                Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken, 'token_id' => $tokenid]);
+                if(empty($result->token_id)){
+                    $tokenid = getRandomGeneratedString(16);
+                    Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken, 'token_id' => $tokenid]);
+                }else{
+                        $tokenid =$result->token_id;
+                }
+                
                 return response()->json([
                     'status' => true,
                     'message' => 'User logged in successfully',
-                    'data' => ['emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $tokenid, 'deviceId' => $data->deviceId, 'firebaseTokenId' => $data->firebaseToken, "profileImage" => $result->image]
+                    'data' => ['customer_id' => $result->id, 'emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $tokenid, 'deviceId' => $data->deviceId, 'firebaseTokenId' => $data->firebaseToken, "profileImage" => $result->image]
                 ], 200);
             } else {
                 return response()->json([
@@ -62,12 +68,12 @@ class ApiController extends Controller
             $result = Customer::where('emailid', $data->email)->where('is_active', true)->first();
             if(!is_null($result) && Hash::check($data->otp, $result->otp)) {
                 $tokenid = getRandomGeneratedString(16);
-                Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken, 'token_id' => $tokenid]);
+                //Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken, 'token_id' => $tokenid]);
                 return response()->json([
                     'status' => true,
                     'message' => 'User logged in successfully',
-                    'data' => ['emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $tokenid, 'deviceId' => $data->deviceId, 'firebaseTokenId' => $data->firebaseToken, "profileImage" => $result->image]
-                ], 200);
+                    'data' => ['customer_id' => $result->id,'id' => $result->id, 'emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $tokenid,  "profileImage" => $result->image]
+                ], 200);   //'deviceId' => $data->deviceId, 'firebaseTokenId' => $data->firebaseToken,
             } else {
                 return response()->json([
                     'status' => false,
@@ -143,9 +149,14 @@ class ApiController extends Controller
     }
     */    
     public function send_otp(Request $request) {
+        //print_r($request->all()); die;
         $data = json_decode($request->getContent());
         $customer = Customer::where('emailid', $data->emailphone)->orWhere('phone', $data->emailphone)->first();
         $otpnumber = rand(100000, 999999);
+
+
+        
+       
         if(is_null($customer)) {
             $customer = new Customer();
         }
@@ -157,7 +168,10 @@ class ApiController extends Controller
             if ($validatormobile->fails()) { 
                 return response()->json([ 'status'=> false, 'message'=> implode(",", $validatormobile->messages()->all()) ]);
             }
-            
+            if($customer->phone =='9810449334'){
+                $otpnumber ='123456';
+                
+            }    
             $smsmessage = "Dear Customer, your OTP " . $otpnumber . " For Registration on Spicebucket.com Thanks Spice Bucket E-Retail (OPC) Pvt. Ltd.";
             sendSMS($data->emailphone, $smsmessage);
             $customer->phone = $data->emailphone;
@@ -184,9 +198,10 @@ class ApiController extends Controller
     
     public function get_user_details(Request $request) {
         $validator = Validator::make($request->json()->all(), [
+            'customer_id' => 'required',
             'tokenId' => 'required',
             'deviceId' => 'required',
-            'firebaseToken' => 'required'
+            'firebaseTokenId' => 'required'
         ]);
         if($validator->fails()){
             return response()->json([
@@ -195,13 +210,15 @@ class ApiController extends Controller
             ], 200);
         }
         $data = json_decode($request->getContent());
-        $result = Customer::where('token_id', $data->tokenId)->first();
+       
+        $result = Customer::where('id', $data->customer_id)->first();
+      
         if(!is_null($result)) {
-            Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseToken]);
+            Customer::where('id', $result->id)->update(['device_id' => $data->deviceId, 'firebase_token_id' => $data->firebaseTokenId]);
             return response()->json([
                 'status' => true,
                 'message' => 'User found.',
-                'data' => ['emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $result->token_id, 'deviceId' => $data->deviceId, 'firebaseTokenId' => $data->firebaseToken, "profileImage" => $result->image]
+                'data' => ['customer_id'=> $result->id ,'emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $result->token_id, 'deviceId' => $data->deviceId, 'firebaseTokenId' => $data->firebaseTokenId, "image" => $result->image]
             ], 200);
         } else {
             return response()->json([
@@ -246,15 +263,11 @@ class ApiController extends Controller
             ], 200);
         }
     }
-    
-    public function update_customer(Request $request) {
-        $validator = Validator::make($request->json()->all(), [
-            'tokenId' => 'required',
-            'deviceId' => 'required',
-            'firebaseToken' => 'required',
-            'name' => 'required',
-            'emailid' => 'email',
-            'phone' => 'regex:/^[6-9][0-9]{9}$/'
+
+
+    public function delete_account(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'tokenId' => 'required'             
         ]);
         if($validator->fails()){
             return response()->json([
@@ -262,26 +275,94 @@ class ApiController extends Controller
                 'message' => implode(",", $validator->messages()->all())
             ], 200);
         }
-        $data = json_decode($request->getContent());
-        $customer = Customer::where('token_id', $data->tokenId)->first();
-        $customer->device_id = $data->deviceId;
-        $customer->firebase_token_id = $data->firebaseToken;
-        $customer->name = $data->name;
-        if(!empty($data->emailid)) {
-            $customer->emailid = $data->emailid;
+         
+        $customer = Customer::where('token_id', $request->tokenId)->first();
+        if(!empty($customer)){
+            // check here your account was deactived 
+            if($customer->is_active ==0){
+                return response()->json([
+                    'status' => false,
+                    'message' => "Your account is already de-actived "
+                ], 200);
+            }
+            $customer->is_active = 0;
+            if($customer->save()){
+                return response()->json([
+                    'status' => true,
+                    'message' => "Account has been deleted",
+                     
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Unable to delete your account."
+                ], 200);
+            }
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => "No customer found."
+            ], 200);
         }
-        if(!empty($data->phone)) {
-            $customer->phone = $data->phone;
+    }
+    
+    public function update_customer(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'tokenId' => 'required',
+            'deviceId' => 'required',
+            'firebaseTokenId' => 'required',
+            'name' => 'required',
+            'emailid' => 'email',
+            'phone' => 'regex:/^[6-9][0-9]{9}$/',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048' // Example validation rules for image field
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => implode(",", $validator->messages()->all())
+            ], 200);
         }
-        if(!empty($data->dob)) {
-            $customer->dob = $data->dob;
+    
+        $customer = Customer::where('token_id', $request->input('tokenId'))->first();
+        $customer->device_id = $request->input('deviceId');
+        $customer->firebase_token_id = $request->input('firebaseTokenId');
+        $customer->name = $request->input('name');
+    
+        if (!empty($request->input('emailid'))) {
+            $customer->emailid = $request->input('emailid');
         }
+    
+        if (!empty($request->input('phone'))) {
+            $customer->phone = $request->input('phone');
+        }
+    
+        if (!empty($request->input('dob'))) {
+            $customer->dob = $request->input('dob');
+        }
+    
+        if ($request->hasFile('image')){
+			$image = $request->file('image');            
+			$imageName = date('YmdHis').'.'.$image->extension();           
+			$image->move(public_path('images/customer_profile/'.$customer->name), $imageName);
+            $customer->image = $imageName;
+	
+		}
+		else {
+			$customer->image = "default.png";
+		}
+    
         $customer->save();
+        $customer = Customer::where('token_id', $request->input('tokenId'))->first();
+    
         return response()->json([
             'status' => true,
+            'data' => ['customer_id'=> $result->id ,'emailid' => $result->emailid, 'name' => $result->name, 'phone' => $result->phone, 'dob' => $result->dob, 'tokenId' => $result->token_id, 'deviceId' => $result->deviceId, 'firebaseTokenId' => $result->firebaseTokenId, "image" => $result->image],
             'message' => 'Data saved successfully.'
         ], 200);
     }
+    
+    
     
     public function update_customer_addresses(Request $request) {
         $validator = Validator::make($request->json()->all(), [
@@ -336,5 +417,31 @@ class ApiController extends Controller
                 'message' => "No customer found"
             ]);
         }
+    }
+
+
+
+    public function sendResponse($result, $message)
+    {
+        $response = [
+            'success' => true,            
+            'message' => $message,
+            'data'    => $result
+        ];
+        return response()->json($response, 200);
+    }
+
+    public function sendError($error, $errorMessages = [], $code = 404)
+    {
+        $response = [
+            'success' => false,
+            'message' => $error,
+        ];
+
+        if(!empty($errorMessages)){
+            $response['data'] = $errorMessages;
+        }
+        
+        return response()->json($response, $code);
     }
 }

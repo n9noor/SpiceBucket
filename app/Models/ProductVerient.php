@@ -9,4 +9,8 @@ class ProductVerient extends Model
 {
     use HasFactory;
     protected $table = 'product_variants';
+
+    public function product_variant_values() {
+        return $this->hasMany(ProductVerientValue::class);
+    }
 }

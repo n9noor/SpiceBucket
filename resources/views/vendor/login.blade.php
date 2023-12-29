@@ -66,7 +66,7 @@
 @if(Session::has('message'))
 <div class='alert alert-danger'>{{Session::get('message')}}</div>
 @endif
-<form method="post" action="/vendors/login_process" class="form-horizontal">
+<form method="post" action="/sellers/login_process" class="form-horizontal">
 @csrf
 <div class="row">
 <div class="col-md-6">
@@ -88,16 +88,14 @@
 </div>
 </div>
 </div>
-<!--
 <div class="position-relative form-check mb-3">
 <input name="check" id="keep-me-logged-in" type="checkbox" class="form-check-input">
 <label for="keep-me-logged-in" class="form-label form-check-label">Keep me logged in</label>
 </div>
--->
 <div class="divider row"></div>
 <div class="d-flex align-items-center">
 <div class="ms-auto">
-<!-- <a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a> -->
+<a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a>
 <button id="btn-login" class="btn btn-primary btn-lg">Login to Dashboard</button>
 </div>
 </div>

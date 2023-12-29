@@ -59,7 +59,7 @@ Edit Product Category: {{$category->name}}
 <div class="position-relative mb-3">
 <label for="category_image" class="form-label">Image</label>
 <input type="file" name="category_image" id="category_image" class="form-control" onchange="displayImage(this, 'category-image-view');" />
-<div id="category-image-view"><img src="{{url('/public/images/products/' . $category->image)}}" class="mx-5 my-3 img-thumbnail" width="200" height="200" /></div>
+<div id="category-image-view"><img src="{{(env('APP_ENV') == "production" ? url('/public/images/products/' . $category->image) : url('/images/products/' . $category->image))}}" class="mx-5 my-3 img-thumbnail" width="200" height="200" /></div>
 </div>
 </div>
 <div class="col-md-6">

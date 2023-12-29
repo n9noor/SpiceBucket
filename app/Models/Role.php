@@ -17,4 +17,11 @@ class Role extends Model
         'rolename',
         'description'
     ];
+
+    /*
+    * Foreign Key working
+    */
+    public function users(){
+        return $this->hasMany(User::class);
+    }
 }

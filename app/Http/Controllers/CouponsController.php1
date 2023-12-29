@@ -1,0 +1,244 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Coupon;
+use App\Models\CouponMapping;
+use App\Models\Customer;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\Vendor;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+class CouponsController extends Controller
+{
+    public function index()
+    {
+        if (Session::get('admin-logged-in') == false) {
+            return redirect('/administrator/login')->with('message', "Please log in.");
+        }
+		if(Session::get('admin-loggedin-property')['discount-coupon-view'] == 0){
+            return view('wms.accessdenied');
+		}
+        $coupons = Coupon::with('coupon_usage')->get();
+        return view('coupons.index', ['title' => 'Coupons - SpiceBucket Administrator', 'coupons' => $coupons]);
+    }
+
+    public function add_coupon()
+    {
+        if (Session::get('admin-logged-in') == false) {
+            return redirect('/administrator/login')->with('message', "Please log in.");
+        }
+		if(Session::get('admin-loggedin-property')['discount-coupon-add'] == 0){
+            return view('wms.accessdenied');
+		}
+        $vendors = Vendor::where('is_active', true)->get();
+        $customers = Customer::where('is_active', true)->get();
+        $categories = ProductCategory::where('parent', 0)->get();
+        $products = Product::where('is_approved', true)->where('is_active', true)->get();
+        return view('coupons.add', ['title' => 'Add Coupon - SpiceBucket Administrator', 'vendors' => $vendors, 'customers' => $customers, 'categories' => $categories, 'products' => $products]);
+    }
+
+    public function delete_coupon($couponid)
+    {
+
+
+         if (Session::get('admin-logged-in') == false) {
+            return redirect('/administrator/login')->with('message', "Please log in.");
+        }
+        $couponCollection = Coupon::where('id',$couponid)->delete();
+        return redirect('/administrator/coupons')->with('message', 'Coupon is  Deleted Successfully.');
+          
+    }
+
+    public function save_coupon(Request $request)
+    {
+        if (Session::get('admin-logged-in') == false) {
+            return redirect('/administrator/login')->with('message', "Please log in.");
+        }
+		if(Session::get('admin-loggedin-property')['discount-coupon-add'] == 0){
+            return view('wms.accessdenied');
+		}
+        $this->validate($request, [
+            'title' => 'required',
+            'coupon_description' => 'required',
+            'start_datetime' => 'required',
+            'end_datetime' => 'required',
+            'coupon_code' => 'required',
+            'coupon_type' => 'required',
+            'minimum_cart_amount' => 'required',
+            'flat_coupon_off' => 'required_unless:coupon_type,percent',
+            'percent_coupon_off' => 'required_unless:coupon_type,flat',
+            'percent_coupon_max_off' => 'required_unless:coupon_type,flat',
+            'no_of_time' => 'required'
+        ]);
+        $coupon = new Coupon();
+        $coupon->title = $request->title;
+        $coupon->coupon_description = $request->coupon_description;
+        $coupon->start_datetime = date('Y-m-d', strtotime($request->start_datetime));
+        $coupon->end_datetime = date('Y-m-d', strtotime($request->end_datetime));
+        $coupon->no_of_time = $request->no_of_time;
+        $coupon->minimum_cart_amount = $request->minimum_cart_amount;
+        $coupon->coupon_code = $request->coupon_code;
+        $coupon->coupon_type = $request->coupon_type;
+        $coupon->payment_mode_apply = $request->payment_mode_apply;
+        $coupon->coupon_off = ($request->coupon_type == 'flat' ? $request->flat_coupon_off : $request->percent_coupon_off);
+        $coupon->maximum_discount_amount = $request->percent_coupon_max_off;
+        $coupon->save();
+
+        $couponid = $coupon->id;
+        $couponmapping = new CouponMapping();
+        $couponmapping->coupon_id = $couponid;
+        if (!empty($request->vendors)) {
+            $couponmapping->vendor_id = implode(", ", $request->vendors);
+        }
+        if (!empty($request->customers)) {
+            $couponmapping->customer_id = implode(", ", $request->customers);
+        }
+        if (!empty($request->products)) {
+            $couponmapping->product_id = implode(", ", $request->products);
+        }
+        if (!empty($request->categories)) {
+            $couponmapping->category_id = implode(", ", $request->categories);
+        }
+        $couponmapping->save();
+
+        return redirect('/administrator/coupons')->with('message', 'Coupon Added Successfully.');
+    }
+
+    public function verify(Request $request)
+    {
+        $coupons = Coupon::with('coupon_mapping')->with('coupon_usage')->where('coupon_code', $request->couponCodeText)->whereRaw("DATE(start_datetime) <= DATE(SYSDATE())")->whereRaw("DATE(end_datetime) >= DATE(SYSDATE())")->where('is_active', true) ->selectRaw('coupons.*, coupons.id AS coupondid')->first();
+        if ($coupons == null) {
+            return response()->json(['status' => false, 'message' => 'Coupon is not available'], 200);
+        }
+        $couponid = $coupons->coupondid;
+        $vendorfilter = is_null($coupons->coupon_mapping->vendor_id) ? array() : explode(", ", $coupons->coupon_mapping->vendor_id);
+        $customerfilter = is_null($coupons->coupon_mapping->customer_id) ? array() : explode(", ", $coupons->coupon_mapping->customer_id);
+        $categoryfilter = is_null($coupons->coupon_mapping->category_id) ? array() : explode(", ", $coupons->coupon_mapping->category_id);
+        $productfilter = is_null($coupons->coupon_mapping->product_id) ? array() : explode(", ", $coupons->coupon_mapping->product_id);
+        $discount = $subtotal = $subtotalproductwise = $subtotalvendorwise = $subtotalcategorywise = 0;
+        $vendorwisecart = $categorywisecart = $productwisecart = array();
+        foreach (Session::get('customer-cart') as $product_id => $cart) {
+            foreach ($cart as $cartelement) {
+                $subtotal += $cartelement['totalprice'];
+                $array = array('storeid' => $cartelement['storeid'], 'productid' => $product_id, 'categoryid' => $cartelement['categoryid'], 'quantity' => $cartelement['quantity'], 'price' => $cartelement['totalprice']);
+                if (count($productfilter) > 0) {
+                    if (in_array($product_id, $productfilter)) {
+                        if (!array_key_exists($product_id, $productwisecart)) {
+                            $productwisecart[$product_id] = array();
+                        }
+                        $subtotalproductwise += $cartelement['totalprice'];
+                        array_push($productwisecart[$product_id], $array);
+                    }
+                }
+                if (count($categoryfilter) > 0) {
+                    if (in_array($cartelement['categoryid'], $categoryfilter)) {
+                        if (!array_key_exists($cartelement['categoryid'], $categorywisecart)) {
+                            $categorywisecart[$cartelement['categoryid']] = array();
+                        }
+                        $subtotalcategorywise += $cartelement['totalprice'];
+                        array_push($categorywisecart[$cartelement['categoryid']], $array);
+                    }
+                }
+                if (count($vendorfilter) > 0) {
+                    if (in_array($cartelement['storeid'], $vendorfilter)) {
+                        if (!array_key_exists($cartelement['storeid'], $vendorwisecart)) {
+                            $vendorwisecart[$cartelement['storeid']] = array();
+                        }
+                        $subtotalvendorwise += $cartelement['totalprice'];
+                        array_push($vendorwisecart[$cartelement['storeid']], $array);
+                    }
+                }
+            }
+        }
+
+        if (count($customerfilter) > 0) {
+            if (in_array(Session::get('customer-loggedin-id'), $customerfilter)) {
+                if ($subtotal < $coupons->minimum_cart_amount) {
+                    return response()->json(['status' => false, 'message' => 'Add <i class="fa fa-rupee-sign"></i> ' . ($coupons->minimum_cart_amount - $subtotal) . ' to avail this coupon.'], 200);
+                }
+                if ($coupons->coupon_type == "flat") {
+                    $discount = $coupons->coupon_off;
+                } else {
+                    $discount = (($subtotal * $coupons->coupon_off) / 100);
+                    if ($coupons->maximum_discount_amount <= $discount) {
+                        $discount = $coupons->maximum_discount_amount;
+                    }
+                }
+            } else {
+                return response()->json(['status' => false, 'message' => 'Coupon not applicable'], 200);
+            }
+        } else if (count($productfilter) > 0) {
+            if ($subtotalproductwise < $coupons->minimum_cart_amount) {
+                return response()->json(['status' => false, 'message' => 'Add <i class="fa fa-rupee-sign"></i> ' . ($coupons->minimum_cart_amount - $subtotalproductwise) . ' to avail this coupon.'], 200);
+            }
+            $productsids = array_keys($productwisecart);
+            foreach ($productsids as $productsid) {
+                if (in_array($productsid, $productfilter)) {
+                    if ($coupons->coupon_type == "flat") {
+                        $discount = $coupons->coupon_off;
+                    } else {
+                        $discount = (($subtotalproductwise * $coupons->coupon_off) / 100);
+                        if ($coupons->maximum_discount_amount <= $discount) {
+                            $discount = $coupons->maximum_discount_amount;
+                        }
+                    }
+                }
+            }
+        } else if (count($vendorfilter) > 0) {
+            if ($subtotalvendorwise < $coupons->minimum_cart_amount) {
+                return response()->json(['status' => false, 'message' => 'Add <i class="fa fa-rupee-sign"></i> ' . ($coupons->minimum_cart_amount - $subtotalvendorwise) . ' to avail this coupon.'], 200);
+            }
+            $vendorsids = array_keys($vendorwisecart);
+            foreach ($vendorsids as $vendorsid) {
+                if (in_array($vendorsid, $vendorfilter)) {
+                    if ($coupons->coupon_type == "flat") {
+                        $discount = $coupons->coupon_off;
+                    } else {
+                        $discount = (($subtotalvendorwise * $coupons->coupon_off) / 100);
+                        if ($coupons->maximum_discount_amount <= $discount) {
+                            $discount = $coupons->maximum_discount_amount;
+                        }
+                    }
+                }
+            }
+        } else if (count($categoryfilter) > 0) {
+            if ($subtotalcategorywise < $coupons->minimum_cart_amount) {
+                return response()->json(['status' => false, 'message' => 'Add <i class="fa fa-rupee-sign"></i> ' . ($coupons->minimum_cart_amount - $subtotalcategorywise) . ' to avail this coupon.'], 200);
+            }
+            $categoriesids = array_keys($productwisecart);
+            foreach ($categoriesids as $categoriesid) {
+                if (in_array($categoriesid, $categoryfilter)) {
+                    if ($coupons->coupon_type == "flat") {
+                        $discount = $coupons->coupon_off;
+                    } else {
+                        $discount = (($subtotalcategorywise * $coupons->coupon_off) / 100);
+                        if ($coupons->maximum_discount_amount <= $discount) {
+                            $discount = $coupons->maximum_discount_amount;
+                        }
+                    }
+                }
+            }
+        } else {
+            if ($subtotal < $coupons->minimum_cart_amount) {
+                return response()->json(['status' => false, 'message' => 'Add <i class="fa fa-rupee-sign"></i> ' . ($coupons->minimum_cart_amount - $subtotal) . ' to avail this coupon.'], 200);
+            }
+            if ($coupons->coupon_type == "flat") {
+                $discount = $coupons->coupon_off;
+            } else {
+                $discount = (($subtotal * $coupons->coupon_off) / 100);
+                if ($coupons->maximum_discount_amount <= $discount) {
+                    $discount = $coupons->maximum_discount_amount;
+                }
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'discount' => $discount,
+            'couponid' => $couponid
+        ], 200);
+    }
+}

@@ -98,10 +98,31 @@ function ecCheckCookie()
     
     /*----------------------------- Site Cookie function --------------------*/
     // Calling Function On Each Time Site Load | Reload
-    ecCheckCookie();
-    
+    logoutAccount();
+      function deleteProfile() {
+            if (confirm("Do you really want to logout your account?")) {
+                location.href = '/logout';
+            }
+        }
     $('.login-otp-span').hide();
-    
+    function countdown() {
+        var seconds = 59;
+        function tick() {
+          var counter = document.getElementById("counter");
+          seconds--;
+          counter.innerHTML =
+            "0:" + (seconds < 10 ? "0" : "") + String(seconds);
+          if (seconds > 0) {
+            setTimeout(tick, 1000);
+          } else {
+            document.getElementById("verifiBtn").innerHTML = `
+                <label class="pull-right resend-otp" id='resend-otp' >Resend otp</label>
+            `;
+            document.getElementById("counter").innerHTML = "";
+          }
+        }
+        tick();
+      }
     //On click method for Send OTP
     $('#send-otp').click(function() {
         var error=0;

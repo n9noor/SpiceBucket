@@ -7,17 +7,15 @@
 <i class="pe-7s-user icon-gradient bg-sunny-morning"></i>
 </div>
 <div>
-Roles
+Departments
 <div class="page-title-subheading">&nbsp;</div>
 </div>
 </div>
-<!--
 <div class="page-title-actions">
 <button type="button" onclick="window.location.href='/administrator/add-role'" title="Add New Role" class="btn-icon btn-shadow me-3 btn btn-dark">
-<i class="fa fa-plus btn-icon-wrapper"></i>Add Role
+<i class="fa fa-plus btn-icon-wrapper"></i>Add Department
 </button>
 </div>
--->
 </div>
 </div>
 <div class="main-card mb-3 card">
@@ -29,8 +27,8 @@ Roles
 @foreach($roles as $role)
 <tr>
 <td>
-<a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-primary" href="/administrator/edit-role/{{$role->id}}"><i class="btn-icon-wrapper fa fa-user"></i>Edit Role</a>
-<a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-danger" href="/administrator/delete-role/{{$role->id}}"><i class="btn-icon-wrapper fa fa-trash"></i>Delete Role</a>
+<a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-primary" href="/administrator/edit-role/{{$role->id}}"><i class="btn-icon-wrapper fa fa-edit"></i></a>
+<a class="mb-2 mr-2 btn-icon btn-shadow btn-outline-2x btn btn-outline-danger" href="/administrator/delete-role/{{$role->id}}"><i class="btn-icon-wrapper fa fa-trash"></i></a>
 </td>
 <td>{{$role->rolename}}</td>
 <td>{{$role->description}}</td>

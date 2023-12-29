@@ -1,344 +1,379 @@
 @extends('layout')
 @section('content')
-<!-- Ec breadcrumb start -->
-<div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
-<div class="container">
-<div class="row">
-<div class="col-12">
-<div class="row ec_breadcrumb_inner">
-<div class="col-md-6 col-sm-12">
-<h2 class="ec-breadcrumb-title">Shop</h2>
-</div>
-<div class="col-md-6 col-sm-12">
-<!-- ec-breadcrumb-list start -->
-<ul class="ec-breadcrumb-list">
-<li class="ec-breadcrumb-item"><a href="/">Home</a></li>
-<li class="ec-breadcrumb-item active">Shop</li>
-</ul>
-<!-- ec-breadcrumb-list end -->
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Ec breadcrumb end -->
 
-<!-- Page detail section -->
-<section class="ec-bnr-detail margin-bottom-30 section-space-pt">
-<div class="ec-page-detail">
-<div class="container">
-<div class="ec-main-heading d-none">
-<h2>Shop <span>Detail</span></h2>
-</div>
-<div class="row">
-<div class="col-lg-6 col-md-12">
-<div class="ec-cat-bnr">
-<a href="product-left-sidebar.html"><span></span></a>
-</div>
-</div>
-<div class="col-lg-6 col-md-12">
-<div class="ec-page-description">
-<h6>The Best deal on top brands</h6>
-<p class="m-0">Lorem Ipsum is simply dummy text of the printing and typesetting
-industry. Lorem Ipsum has been the industry's standard dummy text ever
-since the 1500s. It has survived not only five centuries, but also the
-leap into electronic typesetting, remaining essentially unchanged.
-</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- End detail section -->
+<main class="main pages">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                <span></span> My Account
+            </div>
+        </div>
+    </div>
+    <div class="page-content pt-20 pb-20">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link backToOrders" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab"  aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                    </li>
+									
+									
+									
+									<li class="nav-item">
+                                        <a class="nav-link" id="wallet-tab" data-bs-toggle="tab" href="#wallet" role="tab" aria-controls="wallet" aria-selected="true">
+										<i class="fi fi-rs-wallet"></i><strong>Wallet</strong></a>
+                                    </li>
+									
+									
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-sm-12">
+                            @if(Session::has('success'))
+                            <h3 class="alert alert-success">{{ Session::get('success') }}</h3>
+                            <p class="alert alert-success">{{ Session::get('subsuccess') }}</p>
+                            @endif
+                            <div class="tab-content account dashboard-content">
+                                <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="mb-0">Hello, {{ Session::get('customer-loggedin-name') }}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>
+                                                you can easily check &amp; view your <a href="#">recent orders</a>,<br />
+                                                manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a>
+                                            </p>
 
-<!-- Ec Shop page -->
-<section class="ec-page-content-bnr section-space-pb">
-<div class="container">
-<div class="row">
-<div class="ec-shop-rightside col-lg-9 col-md-12 order-lg-last order-md-first margin-b-30">
-<!-- Shop Top Start -->
-<div class="ec-pro-list-top d-flex">
-<div class="col-md-6 ec-grid-list">
-<div class="ec-gl-btn">
-<button class="btn btn-grid active"><img src="{{asset('frontend/images/icons/grid.svg')}}"
-class="svg_img gl_svg" alt="" /></button>
-<button class="btn btn-list"><img src="{{asset('frontend/images/icons/list.svg')}}"
-class="svg_img gl_svg" alt="" /></button>
-</div>
-</div>
-<div class="col-md-6 ec-sort-select">
-<span class="sort-by">Sort by</span>
-<div class="ec-select-inner">
-<select name="ec-select" id="ec-select">
-<option selected disabled>Position</option>
-<option value="1">Relevance</option>
-<option value="2">Name, A to Z</option>
-<option value="3">Name, Z to A</option>
-<option value="4">Price, low to high</option>
-<option value="5">Price, high to low</option>
-</select>
-</div>
-</div>
-</div>
-<!-- Shop Top End -->
+                                            <style>
+                                                #myChart {
+                                                    height: 100%;
+                                                    width: 100%;
+                                                    min-height: 150px;
+                                                }
 
-<!-- Shop content Start -->
-<div class="shop-pro-content">
-<div class="shop-pro-inner">
-<div class="row">
-@foreach($products as $product)
-<div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-<div class="ec-product-inner">
-<div class="ec-pro-image-outer">
-<div class="ec-pro-image">
-<a href="javascript:void(0)" class="image">
-<img class="main-image" src="{{url('/images/products/' . $product->image)}}" alt="Product" />
-<img class="hover-image" src="{{url('/images/products/' . $product->image)}}" alt="Product" />
-</a>
-<span class="percentage">{{$product->discount}}</span>
-<a href="#" class="quickview" data-link-action="quickview" title="Quick view" data-bs-toggle="modal" data-bs-target="#ec_quickview_modal">
-<img src="{{asset('frontend/assets/images/icons/quickview.svg')}}" class="svg_img pro_svg" alt="" />
-</a>
-<div class="ec-pro-actions">
-<a href="javascript:void(0)" class="ec-btn-group compare" title="Compare">
-<img src="{{asset('frontend/images/icons/compare.svg')}}" class="svg_img pro_svg" alt="" /></a>
-<button title="Add To Cart" class=" add-to-cart"><img src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img pro_svg" alt="" /> Add To Cart</button>
-<a class="ec-btn-group wishlist" title="Wishlist"><img
-src="{{asset('frontend/images/icons/wishlist.svg')}}"
-class="svg_img pro_svg" alt="" /></a>
-</div>
-</div>
-</div>
-<div class="ec-pro-content">
-<h5 class="ec-pro-title"><a data-id="{{$product->id}}" href="javascript:void(0)">{{$product->name}}</a></h5>
-<div class="ec-pro-rating">
-<i class="ecicon eci-star fill"></i>
-<i class="ecicon eci-star fill"></i>
-<i class="ecicon eci-star fill"></i>
-<i class="ecicon eci-star fill"></i>
-<i class="ecicon eci-star"></i>
-</div>
-<div class="ec-pro-list-desc">{{$product->description}}</div>
-<span class="ec-price">
-<span class="new-price"><i class="ecicon eci-inr"></i> {{$product->net_price}}</span>
-</span>
-</div>
-</div>
-</div>
-@endforeach
-</div>
-</div>
-<!-- Ec Pagination Start -->
-<!--
-<div class="ec-pro-pagination">
-<span>Showing 1-12 of 21 item(s)</span>
-<ul class="ec-pro-pagination-inner">
-<li><a class="active" href="#">1</a></li>
-<li><a href="#">2</a></li>
-<li><a href="#">3</a></li>
-<li><a href="#">4</a></li>
-<li><a href="#">5</a></li>
-<li><a class="next" href="#">Next <i class="ecicon eci-angle-right"></i></a></li>
-</ul>
-</div>
--->
-<!-- Ec Pagination End -->
-</div>
-<!--Shop content End -->
-</div>
-<!-- Sidebar Area Start -->
-<div class="ec-shop-leftside col-lg-3 col-md-12 order-lg-first order-md-last">
-<div id="shop_sidebar">
-<div class="ec-sidebar-heading">
-<h1>Filter Products By</h1>
-</div>
-<div class="ec-sidebar-wrap">
-<!-- Sidebar Category Block -->
-<div class="ec-sidebar-block">
-<div class="ec-sb-title">
-<h3 class="ec-sidebar-title">Category</h3>
-</div>
-<div class="ec-sb-block-content">
-<ul>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" checked /> <a href="#">clothes</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">Bags</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">Shoes</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">cosmetics</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">electrics</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">phone</a><span
-class="checked"></span>
-</div>
-</li>
-<li id="ec-more-toggle-content" style="padding: 0; display: none;">
-<ul>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">Watch</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" /> <a href="#">Cap</a><span
-class="checked"></span>
-</div>
-</li>
-</ul>
-</li>
-<li>
-<div class="ec-sidebar-block-item ec-more-toggle">
-<span class="checked"></span><span id="ec-more-toggle">More
-Categories</span>
-</div>
-</li>
+                                                .zc-ref {
+                                                    display: none;
+                                                }
+                                            </style>
 
-</ul>
-</div>
-</div>
-<!-- Sidebar Size Block -->
-<div class="ec-sidebar-block">
-<div class="ec-sb-title">
-<h3 class="ec-sidebar-title">Size</h3>
-</div>
-<div class="ec-sb-block-content">
-<ul>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" value="" checked /><a href="#">S</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" value="" /><a href="#">M</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" value="" /> <a href="#">L</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" value="" /><a href="#">XL</a><span
-class="checked"></span>
-</div>
-</li>
-<li>
-<div class="ec-sidebar-block-item">
-<input type="checkbox" value="" /><a href="#">XXL</a><span
-class="checked"></span>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<!-- Sidebar Color item -->
-<div class="ec-sidebar-block ec-sidebar-block-clr">
-<div class="ec-sb-title">
-<h3 class="ec-sidebar-title">Color</h3>
-</div>
-<div class="ec-sb-block-content">
-<ul>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#c4d6f9;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#ff748b;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#000000;"></span></div>
-</li>
-<li class="active">
-<div class="ec-sidebar-block-item"><span
-style="background-color:#2bff4a;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#ff7c5e;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#f155ff;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#ffef00;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#c89fff;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#7bfffa;"></span></div>
-</li>
-<li>
-<div class="ec-sidebar-block-item"><span
-style="background-color:#56ffc1;"></span></div>
-</li>
-</ul>
-</div>
-</div>
-<!-- Sidebar Price Block -->
-<div class="ec-sidebar-block">
-<div class="ec-sb-title">
-<h3 class="ec-sidebar-title">Price</h3>
-</div>
-<div class="ec-sb-block-content es-price-slider">
-<div class="ec-price-filter">
-<div id="ec-sliderPrice" class="filter__slider-price" data-min="0"
-data-max="250" data-step="10"></div>
-<div class="ec-price-input">
-<label class="filter__label"><input type="text"
-class="filter__input"></label>
-<span class="ec-price-divider"></span>
-<label class="filter__label"><input type="text"
-class="filter__input"></label>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- End Shop page -->
+                                            <!--<div id='myChart'></div>-->
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                    <div class="card" id="totalOrders">
+                                        <div class="card-header">
+                                            <h3 class="mb-0">Your Orders</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead style="text-align: center;">
+                                                        <tr>
+                                                            <th nowrap="">Order ID</th>
+                                                            <th nowrap="">Date</th>
+                                                            <th nowrap="">Status</th>
+                                                            <th nowrap="">Total</th>
+                                                            <th nowrap="">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="text-align: center;">
+                                                        @foreach ($orders as $order)
+                                                        <tr>
+                                                            <td nowrap="" >{{ $order->orderid }}</td>
+                                                            <td nowrap="" >{{date('d/M/Y h:i A', strtotime($order->created_at)) }}
+                                                            </td>
+                                                            <td nowrap="">{{ strtolower($order->order_status) == 'cancel' ? 'Cancelled' : ucwords($order->order_status) }}</td>
+                                                            <td nowrap=""><i class="fa fa-rupee-sign"></i> {{ $order->total_amount }}</td>
+                                                            <td nowrap=""><a href="javascript:void(0)" onclick="getInvoiceDetail({{$order->id}})" class="btn-small d-block">View</a>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="invoceDiv">
+                                    </div>
+                                </div>
+								<!------------------Mywallet------->
+								<div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="wallet-tab">
+                                    <!-- <div class="row">
+                                       
+                                       <div class="col-lg-6 dashboard-address-item  is-address-default ">
+                                            <div class="card h-100 mb-3 mb-lg-0 mb-2">
+                                                <div class="card-header">
+                                                   
+                                                  
+                                                    </div>
+                                                <div class="card-body">
+                                                    <address>
+													
+                                                       MYwallet<br /> 
+                                                       Amount - <?php //echo $walletdetail;?><br />
+                                                
+                                                    </address>
+                                                
+                                                </div>
+                                                <div class="card-footer border-top-0">
+                                                    <div class="row">
+                          <div class="col-auto me-auto">
+						  <a href="javascript:void(0)"  onclick="insertDataButton" class="edit-address-info"><i class="fas fa-edit"></i> 
+						  
+						  Add Wallet Amount</a>
+						</div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="col-12 m-2">
+										<a href="javascript:void(0)" type="button" id="Add_wallet" class="add-address"><i class="fa fa-plus"></i> <span>
+										Add Wallet</span></a></div>
+                                    </div>-->
+									
+									<div class="card-body" style="margin-top:-80px;">
+                                            <form  name="wallet" id="wallet" method="POST" action="razorpaypaymentwallet"  enctype="multipart/form-data">
+                                                @csrf  
+                                                <div class="row">
+                                                 <div class="form-group col-md-12"> 
+                                                  <label>Wallet Amount<span class="required"></span></label>
+                                   <input required="" class="form-control" name="Wallet_amount" readonly="readonly" id="Wallet_amount" type="text" value="<?php echo $walletdetail;?>" /></div>
+								   <input class="form-control" name="userid" id="userid" type="hidden" value="<?php echo session('customer-loggedin-id');?>" />
+								    <input class="form-control" name="email" id="email" type="text" value="<?php echo session('customer-loggedin-email');?>" />
+									<input class="form-control" name="phone" id="phone" type="text" value="<?php echo session('customer-loggedin-phone');?>" />
+									<input class="form-control" name="Name" id="Name" type="text" value="<?php echo "Madhav";?>"  />
+									<input class="form-control" name="logo" id="logo" type="text" value="https://spicebucket.com/assets/imgs/logoSB.png" />
+									
+								   
+								   <input class="form-control" name="currency" id="currency" type="hidden" value="<?php echo 'INR';?>" />
+								   <input class="form-control" name="company_name" id="company_name" type="hidden" value="<?php echo 'spicebucket';?>" />
+								  
+                                          <div class="col-md-12">
+      <!-- <button type="button" class="btn btn-fill-out submit font-weight-bold" name="Add_wallet2" id="Add_wallet2" 
+	   onclick="Addwallet('<?php //echo $walletdetail;?>','<?php //echo session('customer-loggedin-id');?>');"  value="Submit">Add Wallet</button>-->
+												   <input type="submit" name="submit" id="submit" class="btn btn-fill-out submit font-weight-bold" value="Save"/>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                </div>
+								
+						<!-----------------END--------------------->
+
+                                <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                    <div class="row">
+                                        @foreach($addresses as $address)
+                                        <div class="col-lg-6 dashboard-address-item  is-address-default ">
+                                            <div class="card h-100 mb-3 mb-lg-0 mb-2">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">{{$address->firstname}} {{$address->lastname}}
+                                                        <small class="badge address-dashboard">{{strtoupper($address->address_type)}}</small>
+                                                    </h5>
+                                                    @if($address->is_default == 1)
+                                                    <small class="badge default-dashboard">DEFAULT</small>
+                                                    @else
+                                                    <small style="cursor: pointer;" data-id="{{$address->id}}" class="badge  address-mark-as-default">MARK DEFAULT</small>
+                                                    @endif
+                                                                                                </div>
+                                                <div class="card-body">
+                                                    <address>
+                                                        {{$address->address_line_1}}<br />
+                                                        {{$address->address_line_2}}<br />
+                                                        {{$address->address_line_3}}
+                                                    </address>
+                                                    <p>City : {{$address->city}}</p>
+                                                    <p>State : {{$address->state}}</p>
+                                                    <p>Pin Code : {{$address->pincode}}</p>
+                                                    <p>Country : {{$address->country}}</p>
+                                                </div>
+                                                <div class="card-footer border-top-0">
+                                                    <div class="row">
+                                                        <div class="col-auto me-auto"><a href="javascript:void(0)" onclick="editAddress({{$address->id}})" class="edit-address-info"><i class="fas fa-edit"></i> Edit</a></div>
+                                                        <div class="col-auto"><a href="javascript:void(0)" onclick="removeAddress({{$address->id}})" class="text-danger btn-trigger-delete-address removeAddress"><i class="fas fa-trash-alt"></i> Remove</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach   
+                                        <div class="col-12 m-2"><a href="javascript:void(0)" type="button" id="new-address" class="add-address"><i class="fa fa-plus"></i> <span>Add a new address</span></a></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Account Details</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="javascript:void(0)" name="enq">
+                                                @php $name = !is_null($customer->name) ? $customer->name : ' ';
+                                                list($firstName, $lastName) = explode(' ', $name); @endphp
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>First Name <span class="required">*</span></label>
+                                                        <input required="" class="form-control" name="first_name" id="first_name" type="text" value="{{$firstName}}" />
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Last Name <span class="required">*</span></label>
+                                                        <input required="" class="form-control" name="last_name" id="last_name" value="{{$lastName}}" />
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Phone<span class="required">*</span></label>
+                                                        <input required="" class="form-control" name="phone" id="phone" type="text" value="{{$customer->phone}}" />
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label>Email Address <span class="required">*</span></label>
+                                                        <input required="" class="form-control" name="email" id="email" type="email" value="{{$customer->emailid}}" />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button type="button" class="btn btn-fill-out submit font-weight-bold" name="submit" id="update-customer-details" value="Submit">Save Change</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
 @endsection
+
+@push('externaljavascript')
+<script nonce="undefined" src="https://cdn.zingchart.com/zingchart.min.js"></script>
+@endpush
+@push('javascript')
+
+<script>
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+    window.feed = function(callback) {
+        var tick = {};
+        tick.plot0 = Math.ceil(350 + (Math.random() * 500));
+        callback(JSON.stringify(tick));
+    };
+
+    var myConfig = {
+        type: "gauge",
+        globals: {
+            fontSize: 25
+        },
+        plotarea: {
+            marginTop: 80
+        },
+        tooltip: {
+            borderRadius: 5
+        },
+        scaleR: {
+            aperture: 270,
+            minValue: 0,
+            maxValue: {{$maxValue}},
+            center: {
+                visible: false
+            },
+            tick: {
+                visible: false
+            },
+            labels: @json($rewards),
+            ring: {
+                size: 50,
+                rules: [{
+                        rule: '%v >= 0 ',
+                        backgroundColor: '#e3273A'
+                    },
+                ]
+            }
+        },
+       
+        series: [{
+            values: [{{ $rewardhistory }}], 
+            backgroundColor: 'black',
+            animation: {
+                effect: 2,
+                method: 1,
+                sequence: 4,
+                speed: 100
+            },
+        }]
+    };
+
+    zingchart.render({
+        id: 'myChart',
+        data: myConfig,
+        height: 500,
+        width: '100%'
+    });
+
+    $(document).on('click', 'small.address-mark-as-default', function() {
+        var id = $(this).attr('data-id');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'post',
+            url: '/update-default-address',
+            data: {
+                id: id
+            },
+            success: function() {
+                getAddresses();
+            }
+        });
+    });
+
+
+
+       // $('#Add_wallet').click(function() {
+		function Addwallet(e,d) { 
+		 var Wallet_amount  = $("#Wallet_amount").val();
+		 var userid = $("#userid").val();
+		 var formdata = $('#wallet').serialize();
+		 alert(e);
+		 alert(d);
+		 
+          $.ajax({
+                url: '/paymentwalletcodtest',
+                type: 'get',
+                data: {amount : e,userid : d},
+						
+                success: function(response) {
+                    console.log(response.message);
+                    
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                   
+                }
+            });
+     
+	}
+
+</script>
+@endpush

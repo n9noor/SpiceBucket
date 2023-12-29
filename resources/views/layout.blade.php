@@ -1,556 +1,2091 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html class="no-js" lang="en">
+
+
+
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="x-ua-compatible" content="ie=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-<title>Spice Bucket.</title>
-<meta name="keywords" content="" />
-<meta name="description" content="">
-<meta name="author" content="">
+    <meta charset="utf-8" />
 
-<!-- site Favicon -->
-<link rel="icon" href="{{asset('images/favicon.png')}}" sizes="32x32" />
-<link rel="apple-touch-icon" href="{{asset('images/favicon.png')}}" />
-<meta name="msapplication-TileImage" content="{{asset('images/favicon.png')}}" />
+    <title>Spice Bucket</title>
 
-<!-- css Icon Font -->
-<link rel="stylesheet" href="{{asset('frontend/css/vendor/ecicons.min.css')}}" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
-<!-- css All Plugins Files -->
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/animate.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/swiper-bundle.min.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/jquery-ui.min.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/countdownTimer.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/slick.min.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/nouislider.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/plugins/bootstrap.css')}}" />
+    <meta name="description" content="" />
 
-<!-- Main Style -->
-<link rel="stylesheet" href="{{asset('frontend/css/style.css')}}" />
-<link rel="stylesheet" href="{{asset('frontend/css/responsive.css')}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- Background css -->
-<link rel="stylesheet" id="bg-switcher-css" href="{{asset('frontend/css/backgrounds/bg-4.css')}}">
+    <meta property="og:title" content="" />
+
+    <meta property="og:type" content="" />
+
+    <meta property="og:url" content="" />
+
+    <meta property="og:image" content="" />
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Favicon -->
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <!-- Template CSS -->
+
+    <link rel="stylesheet" href="/assets/css/plugins/slider-range.css" />
+
+    <link rel="stylesheet" href="/assets/css/listnav.css?v=5.6" />
+
+    <link rel="stylesheet" href="/assets/css/main.css?v={{rand()}}" />
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="/assets/alertifyjs/css/alertify.min.css" />
+    <link rel="stylesheet" href="/assets/alertifyjs/css/themes/default.min.css" />
+    <link rel="stylesheet" href="/assets/css/track.scss" />
+
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QDSMX4G87G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-QDSMX4G87G');
+</script>
+	
+    @stack('externalcss')
 
 </head>
+
+
+
+<style>
+
+  .animated-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+} 
+.mobile-promotion{
+    position: relative;
+}
+
+.mobile-promotion .d-inline-block{
+    width:100%;
+    text-align:center;
+}
+
+.loop-text2 p {
+    width:100%;
+    position: absolute;
+    font-size: 13px;
+    top: 16%;
+    /* left: 26%; */
+  opacity: 0; 
+  
+}
+
+@keyframes moveUp {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  20%, 80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+</style>
+
+
+
 <body>
-<div id="ec-overlay"><span class="loader_img"></span></div>
-<!-- Header start  -->
-<header class="ec-header">
-<!--Ec Header Top Start -->
-<div class="header-top">
-<div class="container">
-<div class="row align-items-center">
-<!-- Header Top social Start -->
-<div class="col text-left header-top-left d-none d-lg-block">
-<div class="header-top-social">
-<span class="social-text text-upper">Follow us on:</span>
-<ul class="mb-0">
-<li class="list-inline-item"><a class="hdr-facebook" href="javascript:void()"><i class="ecicon eci-facebook"></i></a></li>
-<li class="list-inline-item"><a class="hdr-twitter" href="javascript:void()"><i class="ecicon eci-twitter"></i></a></li>
-<li class="list-inline-item"><a class="hdr-instagram" href="javascript:void()"><i class="ecicon eci-instagram"></i></a></li>
-<li class="list-inline-item"><a class="hdr-linkedin" href="javascript:void()"><i class="ecicon eci-linkedin"></i></a></li>
-</ul>
-</div>
-</div>
-<!-- Header Top social End -->
-<!-- Header Top Message Start -->
-<div class="col text-center header-top-center">
-<div class="header-top-message text-upper">
-<span>Free Shipping</span>This Week Order Over - $75
-</div>
-</div>
-<!-- Header Top Message End -->
-<!-- Header Top Language Currency -->
-<div class="col header-top-right d-none d-lg-block">
-<div class="header-top-lan-curr d-flex justify-content-end">
-<!-- Currency Start -->
-<div class="header-top-curr dropdown">
-<button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
-class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-<ul class="dropdown-menu">
-<li class="active"><a class="dropdown-item" href="javascript:void()">USD $</a></li>
-<li><a class="dropdown-item" href="javascript:void()">EUR €</a></li>
-</ul>
-</div>
-<!-- Currency End -->
-<!-- Language Start -->
-<div class="header-top-lan dropdown">
-<button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
-class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-<ul class="dropdown-menu">
-<li class="active"><a class="dropdown-item" href="javascript:void()">English</a></li>
-<li><a class="dropdown-item" href="javascript:void()">Italiano</a></li>
-</ul>
-</div>
-<!-- Language End -->
 
-</div>
-</div>
-<!-- Header Top Language Currency -->
-<!-- Header Top responsive Action -->
-<div class="col d-lg-none ">
-<div class="ec-header-bottons">
-<!-- Header User Start -->
-<div class="ec-header-user dropdown">
-<button class="dropdown-toggle" data-bs-toggle="dropdown"><img
-src="{{asset('frontend/images/icons/user.svg')}}" class="svg_img header_svg" alt="" /></button>
-<ul class="dropdown-menu dropdown-menu-right">
-@if(Session::get('customer-logged-in') == true)
-<li><a class="dropdown-item" href="/logout">Logout</a></li>
-@else
-<!-- <li><a class="dropdown-item" href="/registration">Customer Register</a></li> -->
-<li><a class="dropdown-item" href="/login">Customer Login</a></li>
-@endif
-<li><a class="dropdown-item" href="/vendors/register">Vendor Register</a></li>
-<li><a class="dropdown-item" href="/vendors/login">Vendor Login</a></li>
-<li><a class="dropdown-item" href="/administrator/login">Administrator Login</a></li>
-</ul>
-</div>
-<!-- Header User End -->
-<!-- Header Cart Start -->
-<!--
-<a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
-<div class="header-icon"><img src="{{asset('frontend/images/icons/wishlist.svg')}}"
-class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count">4</span>
-</a>
--->
-<!-- Header Cart End -->
-<!-- Header Cart Start -->
-<a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
-<div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}"
-class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count cart-count-lable">{{Session::get('totalquantity')}}</span>
-</a>
-<!-- Header Cart End -->
-<!-- Header menu Start -->
-<a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle d-lg-none">
-<i class="ecicon eci-bars"></i>
-</a>
-<!-- Header menu End -->
-</div>
-</div>
-<!-- Header Top responsive Action -->
-</div>
-</div>
-</div>
-<!-- Ec Header Top  End -->
-<!-- Ec Header Bottom  Start -->
-<div class="ec-header-bottom d-none d-lg-block">
-<div class="container position-relative">
-<div class="row">
-<div class="ec-flex">
-<!-- Ec Header Logo Start -->
-<div class="align-self-center">
-<div class="header-logo">
-<a href="/"><img src="{{asset('images/logo-color.png')}}" alt="Site Logo" /></a>
-</div>
-</div>
-<!-- Ec Header Logo End -->
+    <div id="alert-container"></div>
 
-<!-- Ec Header Search Start -->
-<div class="align-self-center">
-<div class="header-search">
-<form class="ec-btn-group-form" action="javascript:void()">
-<input class="form-control" placeholder="Enter Your Product Name..." type="text">
-<button class="submit" type="submit"><img src="{{asset('frontend/images/icons/search.svg')}}"
-class="svg_img header_svg" alt="" /></button>
-</form>
-</div>
-</div>
-<!-- Ec Header Search End -->
+    <header class="header-area header-style-1 header-height-2">
 
-<!-- Ec Header Button Start -->
-<div class="align-self-center">
-<div class="ec-header-bottons">
+        <div class="mobile-promotion">
 
-<!-- Header User Start -->
-<div class="ec-header-user dropdown">
-<button class="dropdown-toggle" data-bs-toggle="dropdown"><img
-src="{{asset('frontend/images/icons/user.svg')}}" class="svg_img header_svg" alt="" /></button>
-<ul class="dropdown-menu dropdown-menu-right">
-@if(Session::get('customer-logged-in') == true)
-<li><a class="dropdown-item" href="/logout">Logout</a></li>
-@else
-<!-- <li><a class="dropdown-item" href="/registration">Customer Register</a></li> -->
-<li><a class="dropdown-item" href="/login">Customer Login</a></li>
-@endif
-<li><a class="dropdown-item" href="/vendors/register">Vendor Register</a></li>
-<li><a class="dropdown-item" href="/vendors/login">Vendor Login</a></li>
-<li><a class="dropdown-item" href="/administrator/login">Administrator Login</a></li>
-</ul>
-</div>
-<!-- Header User End -->
-<!-- Header wishlist Start -->
-<!--
-<a href="wishlist.html" class="ec-header-btn ec-header-wishlist">
-<div class="header-icon"><img src="{{asset('frontend/images/icons/wishlist.svg')}}"
-class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count">4</span>
-</a>
--->
-<!-- Header wishlist End -->
-<!-- Header Cart Start -->
-<a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
-<div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}"
-class="svg_img header_svg" alt="" /></div>
-<span class="ec-header-count cart-count-lable">{{Session::get('totalquantity')}}</span>
-</a>
-<!-- Header Cart End -->
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Ec Header Button End -->
-<!-- Header responsive Bottom  Start -->
-<div class="ec-header-bottom d-lg-none">
-<div class="container position-relative">
-<div class="row ">
+                <div  class="d-inline-block">
+                   
+                         <div class="loop-text2" style="text-align: center;">
+                              
+                              <p class="show" style="color:white;">Flat 10% Dsicount On All Product Use SBNEWU</p>
+                              <p class="show"  style="color:white;">Direct Factory To At Your Doorstep</p>
+                              <p  class="show" style="color:white;">Free Delivery on Order Above <i class="fa fa-rupee-sign"> 499</i></p>
+                            </div>
+                          
 
-<!-- Ec Header Logo Start -->
-<div class="col">
-<div class="header-logo">
-<a href="/"><img src="{{asset('images/logo-color.png')}}" alt="Site Logo" /></a>
-</div>
-</div>
-<!-- Ec Header Logo End -->
-<!-- Ec Header Search Start -->
-<div class="col">
-<div class="header-search">
-<form class="ec-btn-group-form" action="javascript:void()">
-<input class="form-control" placeholder="Enter Your Product Name..." type="text">
-<button class="submit" type="submit"><img src="{{asset('frontend/images/icons/search.svg')}}"
-class="svg_img header_svg" alt="" /></button>
-</form>
-</div>
-</div>
-<!-- Ec Header Search End -->
-</div>
-</div>
-</div>
-<!-- Header responsive Bottom  End -->
-<!-- EC Main Menu Start -->
-<div id="ec-main-menu-desk" class="d-none d-lg-block sticky-nav">
-<div class="container position-relative">
-<div class="row">
-<div class="col-md-12 align-self-center">
-<div class="ec-main-menu">
-<ul>
-<li><a href="/">Home</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Ec Main Menu End -->
-<!-- ekka Mobile Menu Start -->
-<div id="ec-mobile-menu" class="ec-side-cart ec-mobile-menu">
-<div class="ec-menu-title">
-<span class="menu_title">My Menu</span>
-<button class="ec-close">×</button>
-</div>
-<div class="ec-menu-inner">
-<div class="ec-menu-content">
-<ul>
-<li><a href="/">Home</a></li>
-</ul>
-</div>
-<div class="header-res-lan-curr">
-<div class="header-top-lan-curr">
-<!-- Language Start -->
-<div class="header-top-lan dropdown">
-<button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
-class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-<ul class="dropdown-menu">
-<li class="active"><a class="dropdown-item" href="javascript:void()">English</a></li>
-<li><a class="dropdown-item" href="javascript:void()">Italiano</a></li>
-</ul>
-</div>
-<!-- Language End -->
-<!-- Currency Start -->
-<div class="header-top-curr dropdown">
-<button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
-class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-<ul class="dropdown-menu">
-<li class="active"><a class="dropdown-item" href="javascript:void()">USD $</a></li>
-<li><a class="dropdown-item" href="javascript:void()">EUR €</a></li>
-</ul>
-</div>
-<!-- Currency End -->
-</div>
-<!-- Social Start -->
-<div class="header-res-social">
-<div class="header-top-social">
-<ul class="mb-0">
-<li class="list-inline-item"><a class="hdr-facebook" href="javascript:void()"><i class="ecicon eci-facebook"></i></a></li>
-<li class="list-inline-item"><a class="hdr-twitter" href="javascript:void()"><i class="ecicon eci-twitter"></i></a></li>
-<li class="list-inline-item"><a class="hdr-instagram" href="javascript:void()"><i class="ecicon eci-instagram"></i></a></li>
-<li class="list-inline-item"><a class="hdr-linkedin" href="javascript:void()"><i class="ecicon eci-linkedin"></i></a></li>
-</ul>
-</div>
-</div>
-<!-- Social End -->
-</div>
-</div>
-</div>
-<!-- ekka mobile Menu End -->
-</header>
-<!-- Header End  -->
+                              
 
-<!-- ekka Cart Start -->
-<div class="ec-side-cart-overlay"></div>
-<div id="ec-side-cart" class="ec-side-cart">
-<div class="ec-cart-inner">
-<div class="ec-cart-top">
-<div class="ec-cart-title">
-<span class="cart_title">My Cart</span>
-<button class="ec-close">×</button>
-</div>
-<ul class="eccart-pro-items">
-@php $subprice = 0; $gst = 0; @endphp
-@foreach(Session::get('customer-cart') as $product_id => $cart)
-<li data-pid="product-{{$product_id}}" data-qty="{{$cart['quantity']}}" data-price="{{$cart['price']}}">
-<a href="javascript:void(0);" class="sidekka_pro_img">
-<img src="{{url('/images/products/' . $cart['image'])}}" alt="product">
-</a>
-<div class="ec-pro-content">
-<a href="javascript:void(0);" class="cart_pro_title">{{$cart['title']}}</a>
-<span class="cart-price"><span><i class="ecicon eci-rupee"></i> {{$cart['price']}}</span> x <span class="cart-qty-{{$product_id}}">{{$cart['quantity']}}</span></span>
-<div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>
-<input class="qty-input" type="text" name="ec_qtybtn_{{$product_id}}" value="{{$cart['quantity']}}">
-<div class="inc ec_qtybtn">+</div></div>
-<a href="javascript:void(0)" class="remove" id="remove-{{$product_id}}">×</a>
-</div>
-</li>
-@php $subprice += ($cart['quantity'] * $cart['price']); @endphp
-@endforeach
-</ul>
-</div>
-<div class="ec-cart-bottom">
-<div class="cart-sub-total">
-<table class="table cart-table">
-<tbody>
-<tr>
-<td class="text-left">Sub-Total :</td>
-<td class="text-right"><i class="ecicon eci-rupee"></i> <span id='sub-price'>{{number_format($subprice, 2)}}</span></td>
-</tr>
-<tr>
-<td class="text-left">GST (18%) :</td>
-@php $gst = $subprice * 0.18; @endphp
-<td class="text-right"><i class="ecicon eci-rupee"></i> <span id='gst-price'>{{number_format($gst, 2)}}</span></td>
-</tr>
-<tr>
-<td class="text-left">Total :</td>
-<td class="text-right primary-color"><i class="ecicon eci-rupee"></i> <span id='total-price'>{{number_format(($subprice + $gst), 2)}}</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="cart_btn">
-<a href="{{url('/cart')}}" class="btn btn-primary">View Cart</a>
-<a href="/checkout" class="btn btn-secondary">Checkout</a>
-</div>
-</div>
-</div>
-</div>
-<!-- ekka Cart End -->
-@yield('content')
-<!-- Footer Start -->
-<footer class="ec-footer section-space-mt">
-<div class="footer-container">
-<div class="footer-top section-space-footer-p">
-<div class="container">
-<div class="row">
-<div class="col-sm-12 col-lg-3 ec-footer-contact">
-<div class="ec-footer-widget">
-<div class="ec-footer-logo"><a href="javascript:void()"><img src="{{asset('images/logo-color.png')}}" alt=""></a></div>
-<h4 class="ec-footer-heading">Contact us</h4>
-<div class="ec-footer-links">
-<ul class="align-items-center">
-<li class="ec-footer-link">1234, ABC Colony, XYZ State, Country</li>
-<li class="ec-footer-link"><span>Call Us:</span><a href="tel:+910123456789">+44
-0123 456 789</a></li>
-<li class="ec-footer-link"><span>Email:</span><a
-href="mailto:example@ec-email.com">+example@ec-email.com</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-sm-12 col-lg-2 ec-footer-info">
-<div class="ec-footer-widget">
-<h4 class="ec-footer-heading">Information</h4>
-<div class="ec-footer-links">
-<ul class="align-items-center">
-<li class="ec-footer-link"><a href="javascript:void()">About us</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">FAQ</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Delivery Information</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Contact us</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-sm-12 col-lg-2 ec-footer-account">
-<div class="ec-footer-widget">
-<h4 class="ec-footer-heading">Account</h4>
-<div class="ec-footer-links">
-<ul class="align-items-center">
-<li class="ec-footer-link"><a href="javascript:void()">My Account</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Order History</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Wish List</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Specials</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-sm-12 col-lg-2 ec-footer-service">
-<div class="ec-footer-widget">
-<h4 class="ec-footer-heading">Services</h4>
-<div class="ec-footer-links">
-<ul class="align-items-center">
-<li class="ec-footer-link"><a href="javascript:void()">Discount Returns</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Policy & policy </a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Customer Service</a></li>
-<li class="ec-footer-link"><a href="javascript:void()">Term & condition</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-sm-12 col-lg-3 ec-footer-news">
-<div class="ec-footer-widget">
-<h4 class="ec-footer-heading">Newsletter</h4>
-<div class="ec-footer-links">
-<ul class="align-items-center">
-<li class="ec-footer-link">Get instant updates about our new products and
-special promos!</li>
-</ul>
-<div class="ec-subscribe-form">
-<form id="ec-newsletter-form" name="ec-newsletter-form" method="post" action="javascript:void()">
-<div id="ec_news_signup" class="ec-form">
-<input class="ec-email" type="email" required="" placeholder="Enter your email here..." name="ec-email" value="" />
-<button id="ec-news-btn" class="button btn-primary" type="submit" name="subscribe" value=""><i class="ecicon eci-paper-plane-o" aria-hidden="true"></i></button>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="footer-bottom">
-<div class="container">
-<div class="row align-items-center">
-<!-- Footer social Start -->
-<div class="col text-left footer-bottom-left">
-<div class="footer-bottom-social">
-<span class="social-text text-upper">Follow us on:</span>
-<ul class="mb-0">
-<li class="list-inline-item"><a class="hdr-facebook" href="javascript:void()"><i class="ecicon eci-facebook"></i></a></li>
-<li class="list-inline-item"><a class="hdr-twitter" href="javascript:void()"><i class="ecicon eci-twitter"></i></a></li>
-<li class="list-inline-item"><a class="hdr-instagram" href="javascript:void()"><i class="ecicon eci-instagram"></i></a></li>
-<li class="list-inline-item"><a class="hdr-linkedin" href="javascript:void()"><i class="ecicon eci-linkedin"></i></a></li>
-</ul>
-</div>
-</div>
-<!-- Footer social End -->
-<!-- Footer Copyright Start -->
-<div class="col-6 text-center footer-copy">
-<div class="footer-bottom-copy ">
-<div class="ec-copy">Copyright © {{getFinancialYear(date('Y-m-d'))}} <a class="site-name text-upper"
-href="javascript:void()">SpiceBucket<span>.</span></a>. All Rights Reserved</div>
-</div>
-</div>
-<!-- Footer Copyright End -->
-<!-- Footer payment -->
-<div class="col footer-bottom-right">
-<div class="footer-bottom-payment d-flex justify-content-end">
-<div class="payment-link">
-<img src="{{asset('frontend/images/icons/payment.png')}}" alt="">
-</div>
+                                
+         
+                                
 
-</div>
-</div>
-<!-- Footer payment -->
-</div>
-</div>
-</div>
-</div>
-</footer>
-<!-- Footer Area End -->
+                            </div>
+
+        </div>
+
+       
+
+        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+
+            <div class="container">
+
+                <div class="row align-items-center">
+
+                    <div class="col-xl-4 col-lg-3">
+
+                        <div class="header-info">
+
+                            <ul>
+
+                                <li class="bold-font"><a href="{{array_key_exists('firstcoloumntitleurl', $header) && strlen($header['firstcoloumntitleurl']) > 0 ? $header['firstcoloumntitleurl'] : 'javascript:void(0)'}}">
+
+                                        <div class="blink-container">
+
+                                            <!-- <h1 onclick="trackYourOrder('', '')" class="text-red blink-hard">{{array_key_exists('firstcoloumntitle', $header) && strlen($header['firstcoloumntitle']) > 0 ? $header['firstcoloumntitle'] : 'Track Your Order'}}</h1> -->
+                       <a   href="https://www.dtdc.in/tracking.asp"  class="text-red blink-hard" target="_blank"><h1 style="color:white;">Track Your Order</h1></a>
+                                        </div>
+                                    </a></li>
+
+                                <li><a href="{{array_key_exists('firstcoloumntitlesecondparturl', $header) && strlen($header['firstcoloumntitlesecondparturl']) > 0 ? $header['firstcoloumntitlesecondparturl'] : 'javascript:void(0)'}}">{{array_key_exists('firstcoloumntitlesecondpart', $header) && strlen($header['firstcoloumntitlesecondpart']) > 0 ? $header['firstcoloumntitlesecondpart'] : 'Cash On Delivery Available'}}</a></li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xl-4 col-lg-5">
+
+                        <div class="text-center">
+
+                            <!--<div id="news-flash" class="d-inline-block">
+
+                                <ul>
+                                    @if(array_key_exists('secondcoloumntitle', $header) && strlen($header['secondcoloumntitle']) > 0)
+                                    <li>{!!str_replace(array("\r\n", "\n", "\r"), '</li><li>', $header['secondcoloumntitle'])!!}</li>
+                                    
+                                    @endif
+                                </ul>
+
+                            </div>-->
+
+                            <!--<div id="hideDiv">
+                                Free Delivery on Order Above
+                            </div>-->
+                           
+                            <div class="loop-text">
+                              
+                              <p class="show">Flat 10% Dsicount On All Product Use SBNEWU</p>
+                              <p>Direct Factory To At Your Doorstep </p>
+                              <p>Free Delivery on Order Above  <i class="fa fa-rupee-sign"> 499</i></p>
+                            </div>
+
+                            <style type="text/css">
+                                @keyframes fade {
+                                     0% {
+                                         opacity: 1;
+                                    }
+                                     50% {
+                                         opacity: 0;
+                                    }
+                                     100% {
+                                         opacity: 1;
+                                    }
+                                }
+                                 .loop-text {
+                                     position: relative;
+                                     height: 40px;
+                                     overflow: hidden;
+                                }
+                                 .loop-text p {
+                                     position: absolute;
+                                     height: 30px;
+                                     opacity: 0;
+                                     transition: 0.5s ease-out;
+                                }
+                                 .loop-text p.show {
+                                     opacity: 1;
+                                }
 
 
-<!-- Footer navigation panel for responsive display -->
-<div class="ec-nav-toolbar">
-<div class="container">
-<div class="ec-nav-panel">
-<div class="ec-nav-panel-icons">
-<a href="#ec-mobile-menu" class="navbar-toggler-btn ec-header-btn ec-side-toggle"><img
-src="{{asset('frontend/images/icons/menu.svg')}}" class="svg_img header_svg" alt="" /></a>
-</div>
-<div class="ec-nav-panel-icons">
-<a href="#ec-side-cart" class="toggle-cart ec-header-btn ec-side-toggle"><img
-src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img header_svg" alt="" /><span
-class="ec-cart-noti ec-header-count cart-count-lable">{{Session::get('totalquantity')}}</span></a>
-</div>
-<div class="ec-nav-panel-icons">
-<a href="/" class="ec-header-btn"><img src="{{asset('frontend/images/icons/home.svg')}}"
-class="svg_img header_svg" alt="icon" /></a>
-</div>
-<!--
-<div class="ec-nav-panel-icons">
-<a href="wishlist.html" class="ec-header-btn"><img src="{{asset('frontend/images/icons/wishlist.svg')}}"
-class="svg_img header_svg" alt="icon" /><span class="ec-cart-noti">4</span></a>
-</div>
--->
-<div class="ec-nav-panel-icons">
-<a href="/login" class="ec-header-btn"><img src="{{asset('frontend/images/icons/user.svg')}}"
-class="svg_img header_svg" alt="icon" /></a>
+                                .loop-text p {
+                                  font-weight: 500;
+                                  color: #fff;
+                                  margin-top: 8px;
+                                  text-align: center;
+                                  width: 100%;
+                                  display: block;
+
+                                 
+                            </style>
+                            
+                            <script type="text/javascript">
+                                
+                                let texts = document.querySelectorAll(".loop-text p");
+
+                                    let prev = null;
+                                    let animate = (curr, currIndex) => {
+                                      let index = (currIndex + 1) % texts.length
+                                      setTimeout(() => {
+                                        if(prev) {
+                                          prev.className = "";
+                                        } 
+                                        curr.className = "show";
+                                        prev = curr;
+                                        animate(texts[index], index);
+                                      }, 2500);
+                                    }
+
+                                    animate(texts[0], 0);
+                            </script>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4">
+
+                        <div class="header-info header-info-right">
+
+                            <ul>
+
+                                <li class="bold-font">{{array_key_exists('thirdcoloumntitle', $header) && strlen($header['thirdcoloumntitle']) > 0 ? $header['thirdcoloumntitle'] : "Customer Support"}}:&nbsp;<strong class="text-brand">
+
+                                        <a class="header-call" href="tel:{{array_key_exists('customersupportnumber', $header) && strlen($header['customersupportnumber']) > 0 ? $header['customersupportnumber'] : '+917247247070'}}">{{array_key_exists('customersupportnumber', $header) && strlen($header['customersupportnumber']) > 0 ? $header['customersupportnumber'] : '+91 724 724 7070'}}</a></strong></li>
+
+                                <li>
+
+                                    <a class="language-dropdown-active" id="google_translate_element" href="#">English <i class="fi-rs-angle-small-down"></i></a>
+
+                                    
+                                </li>
+
+                                
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="header-middle header-middle-ptb-1">
+
+            <div class="container">
+
+                <div class="header-wrap">
+
+                    <div class="logo logo-width-1">
+
+                        <a href="/"><img src="{{array_key_exists('logoimage', $header) && strlen($header['logoimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $header['logoimage']) : url('/images/staticImages/' . $header['logoimage'])) : url('/assets/imgs/logoSB.png')}}" alt="logo" /></a>
+
+                    </div>
+
+                    <div class="header-right">
+
+                        <div class="search-style-2">
+
+                            <form action="/shop">
+
+                                <select class="select-active" name="category">
+
+                                    <option value='0'>All Categories</option>
+
+                                    @foreach ($categories as $category)
+
+                                    <option value='{{ $category->id }}'>{{ $category->name }}</option>
+
+                                    @endforeach
+
+                                </select>
+
+                                <input type="text" name="searchquery" required placeholder="Search for items..." value="{{ old('searchquery') }}" />
+
+                            </form>
+
+                        </div>
+
+                        <div class="header-action-right">
+
+                            <div class="header-action-2">
+                                <div class="header-action-icon-2">
+                                    <a href="/notification" class="mini-cart-icon-wishlist">
+                                        <img class="svgInject" alt="Spice Bucket" src="/assets/imgs/theme/icons/bell.png" />
+                                        <span class="pro-count green">{{session('notificationCount')}}</span>
+                                    </a>
+                                    <!--<a href="/notification"><span class="lable">Notifications</span></a>-->
+                                </div>
+
+                                <div class="header-action-icon-2">
+
+                                    <a href="/wishlist" class="mini-cart-icon-wishlist">
+
+                                        <img class="svgInject" alt="Spice Bucket" src="/assets/imgs/theme/icons/icon-heart.svg" />
+
+                                        <span class="pro-count blue">0</span>
+
+                                    </a>
+
+                                    <!--<a href="/wishlist"><span class="lable">Wishlist</span></a>-->
+
+                                </div>
+
+                                <div class="header-action-icon-2">
+
+                                    <a class="mini-cart-icon" href="/cart">
+
+                                        <img alt="Spice Bucket" src="/assets/imgs/theme/icons/icon-cart.svg" />
+
+                                        <span class="pro-count blue">0</span>
+
+                                    </a>
+
+                                    <!--<a href="/cart"><span class="lable">Cart</span></a>-->
+
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 cart-dropdown-panel">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="header-action-icon-2">
+
+                                    <a href="javascript:void(0)">
+
+                                        <img class="svgInject" alt="Spice Bucket" src="/assets/imgs/theme/icons/icon-user.svg" />
+
+                                    </a>
+
+                                    @if (Session::get('customer-logged-in') == true)
+
+                                    <a href="javascript:void(0)"><span class="lable ml-0">{{Session::get('customer-loggedin-name')}}</span></a>
+
+                                    @else
+
+                                    <!--<a href="/login"><span class="lable ml-0">Account</span></a>-->
+
+                                    @endif
+
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+
+                                        <ul>
+
+                                            @if (Session::get('customer-logged-in') == true)
+
+                                            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+
+                                            <li><a class="dropdown-item"  onclick="return confirm('Are you sure you want to logout?')" href="/logout">Logout</a></li>
+
+                                            @else
+
+                                            <li><a class="dropdown-item" href="/login">Login</a></li>
+
+                                            @endif
+
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="header-bottom header-bottom-bg-color sticky-bar">
+
+            <div class="container">
+
+                <div class="header-wrap header-space-between position-relative">
+
+                    <div class="logo logo-width-1 d-block d-lg-none">
+
+                        <a href="/"><img src="/assets/imgs/logoSB.png" alt="logo" /></a>
+
+                    </div>
+
+                    <div class="header-nav d-none d-lg-flex">
+
+                        <div class="main-categori-wrap d-none d-lg-block">
+
+                            <a class="categories-button-active" href="#">
+
+                                <span class="fi-rs-apps"></span> <span class="et">Browse</span> All Categories
+
+                                <i class="fi-rs-angle-down"></i>
+
+                            </a>
+
+                            <div class="categories-dropdown-wrap categories-dropdown-active-large font-heading">
+
+                                <div class="d-flex categori-dropdown-inner">
+
+                                    <ul class="category-list">
+
+                                        @foreach ($headercategories as $headercategory)
+                                        <li class="onhover-category-list">
+                                            @php $imagearray=array('path_folder'=>'/images/products/','image'=> $headercategory['image'],'size'=>[100,100]); 
+                                             @endphp  
+                                             <a class="category-name" href="/offers?category={{ $headercategory['id'] }}"> <img src="{{ imageRender($imagearray)}}" alt="" />{{ $headercategory['name'] }}</a>
+                                         </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
+                            <nav>
+                                <ul>
+                                    <li>
+
+                                        @if(url()->current() == env('APP_URL'))
+
+                                        <a class="{{ $activePage == 'home' ? 'active' : '' }}">Home</a>
+
+                                        @else
+
+                                        <a class="{{ $activePage == 'home' ? 'active' : '' }}" href="/" >Home</a>
+
+                                        @endif
+
+                                    </li>
+
+                                    <li>
+
+                                        @if(url()->current() == env('APP_URL') . "/about-us")
+
+
+
+                                        <a class="{{ $activePage == 'about' ? 'active' : '' }}">About</a>
+
+                                        @else
+
+                                        <a class="{{ $activePage == 'about' ? 'active' : '' }}" href="/about-us" >About</a>
+
+                                        @endif
+
+                                    </li>
+
+                                    
+
+                                    <li class="position-static">
+
+                                        <a class="{{ $activePage == 'vendor' ? 'active' : '' }}" href="javascript:void(0)">Sellers</a>
+
+                                        <ul class="mega-menu">
+
+                                            <li class="sub-mega-menu sub-mega-menu-width-22">
+
+                                                <input type="text" id="search-brandname" placeholder="Type To Search" />
+
+                                                <ul id="brand-names" class="brand-names">
+
+                                                    @foreach($vendors as $vendor)
+
+                                                    @if($vendor->is_approved == 1)
+
+                                                        @if(url()->current() == env('APP_URL') . "/brand/$vendor->slug")
+                                                            <li><a href="#">{{$vendor->vendor_alias}}</a></li>
+                                                            @else
+                                                            <li><a href="/brand/{{$vendor->slug}}" target="_blank">{{is_null($vendor->vendor_alias) ? $vendor->store_name : $vendor->vendor_alias}}</a></li>
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+
+                                            </li>
+
+                                            <li class="sub-mega-menu sub-mega-menu-width-90">
+
+                                                <div class="tabs">
+
+                                                    <input type="radio" name="tabs" id="tabone" checked="checked">
+
+                                                    <label for="tabone">Popular Brands</label>
+
+                                                    <div class="tab">
+
+                                                        <ul class="brand-logos">
+
+                                                            @foreach($vendors as $vendor)
+                                                            @if($vendor->is_approved == 1 && $vendor->tab_category == 'popular')
+                                                            @if(url()->current() == env('APP_URL') . "/brand/$vendor->slug")
+                                                            <li><a><img src="{{ env('APP_ENV') == 'production' ? url('/public/images/vendors/' . $vendor->image) : url('/images/vendors/' . $vendor->image) }}" title="{{$vendor->store_name}} ( {{$vendor->store_alias}} )" width="150" height="150" /></a></li>
+                                                            @else
+                                                            <li><a href="/brand/{{$vendor->slug}}" target="_blank"><img src="{{ env('APP_ENV') == 'production' ? url('/public/images/vendors/' . $vendor->image) : url('/images/vendors/' . $vendor->image) }}" title="{{is_null($vendor->vendor_alias) ? $vendor->store_name : ($vendor->vendor_alias . '( ' . $vendor->store_name . ' )')}}" width="150" height="150" /></a></li>
+                                                            @endif
+                                                            @endif
+                                                            @endforeach
+
+                                                        </ul>
+
+                                                    </div>
+
+                                                    <input type="radio" name="tabs" id="tabtwo">
+
+                                                    <label for="tabtwo">Top Selling Brands</label>
+
+                                                    <div class="tab">
+
+                                                        <ul class="brand-logos">
+
+                                                            @foreach($vendors as $vendor)
+                                                            @if($vendor->is_approved == 1 && $vendor->tab_category == 'top_selling')
+                                                            @if(url()->current() == env('APP_URL') . "/brand/$vendor->slug")
+                                                            <li><a><img src="{{ env('APP_ENV') == 'production' ? url('/public/images/vendors/' . $vendor->image) : url('/images/vendors/' . $vendor->image) }}" title="{{is_null($vendor->vendor_alias) ? $vendor->store_name : ($vendor->vendor_alias . '( ' . $vendor->store_name . ' )')}}" width="150" height="150" /></a></li>
+                                                            @else
+                                                            <li><a href="/brand/{{$vendor->slug}}" target="_blank"><img src="{{ env('APP_ENV') == 'production' ? url('/public/images/vendors/' . $vendor->image) : url('/images/vendors/' . $vendor->image) }}" title="{{is_null($vendor->vendor_alias) ? $vendor->store_name : ($vendor->vendor_alias . '( ' . $vendor->store_name . ' )')}}" width="150" height="150" /></a></li>
+                                                            @endif
+                                                            @endif
+                                                            @endforeach
+
+                                                        </ul>
+
+                                                    </div>
+
+                                                    <input type="radio" name="tabs" id="tabthree">
+
+                                                    <label for="tabthree">Only At Spice Bucket</label>
+
+                                                    <div class="tab">
+
+                                                        <ul class="brand-logos">
+
+                                                        @foreach($vendors as $vendor)
+                                                            @if($vendor->is_approved == 1 && $vendor->tab_category == 'only_at_spicebucket')
+                                                                @if(url()->current() == env('APP_URL') . "/brand/$vendor->slug")
+                                                                <li><a><img src="{{ env('APP_ENV') == 'production' ? url('/public/images/vendors/' . $vendor->image) : url('/images/vendors/' . $vendor->image) }}" title="{{is_null($vendor->vendor_alias) ? $vendor->store_name : ($vendor->vendor_alias . '( ' . $vendor->store_name . ' )')}}" width="150" height="150" /></a></li>
+                                                            @else
+                                                                <li><a href="/brand/{{$vendor->slug}}" target="_blank"><img src="{{ env('APP_ENV') == 'production' ? url('/public/images/vendors/' . $vendor->image) : url('/images/vendors/' . $vendor->image) }}" title="{{is_null($vendor->vendor_alias) ? $vendor->store_name : ($vendor->vendor_alias . '( ' . $vendor->store_name . ' )')}}" width="150" height="150" /></a></li>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+
+                                                        </ul>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </li>
+
+                                    <li>
+
+                                        @if(url()->current() == env('APP_URL') . "/offers")
+
+                                        <a class="{{ $activePage == 'offers' ? 'active' : '' }}" href="#
+
+                                        ">Offers</a>
+
+                                        @else
+
+                                        <a class="{{ $activePage == 'offers' ? 'active' : '' }}" href="/offers
+
+                                        " target="_blank">Offers</a>
+
+                                        @endif
+
+                                    </li>
+
+                                   
+
+                                    <li>
+
+                                        @if(url()->current() == env('APP_URL') . "/contac-us")
+
+                                        <a class="{{ $activePage == 'contact' ? 'active' : '' }}" href="#" >Contact</a>
+
+                                        @else
+
+                                        <a class="{{ $activePage == 'contact' ? 'active' : '' }}" href="/contact-us">Contact</a>
+
+                                        @endif
+
+                                    </li>
+
+                                </ul>
+
+                            </nav>
+
+                        </div>
+
+                    </div>
+
+                    <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
+
+                        <nav>
+
+                            <ul>
+
+                                <li>
+
+                                   
+
+                                    <img class="download-app-iocn" src="/assets/imgs/icons8-down.gif"><a href="">Download App</a>
+
+                                    <ul class="sub-menu">
+
+                                        <li>
+
+                                            <p>Download Our App</p>
+
+                                        </li>
+
+                                        <li><a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt="" /></a></li>
+
+                                        <li><a href="#" class="hover-up"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt="" /></a></li>
+
+                                    </ul>
+
+                                </li>
+
+                                <li> <a href="/sellers/register" target="_blank">Become a Seller</a> </li>
+
+                            </ul>
+
+                        </nav>
+
+                    </div>
+
+                    <!--<div class="hotline d-none d-lg-flex">
+
+                        <img class="headset-home-nav" src="/assets/imgs/icons8-headset.gif" alt="hotline" />
+
+                        <p><a href="tel:{{array_key_exists('supportnumber', $header) && strlen($header['supportnumber']) > 0 ? trim($header['supportnumber']) : '+917247247070'}}">{{array_key_exists('supportnumber', $header) && strlen($header['supportnumber']) > 0 ? $header['supportnumber'] : '+91 724 724 7070'}}</a><span>24/7 Support Center</span></p>
+
+                    </div>-->
+
+                    <div class="header-action-icon-2 d-block d-lg-none">
+
+                        <div class="burger-icon burger-icon-white">
+
+                            <span class="burger-icon-top"></span>
+
+                            <span class="burger-icon-mid"></span>
+
+                            <span class="burger-icon-bottom"></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="header-action-right d-block d-lg-none">
+
+                        <div class="header-action-2">
+
+                            
+
+                            <div class="header-action-icon-2">
+
+                                <a class="mini-cart-icon" href="/cart">
+
+                                    <img alt="Spice Bucket" src="/assets/imgs/theme/icons/icon-cart.svg" />
+
+                                    <span class="pro-count white">0</span>
+
+                                </a>
+
+                            </div>
+
+                            <div class="header-action-icon-2">
+
+                                <a href="javascript:void(0)">
+
+                                    <img class="svgInject" alt="Spice Bucket" src="/assets/imgs/theme/icons/icon-user.svg" />
+
+                                </a>
+
+                                @if (Session::get('customer-logged-in') == true)
+
+                                <a href="javascript:void(0)"><span class="lable ml-0">My Account</span></a>
+
+                                @else
+
+                                <a href="#"><span class="lable ml-0">Account</span></a>
+
+                                @endif
+
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+
+                                    <ul>
+
+                                        <!--<li><a class="dropdown-item" href="#">Need Help?</a></li>
+
+                                        <li><a class="dropdown-item" href="#">Authenticity</a></li>
+
+                                        <li><a class="dropdown-item" href="#">Responsible Disclosure</a></li>
+
+                                        <li><a class="dropdown-item" href="#">Chat Now</a></li>-->
+
+                                        @if (Session::get('customer-logged-in') == true)
+
+                                        <li>
+
+                                            @if(url()->current() == 'env(APP_URL)' . "/dashboard")
+
+                                            <a class="dropdown-item" href="#">Dashboard</a>
+
+                                            @else
+
+                                            <a class="dropdown-item" href="/dashboard" target="_blank">Dashboard</a>
+
+                                            @endif
+
+
+
+                                        </li>
+
+                                        <li>
+
+                                            <a class="dropdown-item" onclick="return confirm('Are you sure you want to logout?')" href="/logout">Logout</a>
+
+                                        </li>
+
+                                        @else
+
+                                        <li>
+
+                                            @if(url()->current() == 'env(APP_URL)' . "/login")
+
+                                            <a class="dropdown-item" href="#">Login</a>
+
+                                            @else
+
+                                            <a class="dropdown-item" href="/login" target="_blank">Login</a>
+
+                                            @endif
+
+                                        </li>
+
+                                        @endif
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container-fluid desktop-view">
+
+                <div class="mobile-search search-style-3 mobile-header-border">
+
+                    <form action="/shop">
+
+                        <input type="text" name="searchquery" required placeholder="Search for items…" value="{{ old('searchquery') }}" />
+
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="mobile-header-active mobile-header-wrapper-style">
+
+        <div class="mobile-header-wrapper-inner">
+
+            <div class="mobile-header-top">
+
+                <div class="mobile-header-logo">
+
+                    <a href="/"><img src="/assets/imgs/logoSB.png" alt="logo" /></a>
+
+                </div>
+
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+
+                    <button class="close-style search-close">
+
+                        <i class="icon-top"></i>
+
+                        <i class="icon-bottom"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="mobile-header-content-area">
+
+                <div class="mobile-menu-wrap mobile-header-border">
+
+                    <!-- mobile menu start -->
+
+                    <div class="accordion-tabs">
+                        <!-- Toggle radio buttons -->
+                        <input type="radio" name="tabs-activate" id="tab-one" class="activate-tab" />
+                        <input type="radio" name="tabs-activate" id="tab-two" class="activate-tab" />
+
+                        <div class="tabs">
+                            <!-- Visible tabs -->
+                            <label for="tab-one" id="tab-one-label" class="tab">Categories</label>
+                            <label for="tab-two" id="tab-two-label" class="tab">Sellers</label>
+                            <!-- Tab content -->
+
+                            <div id="tab-one-tab-content" class="tab-content">
+                                <div id="mobileSLider-category">
+                                    <ul class="menu">
+                                        @foreach ($headercategories as $headercategory)
+                                        <li class="list"><a href="/offers?category={{ $headercategory['id'] }}">{{ $headercategory['name'] }}</a></li>@endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="tab-two-tab-content" class="tab-content">
+                                <input type="text" id="mobile-search-brandname" placeholder="Type To Search" />
+                                <ul id="mobile-brand-names" class="mobile-brand-names">
+                                    @foreach($vendors as $vendor)
+                                    @if($vendor->is_approved == 1)
+                                    <li><a href="/brand/{{$vendor->slug}}">{{$vendor->vendor_alias}}</a></li>
+                                    @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- mobile menu end -->
+
+                </div>
+            </div>
+            <div class="mobile-header-content-area second_part">
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu font-heading">
+                            <!--<li class="menu-item-has-children">
+                                <a href="#">Wallet</a>
+                            </li>-->
+
+
+
+                            <li class="menu-item-has-children">
+                                <span class="left-menu-icon"><img src="https://spicebucket.com/assets/imgs/theme/icons/dashboard.svg" alt="user"></span>
+                                <a href="/dashboard">User Dashboard</a>
+
+                            </li>
+
+                            
+
+                            <li class="menu-item-has-children">
+                                <span class="left-menu-icon"><img src="https://spicebucket.com/assets/imgs/theme/icons/icon-heart.svg" alt="Wishlist"></span>
+                                <a href="/wishlist">Wishlist</a>
+
+                            </li>
+
+                            <li class="menu-item-has-children">
+                            <span class="left-menu-icon"><img src="https://spicebucket.com/assets/imgs/theme/icons/customer-support.svg" alt="Wishlist"></span>
+
+                                <a href="Tel:+917247247070">Customer Support</a>
+
+                            </li>
+
+                            <li class="menu-item-has-children">
+                                <span class="left-menu-icon"><img src="https://spicebucket.com/assets/imgs/theme/icons/info.png" alt="About us"></span>
+                                <a href="/about-us">About Us</a>
+
+                            </li>
+                            <li class="menu-item-has-children">
+                                <span class="left-menu-icon"><img src="https://spicebucket.com/assets/imgs/theme/icons/insurance.png" alt="About us"></span>
+                                <a href="/privacy-policy">Privacy Policy</a>
+
+                            </li>
+
+                            <li class="menu-item-has-children">
+                                <span class="left-menu-icon"><img src="https://spicebucket.com/assets/imgs/theme/icons/exchange.png" alt="About us"></span>
+                                <a href="/payment-policy">Return Policy</a>
+
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
+                    <!-- mobile menu end -->
+
+                </div>
+
+                
+
+                <div class="mobile-social-icon mb-50 mt-50">
+
+                    <h6 class="mb-15">Follow Us</h6>
+
+<a class="facebook" href="{{array_key_exists('fburl', $footer) && strlen($footer['fburl']) > 0 ? $footer['fburl'] : '#'}}"><img src="{{array_key_exists('fbimage', $footer) && strlen($footer['fbimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['fbimage']) : url('/images/staticImages/' . $footer['fbimage'])) : url('/assets/imgs/theme/icons/icon-facebook-white.svg')}}" alt="" /></a>
+
+
+<a class="instagram" href="{{array_key_exists('instagramurl', $footer) && strlen($footer['instagramurl']) > 0 ? $footer['instagramurl'] : '#'}}"><img src="{{array_key_exists('instagramimage', $footer) && strlen($footer['instagramimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['instagramimage']) : url('/images/staticImages/' . $footer['instagramimage'])) : url('/assets/imgs/theme/icons/icon-instagram-white.svg')}}" alt="" /></a>
+
+<a class="linkedin" href="{{array_key_exists('linkedinurl', $footer) && strlen($footer['linkedinurl']) > 0 ? $footer['linkedinurl'] : '#'}}"><img src="{{array_key_exists('linkedinimage', $footer) && strlen($footer['linkedinimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['linkedinimage']) : url('/images/staticImages/' . $footer['linkedinimage'])) : url('/assets/imgs/theme/icons/icon-instagram-white.svg')}}" alt="" /></a>
+
+<a class="twitter" href="{{array_key_exists('twitterurl', $footer) && strlen($footer['twitterurl']) > 0 ? $footer['twitterurl'] : '#'}}"><img src="{{array_key_exists('twitterimage', $footer) && strlen($footer['twitterimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['twitterimage']) : url('/images/staticImages/' . $footer['twitterimage'])) : url('/assets/imgs/theme/icons/icon-twitter-white.svg')}}" alt="" /></a>
+
+<a class="pintrest" href="{{array_key_exists('pintresturl', $footer) && strlen($footer['pintresturl']) > 0 ? $footer['pintresturl'] : '#'}}"><img src="{{array_key_exists('pintrestimage', $footer) && strlen($footer['pintrestimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['pintrestimage']) : url('/images/staticImages/' . $footer['pintrestimage'])) : url('/assets/imgs/theme/icons/icon-pinterest-white.svg')}}" alt="" /></a>
+
+<a class="youtube" href="{{array_key_exists('youtubeurl', $footer) && strlen($footer['youtubeurl']) > 0 ? $footer['youtubeurl'] : '#'}}"><img src="{{array_key_exists('youtubeimage', $footer) && strlen($footer['youtubeimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['youtubeimage']) : url('/images/staticImages/' . $footer['youtubeimage'])) : url('/assets/imgs/theme/icons/icon-youtube-white.svg')}}" alt="" /></a>
+                </div>
+
+                <div class="site-copyright">
+                Copyright 2022 © Spice Bucket. All rights reserved.</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--End header-->
+
+    <!-- @if(Session::has('message'))
+    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+    @endif -->
+
+    @yield('content')
+
+    
+
+    <footer class="main">
+
+        <section class="newsletter mb-15 wow animate__animated animate__fadeIn">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="position-relative newsletter-inner">
+
+                            <div class="newsletter-content">
+
+                             
+<h2 class="mb-20">Stay Home & Get Your Daily Need <br />
+
+                                    Products From Our Online Store 
+									</h2>
+                               
+								
+								<p class="mb-45">Start Your Daily Shopping with Spice Bucket</p>
+
+                                <!--<form class="form-subcriber d-flex">
+
+                                    <input type="email" placeholder="Your email address" />
+
+                                    <button class="btn" type="submit">Subscribe</button>
+
+                                </form>-->
+                                <div class="grab-latest-offer">
+                                    <a href="https://spicebucket.com/offers">Grab latest offers</a>
+                                </div>
+                            </div>
+
+                            <img src="{{array_key_exists('subscribeimage', $footer) && strlen($footer['subscribeimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['subscribeimage']) : url('/images/staticImages/' . $footer['subscribeimage'])) : url("/assets/imgs/banner/banner-9.png")}}" alt="newsletter" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="featured section-padding">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-lg-1-5 col-md-4 col-6 col-sm-6 mb-md-4 mb-xl-0">
+
+                        <div class="banner-left-icon banner-left-icon1 d-flex align-items-center wow animate__animated animate__fadeInUp" data-wow-delay="0">
+
+                            <div class="banner-icon">
+
+                                <img src="/assets/imgs/icons/tap.png" alt="" />
+
+                            </div>
+
+                            <div class="banner-text">
+
+                                <h3 class="icon-box-title">{{array_key_exists('title1', $footer) && strlen($footer['title1']) > 0 ? $footer['title1'] : 'Choose Your Favourite Brand'}}</h3>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-1-5 col-md-4 col-6 col-sm-6">
+
+                        <div class="banner-left-icon banner-left-icon2 d-flex align-items-center wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+
+                            <div class="banner-icon">
+
+                                <img src="/assets/imgs/icons/quality-assurance.png" alt="" />
+
+                            </div>
+
+                            <div class="banner-text">
+
+                                <h3 class="icon-box-title">{{array_key_exists('title2', $footer) && strlen($footer['title2']) > 0 ? $footer['title2'] : 'Assured Quality'}}</h3>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-1-5 col-md-4 col-6 col-sm-6">
+
+                        <div class="banner-left-icon banner-left-icon1 d-flex align-items-center wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
+
+                            <div class="banner-icon">
+
+                                <img src="/assets/imgs/icons/offer.png" alt="" />
+
+                            </div>
+
+                            <div class="banner-text">
+
+                                <h3 class="icon-box-title">{{array_key_exists('title3', $footer) && strlen($footer['title3']) > 0 ? $footer['title3'] : 'Maximum Discount'}}</h3>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-1-5 col-md-4 col-6 col-sm-6">
+
+                        <div class="banner-left-icon banner-left-icon2 d-flex align-items-center wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
+
+                            <div class="banner-icon">
+
+                                <img src="/assets/imgs/icons/fast-delivery.png" alt="" />
+
+                            </div>
+
+                            <div class="banner-text">
+
+                                <h3 class="icon-box-title">{{array_key_exists('title4', $footer) && strlen($footer['title4']) > 0 ? $footer['title4'] : 'Fast Delivery'}}</h3>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+
+                        <div class="banner-left-icon banner-left-icon1 d-flex align-items-center wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
+
+                            <div class="banner-icon">
+
+                                <img src="/assets/imgs/icons/returns.png" alt="" />
+
+                            </div>
+
+                            <div class="banner-text">
+
+                                <h3 class="icon-box-title">{{array_key_exists('title5', $footer) && strlen($footer['title5']) > 0 ? $footer['title5'] : 'Easy returns'}}</h3>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="section-padding footer-mid mobile-view">
+
+            <div class="container pt-0 pb-5">
+
+                <div class="row">
+
+                    
+
+                    <div class ="footer-link-widget col-md-2 coumn-2 col wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
+
+                        <h4 class="widget-title">{{array_key_exists('footertitle1', $footer) && strlen($footer['footertitle1']) > 0 ? $footer['footertitle1'] : 'Company'}}</h4>
+
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+
+                            @php $count=array_key_exists('firstsubtitleurl', $footer) ? count($footer['firstsubtitleurl']) : 0; @endphp
+
+                            @for($i=0; $i<($count); $i++) <li><a href="{{array_key_exists('firstsubtitleurl', $footer) && strlen($footer['firstsubtitleurl'][$i]) > 0 ? $footer['firstsubtitleurl'][$i] : '#'}}">{{array_key_exists('firstsubtitle', $footer) && strlen($footer['firstsubtitle'][$i]) > 0 ? $footer['firstsubtitle'][$i] : ''}}</a></li>
+
+                                @endfor
+
+                        </ul>
+
+                    </div>
+
+                    <div class="footer-link-widget col-md-2 coumn-3 wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
+
+                        <h4 class="widget-title">{{array_key_exists('footertitle2', $footer) && strlen($footer['footertitle2']) > 0 ? $footer['footertitle2'] : 'Account'}}</h4>
+
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+
+                            @php $count=array_key_exists('secondsubtitleurl', $footer) ? count($footer['secondsubtitleurl']) : 0; @endphp
+
+                            @for($i=0; $i<($count); $i++) <li><a href="{{array_key_exists('secondsubtitleurl', $footer) && strlen($footer['secondsubtitleurl'][$i]) > 0 ? $footer['secondsubtitleurl'][$i] : '#'}}">{{array_key_exists('secondsubtitle', $footer) && strlen($footer['secondsubtitle'][$i]) > 0 ? $footer['secondsubtitle'][$i] : ''}}</a></li>
+
+                                @endfor
+
+                        </ul>
+
+                    </div>
+
+                    <div class="footer-link-widget col-md-2 coumn-4 wow animate__animated animate__fadeInUp" data-wow-delay=".3s">
+
+                        <h4 class="widget-title">{{array_key_exists('footertitle3', $footer) && strlen($footer['footertitle3']) > 0 ? $footer['footertitle3'] : 'Corporate Services'}}</h4>
+
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+
+                            @php $count=array_key_exists('thirdsubtitleurl', $footer) ? count($footer['thirdsubtitleurl']) : 0; @endphp
+
+                            @for($i=0; $i<($count); $i++) <li><a href="{{array_key_exists('thirdsubtitleurl', $footer) && strlen($footer['thirdsubtitleurl'][$i]) > 0 ? $footer['thirdsubtitleurl'][$i] : '#'}}">{{array_key_exists('thirdsubtitle', $footer) && strlen($footer['thirdsubtitle'][$i]) > 0 ? $footer['thirdsubtitle'][$i] : ''}}</a></li>
+
+                                @endfor
+
+                        </ul>
+
+                    </div>
+
+                    <div class="footer-link-widget col-md-2 coumn-5 col wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
+
+                        <h4 class="widget-title">{{array_key_exists('footertitle4', $footer) && strlen($footer['footertitle4']) > 0 ? $footer['footertitle4'] : 'Popular'}}</h4>
+
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+
+                            @php $count=array_key_exists('fourthsubtitle', $footer) ? count($footer['fourthsubtitle']) : 0; @endphp
+
+                            @for($i=0; $i<($count); $i++) <li><a href="{{array_key_exists('fourthsubtitleurl', $footer) && strlen($footer['fourthsubtitleurl'][$i]) > 0 ? $footer['fourthsubtitleurl'][$i] : '#'}}">{{array_key_exists('fourthsubtitle', $footer) && strlen($footer['fourthsubtitle'][$i]) > 0 ? $footer['fourthsubtitle'][$i] : ''}}</a></li>
+
+                                @endfor
+
+                        </ul>
+                    </div>
+
+                    <div class="footer-link-widget col-md-2 coumn-5 col wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
+
+                        <h4 class="widget-title">New at Spice Bucket</h4>
+
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+
+                            
+                             <li><a href="https://spicebucket.com/product-categories/seasonings-and-condiments">Seasonings & Condiments</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/mouth-freshener">Mouth Freshener</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/gifting-food-items">Gifting Food Items</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/poojan-hawan-samagries">Poojan/Hawan Samagries</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/gourmet-&-world-food">Gourmet & World Food</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/organic-foods">Organic Foods</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/premix-&-ingredients">Premix & Ingredients</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/sweets">Sweets</a></li>
+
+                                
+                        </ul>
+                        
+                        
+
+                    </div>
+                    <div class="footer-link-widget col-md-2 coumn-5 col wow animate__animated animate__fadeInUp" data-wow-delay=".4s">
+
+                        <h4 class="widget-title">Latest Categories</h4>
+
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+
+                            
+                             <li><a href="https://spicebucket.com/product-categories/seasonings-and-condiments">Seasonings & Condiments</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/mouth-freshener">Mouth Freshener</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/gifting-food-items">Gifting Food Items</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/poojan-hawan-samagries">Poojan/Hawan Samagries</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/gourmet-&-world-food">Gourmet & World Food</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/organic-foods">Organic Foods</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/premix-&-ingredients">Premix & Ingredients</a></li>
+
+                             <li><a href="https://spicebucket.com/product-categories/sweets">Sweets</a></li>
+
+                                
+                        </ul>
+                        
+                        
+
+                    </div>
+
+                    
+
+                </div>
+
+                    
+
+                </div>
+
+
+<hr>
+				<div class="row">
+					
+
+                        <div class="col-md-3">
+							<div class="mFooter mFooter1">
+								<h4 class="widget-title">Download our Application</h4>
+							</div>
+                            <div class="mFooter mFooter2">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="fAppImage fAImage1">
+                                        <a href="#" class="hover-up"><img src="/assets/imgs/theme/google-play.jpg" alt="" /></a>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="fAppImage fAImage2">
+                                            <a href="#" class="hover-up mb-lg-0"><img class="active" src="/assets/imgs/theme/app-store.jpg" alt="" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                              
+                        </div>
+						</div>
+
+                        <div class="col-md-3">
+                            <div class="logo"><a href="/" class=""><img style="width:120px;" src="{{array_key_exists('googlereviewimage', $footer) && strlen($footer['googlereviewimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['googlereviewimage']) : url('/images/staticImages/' . $footer['googlereviewimage'])) : url('/assets/imgs/slider/pngegg.png')}}" alt="Google review" /></a>
+
+
+
+                            </div>
+                        </div>
+						
+						
+					
+                        <div class="col-md-3">
+							<div class="mFooter mFooter4">
+							<h6 class="mb-15">Secured Payment Gateways</h6>
+							</div>
+                            <div class="mFooter mFooter5">
+                            <img class="" src="/assets/imgs/payment-strip.png" alt="" />
+                            </div>
+						</div>
+
+                        <div class="col-md-3">
+                            <div class="mobile-social-icon">
+
+                                    <h6>Follow Us</h6></br>
+
+                                    <div class="mobile-social-icon-desk">
+                                        <a class="facebook" href="{{array_key_exists('fburl', $footer) && strlen($footer['fburl']) > 0 ? $footer['fburl'] : '#'}}"><img src="{{array_key_exists('fbimage', $footer) && strlen($footer['fbimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['fbimage']) : url('/images/staticImages/' . $footer['fbimage'])) : url('/assets/imgs/theme/icons/icon-facebook-white.svg')}}" alt="" /></a>
+
+
+                                    <a class="instagram" href="{{array_key_exists('instagramurl', $footer) && strlen($footer['instagramurl']) > 0 ? $footer['instagramurl'] : '#'}}"><img src="{{array_key_exists('instagramimage', $footer) && strlen($footer['instagramimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['instagramimage']) : url('/images/staticImages/' . $footer['instagramimage'])) : url('/assets/imgs/theme/icons/icon-instagram-white.svg')}}" alt="" /></a>
+
+                                    <a class="linkedin" href="{{array_key_exists('linkedinurl', $footer) && strlen($footer['linkedinurl']) > 0 ? $footer['linkedinurl'] : '#'}}"><img src="{{array_key_exists('linkedinimage', $footer) && strlen($footer['linkedinimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['linkedinimage']) : url('/images/staticImages/' . $footer['linkedinimage'])) : url('/assets/imgs/theme/icons/icon-instagram-white.svg')}}" alt="" /></a>
+
+
+                                    <a class="twitter" href="{{array_key_exists('twitterurl', $footer) && strlen($footer['twitterurl']) > 0 ? $footer['twitterurl'] : '#'}}"><img src="{{array_key_exists('twitterimage', $footer) && strlen($footer['twitterimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['twitterimage']) : url('/images/staticImages/' . $footer['twitterimage'])) : url('/assets/imgs/theme/icons/icon-twitter-white.svg')}}" alt="" /></a>
+
+                                    <a class="pintrest" href="{{array_key_exists('pintresturl', $footer) && strlen($footer['pintresturl']) > 0 ? $footer['pintresturl'] : '#'}}"><img src="{{array_key_exists('pintrestimage', $footer) && strlen($footer['pintrestimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['pintrestimage']) : url('/images/staticImages/' . $footer['pintrestimage'])) : url('/assets/imgs/theme/icons/icon-pinterest-white.svg')}}" alt="" /></a>
+
+                                    <a class="youtube" href="{{array_key_exists('youtubeurl', $footer) && strlen($footer['youtubeurl']) > 0 ? $footer['youtubeurl'] : '#'}}"><img src="{{array_key_exists('youtubeimage', $footer) && strlen($footer['youtubeimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['youtubeimage']) : url('/images/staticImages/' . $footer['youtubeimage'])) : url('/assets/imgs/theme/icons/icon-youtube-white.svg')}}" alt="" /></a>
+                                    </div>    
+                                    
+                                </div>
+                        </div>
+
+                    
+
+                       
+
+
+
+                    
 </div>
 
-</div>
-</div>
-</div>
-<!-- Footer navigation panel for responsive display end -->
+        </section>
 
-<!-- Cart Floating Button -->
-<div class="ec-cart-float">
-<a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
-<div class="header-icon"><img src="{{asset('frontend/images/icons/cart.svg')}}" class="svg_img header_svg" alt="" /></div>
-<span class="ec-cart-count cart-count-lable">{{Session::get('totalquantity')}}</span>
-</a>
-</div>
-<!-- Cart Floating Button end -->
 
-<!-- Vendor JS -->
-<script src="{{asset('frontend/js/vendor/jquery-3.5.1.min.js')}}"></script>
-<script src="{{asset('frontend/js/vendor/popper.min.js')}}"></script>
-<script src="{{asset('frontend/js/vendor/bootstrap.min.js')}}"></script>
-<script src="{{asset('frontend/js/vendor/jquery-migrate-3.3.0.min.js')}}"></script>
-<script src="{{asset('frontend/js/vendor/modernizr-3.11.2.min.js')}}"></script>
 
-<!--Plugins JS-->
-<script src="{{asset('frontend/js/plugins/swiper-bundle.min.js')}}"></script>
-<script src="{{asset('frontend/js/plugins/countdownTimer.min.js')}}"></script>
-<script src="{{asset('frontend/js/plugins/scrollup.js')}}"></script>
-<script src="{{asset('frontend/js/plugins/jquery.zoom.min.js')}}"></script>
-<script src="{{asset('frontend/js/plugins/slick.min.js')}}"></script>
-<script src="{{asset('frontend/js/plugins/infiniteslidev2.js')}}"></script>
-<script src="{{asset('frontend/js/vendor/jquery.magnific-popup.min.js')}}"></script>
-<script src="{{asset('frontend/js/plugins/jquery.sticky-sidebar.js')}}"></script>
-<!-- Main Js -->
-<script>
-var cart = @php echo json_encode(array_keys(session('customer-cart'))); @endphp;
+
+        <section class="section-padding footer-mid desktop-view">
+
+            <div class="container pt-15 pb-20">
+
+                <div class="row">
+
+                    <div class="col col coumn-1">
+
+                        <div class="widget-about font-md mb-md-3 mb-lg-3 mb-xl-0 wow animate__animated animate__fadeInUp" data-wow-delay="0">
+
+
+
+                            <ul class="contact-infor">
+
+                                <div class="mobile-social-icon">
+
+                                    <h6>Follow Us</h6>
+                                    <a class="facebook" href="{{array_key_exists('fburl', $footer) && strlen($footer['fburl']) > 0 ? $footer['fburl'] : '#'}}"><img src="{{array_key_exists('fbimage', $footer) && strlen($footer['fbimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['fbimage']) : url('/images/staticImages/' . $footer['fbimage'])) : url('/assets/imgs/theme/icons/icon-facebook-white.svg')}}" alt="" /></a>
+
+                                    <a class="instagram" href="{{array_key_exists('instagramurl', $footer) && strlen($footer['instagramurl']) > 0 ? $footer['instagramurl'] : '#'}}"><img src="{{array_key_exists('instagramimage', $footer) && strlen($footer['instagramimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['instagramimage']) : url('/images/staticImages/' . $footer['instagramimage'])) : url('/assets/imgs/theme/icons/icon-instagram-white.svg')}}" alt="" /></a>
+
+                                    <a class="linkedin" href="{{array_key_exists('linkedinurl', $footer) && strlen($footer['linkedinurl']) > 0 ? $footer['linkedinurl'] : '#'}}"><img src="{{array_key_exists('linkedinimage', $footer) && strlen($footer['linkedinimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['linkedinimage']) : url('/images/staticImages/' . $footer['linkedinimage'])) : url('/assets/imgs/theme/icons/icon-instagram-white.svg')}}" alt="" /></a>
+
+                                    <a class="twitter" href="{{array_key_exists('twitterurl', $footer) && strlen($footer['twitterurl']) > 0 ? $footer['twitterurl'] : '#'}}"><img src="{{array_key_exists('twitterimage', $footer) && strlen($footer['twitterimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['twitterimage']) : url('/images/staticImages/' . $footer['twitterimage'])) : url('/assets/imgs/theme/icons/icon-twitter-white.svg')}}" alt="" /></a>
+
+                                    <a class="pintrest" href="{{array_key_exists('pintresturl', $footer) && strlen($footer['pintresturl']) > 0 ? $footer['pintresturl'] : '#'}}"><img src="{{array_key_exists('pintrestimage', $footer) && strlen($footer['pintrestimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['pintrestimage']) : url('/images/staticImages/' . $footer['pintrestimage'])) : url('/assets/imgs/theme/icons/icon-pinterest-white.svg')}}" alt="" /></a>
+
+                                    <a class="youtube" href="{{array_key_exists('youtubeurl', $footer) && strlen($footer['youtubeurl']) > 0 ? $footer['youtubeurl'] : '#'}}"><img src="{{array_key_exists('youtubeimage', $footer) && strlen($footer['youtubeimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['youtubeimage']) : url('/images/staticImages/' . $footer['youtubeimage'])) : url('/assets/imgs/theme/icons/icon-youtube-white.svg')}}" alt="" /></a>
+                                </div>
+
+                                <div>
+
+
+
+                                </div>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <hr>
+
+
+
+
+
+                    <div class="footer-link-widget coumn-6 col widget-install-app wow animate__animated animate__fadeInUp" data-wow-delay=".5s">
+
+                        <h4 class="widget-title">Download our Application</h4>
+
+
+
+                        <div class="download-app">
+
+                            <a href="{{array_key_exists('playstoreimageurl', $footer) && strlen($footer['playstoreimageurl']) > 0 ? $footer['playstoreimageurl'] : '#'}}" class="hover-up mb-sm-2"><img src="{{array_key_exists('playstoreimage', $footer) && strlen($footer['playstoreimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['playstoreimage']) : url('/images/staticImages/' . $footer['playstoreimage'])) : url('/assets/imgs/theme/google-play.jpg')}}" alt="" /></a>
+
+                            <a href="{{array_key_exists('appstoreimageurl', $footer) && strlen($footer['appstoreimageurl']) > 0 ? $footer['appstoreimageurl'] : '#'}}" class="hover-up mb-sm-2 mb-lg-0"><img class="active" src="{{array_key_exists('appstoreimage', $footer) && strlen($footer['appstoreimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['appstoreimage']) : url('/images/staticImages/' . $footer['appstoreimage'])) : url('/assets/imgs/theme/app-store.jpg')}}" alt="" /></a>
+
+                        </div>
+
+                        <hr>
+
+                        <p class="mb-20">Secured Payment Gateways</p>
+
+                        <img class="" src="{{array_key_exists('securepaymentimage', $footer) && strlen($footer['securepaymentimage']) > 0 ? (env('APP_ENV') == "production" ? url('/public/images/staticImages/' . $footer['securepaymentimage']) : url('/images/staticImages/' . $footer['securepaymentimage'])) : url('/assets/imgs/payment-strip.png')}}" alt="" />
+
+                       
+
+
+
+                    </div>
+
+                </div>
+
+        </section>
+			
+		<section class="section1">
+			<div class="whatsup-sticky">
+				<a href="https://wa.me/917247247070?text=Hello%2C+I+want+to+explore+more.">
+
+                            <img src="/assets/imgs/whatsapp.png" alt="spicebucket" /></a>
+			</div>	
+		</section>	
+
+        <div class="container pb-5 wow animate__animated animate__fadeInUp" data-wow-delay="0">
+
+            <div class="row align-items-center">
+
+                <div class="col-12 mb-10">
+
+                    <div class="footer-bottom"></div>
+
+                </div>
+
+                <div class="col-xl-4 col-lg-6 col-md-6 footer-text-copywrite-wrapper">
+
+                    
+					<p class="footer-text-copywrite">Copyright 2022 © Spice Bucket. All rights reserved.</p>
+
+                </div>
+
+                <div class="col-xl-8 col-lg-6 text-center d-none d-xl-block">
+
+                    <!--<div class="hotline d-lg-inline-flex ml-25">
+
+                        <img src="/assets/imgs/icons8-phonelink-ring.gif" alt="spicebucket" />
+
+                        <p><a href="tel:{{array_key_exists('supportnumber', $footer) && strlen($footer['supportnumber']) > 0 ? $footer['supportnumber'] : '+911204268011'}}">{{array_key_exists('supportnumber', $footer) && strlen($footer['supportnumber']) > 0 ? $footer['supportnumber'] : '+911204268011'}}</a><span>24/7 Support Center</span></p>
+
+                    </div>-->
+
+                    <div class="hotline d-lg-inline-flex ml-25">
+
+                        <a href="https://wa.me/917247247070?text=Hello%2C+I+want+to+explore+more.">
+
+                            <img src="/assets/imgs/icons8-whatsapp.gif" alt="spicebucket" /></a>
+
+                        <p><a href="https://wa.me/{{array_key_exists('whatsappnumber', $footer) && strlen($footer['whatsappnumber']) > 0 ? $footer['whatsappnumber'] : '+917247247070'}}?text=Hello%2C+I+want+to+explore+more.">{{array_key_exists('whatsappnumber', $footer) && strlen($footer['whatsappnumber']) > 0 ? $footer['whatsappnumber'] : '+91 7247247070'}}</a><span>24/7 Support Center</span></p>
+
+                    </div>
+
+                    <div class="hotline d-lg-inline-flex ml-25">
+
+                        <img src="/assets/imgs/icons8-secured-letter.gif" alt="spicebucket" />
+
+                        <p><a href="mailto:{{array_key_exists('email', $footer) && strlen($footer['email']) > 0 ? $footer['email'] : 'info@spicebucket.com'}}">{{array_key_exists('email', $footer) && strlen($footer['email']) > 0 ? $footer['email'] : 'info@spicebucket.com'}}</a></p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xl-4 col-lg-6 col-md-6 text-end d-none d-md-block"></div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- Preloader Start 
+
+    <div id="preloader-active">
+
+        <div class="preloader d-flex align-items-center justify-content-center">
+
+            <div class="preloader-inner position-relative">
+
+                <div class="text-center">
+
+                    <img src="http://spicebucket.com/assets/imgs/final_gif_sb.svg" alt="" / style="width: 100px;">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>-->
+
+
+
+    <!-- Quick view -->
+
+    <div class="modal fade custom-modal" id="quick-view-modal" tabindex="-1" aria-labelledby="quick-view-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                <div class="modal-body">
+
+                    <!-- <div class="half-circle-spinner loading-spinner">
+
+                        <img src="http://spicebucket.com/assets/imgs/final_gif_sb.svg" alt="" / style="width: 100px;">
+
+                    </div> -->
+
+                    <div class="quick-view-content"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Track your order -->
+
+    <div class="modal fade custom-modal" id="track-your-order-modal" tabindex="-1" aria-labelledby="track-your-order-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Track Your Order</h5>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+                <div class="modal-body">
+					<form class="form-horizontal" id="track-your-order-frm" name="track-your-order-frm" method="post" action="javascript:void()">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Order ID <span class="required"></span></label>
+									<input class="form-control" id="track-your-order-orderid" name="track-your-order-orderid" type="text" placeholder="Enter Order ID" />
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Seller <span class="required"></span></label>
+									<select class="form-control" id="track-your-order-sellerid" name="track-your-order-vendorid">
+										<option value="">Select Seller</option>
+									</select>
+								</div>
+							</div>
+							<div id="track-your-order-status"></div>
+						</div>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- After Login popup for customer info -->
+
+    <div class="modal fade custom-modal after-login-modal" data-backdrop="static" data-keyboard="false" id="customerInfo-modal" tabindex="-1" aria-labelledby="customerInfo-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                   <!--  <div class="half-circle-spinner loading-spinner">
+
+                        <img src="http://spicebucket.com/assets/imgs/final_gif_sb.svg" alt="" / style="width: 100px;">
+
+                    </div> -->
+
+                    <div>
+
+                        <form method="post" name="enq">
+
+                            <div class="row">
+
+                                <h3>Personal Information</h3>
+
+                                @php $name = explode(" ", Session::get('customer-loggedin-name')); @endphp
+
+                                <div class="form-group col-md-6">
+
+                                    <label>First Name <span class="required">*</span></label>
+
+                                    <input required="" class="form-control" id="first_name" name="first_name" type="text" placeholder="Enter First Name" />
+
+                                </div>
+
+                                <div class="form-group col-md-6">
+
+                                    <label>Last Name <span class="required">*</span></label>
+
+                                    <input required="" value="{{end($name)}}" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" />
+
+                                </div>
+
+                                <div class="form-group col-md-6">
+
+                                    <label>Email Address <span class="required">*</span></label>
+
+                                    <input required="" class="form-control" name="email" id="email" type="email" placeholder="Enter Email Id" />
+
+                                </div>
+
+                                <div class="form-group col-md-6">
+
+                                    <label>Mobile<span class="required">*</span></label>
+
+                                    <input required="" class="form-control" name="phone" id="phone" placeholder="Enter Mobile Number" />
+
+                                </div>
+
+                                <hr>
+
+                                <h3>Address Details</h3>
+
+
+
+                                <div class="form-group col-md-12">
+
+                                    <label>Addres Line 1<span class="required">*</span></label>
+
+                                    <input required="" class="form-control" name="addressline1" id="adddressline1" placeholder="Enter Address Line 1" />
+
+                                </div>
+
+                                <div class="form-group col-md-12">
+
+                                    <label>Address Line 2</label>
+
+                                    <input class="form-control" name="adddressline2" id="adddressline2" placeholder="Enter Address Line 2" />
+
+                                </div>
+
+                                <div class="form-group col-md-12">
+
+                                    <label>Address Line 3</label>
+
+                                    <input class="form-control" name="adddressline3" id="adddressline3" placeholder="Enter Address Line 3" />
+
+                                </div>
+
+                                <div class="form-group col-md-4">
+
+                                    <label>City<span class="required">*</span></label>
+
+                                    <input required="" class="form-control" name="city" id="city" placeholder="Enter City" />
+
+                                </div>
+
+                                <div class="form-group col-md-4">
+
+                                    <label>State<span class="required">*</span></label>
+
+                                    <input required="" class="form-control" name="state" id="state" placeholder="Enter State" />
+
+                                </div>
+
+                                <div class="form-group col-md-4">
+
+                                    <label>Pin Code<span class="required">*</span></label>
+
+                                    <input required="" class="form-control" name="picode" id="pincode" placeholder="Enter Pincode" />
+
+                                </div>
+
+                                <div class="form-group col-md-6">
+
+                                    <label>Country<span class="required">*</span></label>
+
+                                    <select class="form-control" id="country">
+
+                                        <option value="">Select an option...</option>
+
+                                        <option value="india">India</option>
+
+                                    </select>
+
+                                </div>
+
+                                
+                                <div class="col-md-12">
+
+                                    <button type="button" class="btn btn-fill-out submit font-weight-bold" id="add-customer-full-details" name="submit" value="Submit">Save</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Custom Modal for adding new address/ updating already address -->
+
+    <div class="modal fade custom-modal" data-backdrop="static" data-keyboard="false" id="update-address-modal" tabindex="-1" aria-labelledby="update-address-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                <div class="modal-body">
+
+                    <form method="post" name="enq" id="update-customer-address">
+
+                        <input type="hidden" name="update-customer-address-id" id="update-customer-address-id" value="">
+
+                        <div class="row">
+
+                            <h3>Address Details</h3>
+
+                            <div class="form-group col-md-12">
+
+                                <label>Address Type<span class="required"></span></label>
+								
+								<select class="form-control" id="addresstype" name="addresstype" placeholder="Enter Address Type ex: Home / office etc.">
+
+                                    <option value="Home">Home</option>
+									
+									<option value="Office">Office</option>
+
+                                </select>
+
+
+                            </div>
+
+                            <div class="form-group col-md-12">
+
+                                <label>Full Name <span class="required"></span></label>
+
+                                <input required="" class="form-control" id="firstname" name="firstName" type="text" placeholder="Enter Full Name" />
+
+                            </div>
+
+                            <div class="form-group col-md-12">
+
+                                <label>Email Address <span class="required"></span></label>
+
+                                <input required="" class="form-control" name="editemail" id="editemail" type="email" placeholder="Enter Email Id" />
+
+                            </div>
+
+                            <div class="form-group col-md-12">
+
+                                <label>Mobile<span class="required"></span></label>
+
+                                <input required="" class="form-control" name="editphone" id="editphone" placeholder="Enter Mobile Number" />
+
+                            </div>
+
+                            <div class="form-group col-md-12">
+
+                                <label>Address Line 1<span class="required"></span></label>
+
+                                <input required="" class="form-control" name="addressline1" id="addressline1" placeholder="Enter Address Line 1" />
+
+                            </div>
+
+                            <div class="form-group col-md-12">
+
+                                <label>Address Line 2</label>
+
+                                <input class="form-control" name="adddressline2" id="addressline2" placeholder="Enter Address Line 2" />
+
+                            </div>
+							
+							<div class="form-group col-md-12">
+
+                                <label>Pin Code<span class="required"></span></label>
+
+                                <input required="" class="form-control" name="picode" id="editpincode" placeholder="Enter Pincode" />
+
+                            </div>
+
+                            <div class="form-group col-md-12">
+
+                                <label>City<span class="required"></span></label>
+
+                                <input required="" class="form-control" name="city" id="editcity" placeholder="Enter City" />
+
+                            </div>
+
+
+
+                            <div class="form-group col-md-12">
+
+                                <label>State<span class="required"></span></label>
+
+                                
+
+                           
+                                             
+                                 <div class="wrpper-dropdown-state">
+                                 <select class="form-select" aria-label="Default select  name="state"  example" id="editstate"  >
+               
+
+              <option selected>Open this select menu</option>
+                       <option value="AP">Andhra Pradesh</option>
+                <option value= "AR">Arunachal Pradesh</option>
+                <option value= "AS">Assam</option>
+                <option value= "BR">Bihar</option>
+                <option value= "CG">Chhattisgarh</option>
+                 <option value="GA">Goa</option>
+                 <option value="GJ">Gujarat</option>
+                 <option value="HR">Haryana</option>
+                 <option value="HP">Himachal Pradesh</option>
+                 <option value="JK">Jammu and Kashmir</option>
+                <option value= "JH">Jharkhand</option>
+                 <option value="KA">Karnataka</option>
+                <option value= "KL">Kerala</option>
+               <option value=  "MP">Madhya Pradesh</option>
+               <option value=  "MH">Maharashtra</option>
+                <option value= "MN">Manipur</option>
+                <option value= "ML">Meghalaya</option>
+                <option value= "MZ">Mizoram</option>
+                <option value= "NL">Nagaland</option>
+                <option value= "OR">Odisha</option>
+               <option value=  "PB">Punjab</option>
+                <option value= "RJ">Rajasthan</option>
+                <option value= "SK">Sikkim</option>
+                <option value= "TN">Tamil Nadu</option>
+                <option value= "TS">Telangana</option>
+                <option value= "TR">Tripura</option>
+                <option value= "UA">Uttarakhand</option>
+                <option value= "UP">Uttar Pradesh</option>
+                <option value= "WB">West Bengal</option>
+                <option value= "AN">Andaman and Nicobar Islands</option>
+                <option value= "CH">Chandigarh</option>
+                <option value= "DN">Dadra and Nagar Haveli</option>
+                <option value= "DD">Daman and Diu</option>
+               <option value=  "DL">Delhi</option>
+               <option value=  "LD">Lakshadweep</option>
+              <option value= "PY">Puducherry</option>
+              <option value= "LA">Ladakh</option>
+
+                              </select>
+                                 </div>
+                                 </div>
+
+
+                            </div>
+							
+                            <div class="form-group col-md-12">
+
+                                <label>Country<span class="required"></span></label>
+
+                                <select class="form-control" id="editcountry">
+
+                                    <option value="India">India</option>
+
+                                </select>
+
+                            </div>
+
+                            
+
+                            <div class="col-md-12">
+
+                                <button type="button" class="btn btn-fill-out submit font-weight-bold btn-update-customer-address" name="submit" value="Submit">Save</button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Vendor JS-->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/1.6/modernizr.min.js"></script>
+	
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-migrate@3.4.1/dist/jquery-migrate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!--<script src="/assets/js/plugins/slick.js"></script>-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <!-- <script src="/assets/js/plugins/jquery.syotimer.min.js"></script> -->
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js" integrity="sha512-Eak/29OTpb36LLo2r47IpVzPBLXnAMPAVypbSZiZ4Qkf8p/7S/XRG5xp7OKWPPYfJT6metI+IORkR5G8F900+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.5/perfect-scrollbar.min.js" integrity="sha512-X41/A5OSxoi5uqtS6Krhqz8QyyD8E/ZbN7B4IaBSgqPLRbWVuXJXr9UwOujstj71SoVxh5vxgy7kmtd17xrJRw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" integrity="sha512-IsNh5E3eYy3tr/JiX2Yx4vsCujtkhwl7SLqgnwLNgf04Hrt9BT9SXlLlZlWx+OK4ndzAoALhsMNcCmkggjZB1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/assets/js/plugins/select2.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js" integrity="sha512-fHXRw0CXruAoINU11+hgqYvY/PcsOWzmj0QmcSOtjlJcqITbPyypc8cYpidjPurWpCnlB8VKfRwx6PIpASCUkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js" integrity="sha512-d8F1J2kyiRowBB/8/pAWsqUl0wSEOkG5KATkVV4slfblq9VRQ6MyDZVxWl2tWd+mPhuCbpTB4M7uU/x9FlgQ9Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- <script src="/assets/js/plugins/jquery.countdown.min.js"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/5.0.0/imagesloaded.pkgd.min.js" integrity="sha512-kfs3Dt9u9YcOiIt4rNcPUzdyNNO9sVGQPiZsub7ywg6lRW5KuK1m145ImrFHe3LMWXHndoKo2YRXWy8rnOcSKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollup/2.4.1/jquery.scrollUp.min.js" integrity="sha512-gAHP1RIzRzolApS3+PI5UkCtoeBpdxBAtxEPsyqvsPN950Q7oD+UT2hafrcFoF04oshCGLqcSgR5dhUthCcjdA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/theia-sticky-sidebar@1.7.0/dist/theia-sticky-sidebar.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js" integrity="sha512-UH428GPLVbCa8xDVooDWXytY8WASfzVv3kxCvTAFkxD2vPjouf1I3+RJ2QcSckESsb7sI+gv3yhsgw9ZhM7sDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+    @stack('externaljavascript')
+
+    <!-- Template  JS -->
+
+    <script src="/assets/js/jquery-search.js?v=5.6"></script>
+
+    <script src="/assets/js/jquery-listnav.js?v=5.6"></script>
+
+    <script src="/assets/js/main.js?v={{rand()}}"></script>
+
+    <script src="/assets/js/shop.js?v=5.6"></script>
+
+    <script src="/assets/js/cart.js?v={{rand()}}"></script>
+
+    <script src="/assets/alertifyjs/alertify.min.js"></script>
+
+    
+
+<!-- google translate -->
+<!--<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
 </script>
-<script src="{{asset('frontend/js/vendor/index.js')}}"></script>
-<script src="{{asset('frontend/js/cart.js')}}"></script>
-<script src="{{asset('frontend/js/main.js')}}"></script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>-->
+<!-- google translate ends here -->
+
+
+<script>
+const textElements = document.querySelectorAll('.show');
+let currentIndex = 0;
+
+function showTextOneByOne() {
+  if (currentIndex < textElements.length) {
+    textElements[currentIndex].style.display = 'block';
+    currentIndex++;
+  }
+}
+
+ showTextOneByOne();
+
+ 
+const interval = 2000; // Adjust this to control the timing
+setInterval(showTextOneByOne, interval);
+
+
+</script>
+
+<script>
+const paragraphs = document.querySelectorAll('.loop-text2 p');
+
+function loopAnimation(index) {
+  if (index >= paragraphs.length) {
+    index = 0;
+  }
+  
+  paragraphs[index].style.animation = 'none';
+  paragraphs[index].offsetHeight; // Trigger reflow
+  paragraphs[index].style.animation = 'moveUp 3s linear forwards';
+  
+  setTimeout(() => {
+    loopAnimation(index + 1);
+  }, 3000); // Adjust the delay to match your animation duration
+}
+
+loopAnimation(0); // Start the loop
+ 
+$(function() {
+    setTimeout(function() { $("#hideDiv").fadeOut(1500); }, 1000)
+
+    })
+</script>
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6558489cd600b968d31470e3/1hfgdn9p4';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+
+
+
+
+
+@stack('javascript')
+
+
 
 </body>
 </html>
